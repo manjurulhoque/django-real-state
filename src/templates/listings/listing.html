@@ -5,29 +5,48 @@
 {% block title %} | {{ listing.title }} {% endblock %}
 
 {% block content %}
-    <section id="showcase-inner" class="py-5 text-white">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <h1 class="display-4">{{ listing.title }}</h1>
-                    <p class="lead">
-                        <i class="fas fa-map-marker"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}
-                    </p>
+    <!-- Hero Section -->
+    <section id="property-hero" class="position-relative">
+        <div class="hero-image-container">
+            <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="hero-image">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-50">
+                        <div class="col-lg-8">
+                            <div class="hero-content text-white">
+                                <div class="mb-3">
+                                    <span class="badge badge-primary px-3 py-2">
+                                        ${{ listing.price | intcomma }}
+                                    </span>
+                                    {% if listing.is_published %}
+                                        <span class="badge badge-success ml-2">Available</span>
+                                    {% endif %}
+                                </div>
+                                <h1 class="display-4 font-weight-bold mb-3">{{ listing.title }}</h1>
+                                <p class="lead mb-0">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Breadcrumb -->
-    <section id="bc" class="mt-3">
+    <section class="bg-light py-3">
         <div class="container">
-            <nav>
-                <ol class="breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
-                        <a href="{% url 'pages:index' %}">Home</a>
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{% url 'listings:listings' %}">Listings</a>
+                        <a href="{% url 'listings:listings' %}">Properties</a>
                     </li>
                     <li class="breadcrumb-item active">{{ listing.title }}</li>
                 </ol>
@@ -35,139 +54,261 @@
         </div>
     </section>
 
-    <!-- Listing -->
-    <section id="listing" class="py-4">
+    <!-- Main Content -->
+    <section class="py-5">
         <div class="container">
-            <a href="{% url 'listings:listings' %}" class="btn btn-light mb-4">Back To Listings</a>
             <div class="row">
-                <div class="col-md-9">
-                    <!-- Home Main Image -->
-                    <img src="{{ listing.photo_main.url }}" alt="" class="img-main img-fluid mb-3">
-                    <!-- Thumbnails -->
-                    <div class="row mb-5 thumbs">
-                        {% if listing.photo_1 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_1.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_1.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if listing.photo_2 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_2.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_2.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if listing.photo_3 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_3.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_3.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if listing.photo_4 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_4.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_4.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if listing.photo_5 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_5.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_5.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if listing.photo_6 %}
-                            <div class="col-md-2">
-                                <a href="{{ listing.photo_6.url }}" data-lightbox="home-images">
-                                    <img src="{{ listing.photo_6.url }}" alt="" class="img-fluid">
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Fields -->
-                    <div class="row mb-5 fields">
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-money-bill-alt"></i> Asking Price:
-                                    <span class="float-right">${{ listing.price | intcomma }}</span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-bed"></i> Bedrooms:
-                                    <span class="float-right">{{ listing.bedrooms }}</span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-bath"></i> Bathrooms:
-                                    <span class="float-right">{{ listing.bathrooms }}</span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-car"></i> Garage:
-                                    <span class="float-right">{{ listing.garage }}
-                  </span>
-                                </li>
-                            </ul>
+                <!-- Main Content Column -->
+                <div class="col-lg-8">
+                    <!-- Quick Actions -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <a href="{% url 'listings:listings' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Properties
+                        </a>
+                        <div class="property-actions">
+                            <button class="btn btn-outline-secondary mr-2">
+                                <i class="fas fa-heart mr-1"></i>Save
+                            </button>
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-share-alt mr-1"></i>Share
+                            </button>
                         </div>
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-th-large"></i> Square Feet:
-                                    <span class="float-right">{{ listing.sqft }}</span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-square"></i> Lot Size:
-                                    <span class="float-right">{{ listing.lot_size }} Acres
-                  </span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-calendar"></i> Listing Date:
-                                    <span class="float-right">{{ listing.list_date }}</span>
-                                </li>
-                                <li class="list-group-item text-secondary">
-                                    <i class="fas fa-bed"></i> Realtor:
-                                    <span class="float-right">{{ listing.realtor }}
-                  </span>
-                                </li>
+                    </div>
 
+                    <!-- Property Features Overview -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary mb-4">Property Overview</h3>
+                            <div class="row">
+                                <div class="col-md-3 col-6 mb-3">
+                                    <div class="feature-box text-center p-3">
+                                        <div class="feature-icon mb-2">
+                                            <i class="fas fa-bed fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ listing.bedrooms }}</h5>
+                                        <small class="text-muted">Bedroom{{ listing.bedrooms|pluralize }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6 mb-3">
+                                    <div class="feature-box text-center p-3">
+                                        <div class="feature-icon mb-2">
+                                            <i class="fas fa-bath fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ listing.bathrooms }}</h5>
+                                        <small class="text-muted">Bathroom{{ listing.bathrooms|pluralize }}</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6 mb-3">
+                                    <div class="feature-box text-center p-3">
+                                        <div class="feature-icon mb-2">
+                                            <i class="fas fa-expand-arrows-alt fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ listing.sqft | intcomma }}</h5>
+                                        <small class="text-muted">Square Feet</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6 mb-3">
+                                    <div class="feature-box text-center p-3">
+                                        <div class="feature-icon mb-2">
+                                            <i class="fas fa-car fa-2x text-primary"></i>
+                                        </div>
+                                        <h5 class="mb-1">{{ listing.garage }}</h5>
+                                        <small class="text-muted">Garage Space{{ listing.garage|pluralize }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                            </ul>
+                    <!-- Photo Gallery -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary mb-4">Photo Gallery</h3>
+                            <div class="row">
+                                {% if listing.photo_1 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_1.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_1.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if listing.photo_2 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_2.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_2.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if listing.photo_3 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_3.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_3.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if listing.photo_4 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_4.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_4.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if listing.photo_5 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_5.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_5.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if listing.photo_6 %}
+                                    <div class="col-md-4 col-6 mb-3">
+                                        <div class="gallery-item">
+                                            <a href="{{ listing.photo_6.url }}" data-lightbox="property-gallery">
+                                                <img src="{{ listing.photo_6.url }}" alt="Property Image" class="img-fluid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary mb-4">Property Details</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted mb-3">Financial Information</h6>
+                                    <div class="list-group list-group-flush mb-4">
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-dollar-sign text-primary mr-2"></i>Asking Price</span>
+                                            <strong class="text-primary">${{ listing.price | intcomma }}</strong>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="text-muted mb-3">Interior Features</h6>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-bed text-primary mr-2"></i>Bedrooms</span>
+                                            <strong>{{ listing.bedrooms }}</strong>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-bath text-primary mr-2"></i>Bathrooms</span>
+                                            <strong>{{ listing.bathrooms }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6 class="text-muted mb-3">Property Size</h6>
+                                    <div class="list-group list-group-flush mb-4">
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-expand-arrows-alt text-primary mr-2"></i>Square Feet</span>
+                                            <strong>{{ listing.sqft | intcomma }} sq ft</strong>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-square text-primary mr-2"></i>Lot Size</span>
+                                            <strong>{{ listing.lot_size }} Acres</strong>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="text-muted mb-3">Additional Features</h6>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-car text-primary mr-2"></i>Garage</span>
+                                            <strong>{{ listing.garage }} Space{{ listing.garage|pluralize }}</strong>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-calendar text-primary mr-2"></i>Listed Date</span>
+                                            <strong>{{ listing.list_date | date:"M d, Y" }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Description -->
-                    <div class="row mb-5">
-                        <div class="col-md-12">
-                            {{ listing.description }}
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary mb-4">Property Description</h3>
+                            <div class="property-description">
+                                <p>{{ listing.description | linebreaks }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card mb-3">
-                        <img class="card-img-top" src="{{ listing.realtor.photo.url }}" alt="">
-                        <div class="card-body">
-                            <h5 class="card-title">Property Realtor</h5>
-                            <h6 class="text-secondary">{{ listing.realtor }}</h6>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Realtor Card -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <div class="realtor-avatar mb-3">
+                                <img src="{{ listing.realtor.photo.url }}" alt="{{ listing.realtor }}" 
+                                     class="rounded-circle" width="100" height="100" style="object-fit: cover;">
+                            </div>
+                            <h5 class="card-title mb-1">{{ listing.realtor }}</h5>
+                            <p class="text-muted mb-3">Licensed Real Estate Agent</p>
+                            
+                            <button class="btn btn-primary btn-block mb-2" data-toggle="modal" data-target="#inquiryModal">
+                                <i class="fas fa-envelope mr-2"></i>Make an Inquiry
+                            </button>
+                            <button class="btn btn-outline-primary btn-block">
+                                <i class="fas fa-phone mr-2"></i>Call Agent
+                            </button>
                         </div>
                     </div>
-                    <button class="btn-primary btn-block btn-lg" data-toggle="modal" data-target="#inquiryModal">Make An
-                        Inquiry
-                    </button>
+
+                    <!-- Quick Contact Form -->
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-3">Quick Contact</h5>
+                            <form>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="tel" class="form-control" placeholder="Phone Number">
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="3" placeholder="I'm interested in this property..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Inquiry Modal -->
-    <div class="modal fade" id="inquiryModal" role="dialog">
-        <div class="modal-dialog">
+    <div class="modal fade" id="inquiryModal" tabindex="-1" role="dialog" aria-labelledby="inquiryModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="inquiryModalLabel">Make An Inquiry</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
+                    <h5 class="modal-title text-primary" id="inquiryModalLabel">
+                        <i class="fas fa-envelope mr-2"></i>Make an Inquiry
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -180,33 +321,138 @@
                         {% endif %}
                         <input type="hidden" name="realtor_email" value="{{ listing.realtor.email }}">
                         <input type="hidden" name="listing_id" value="{{ listing.id }}">
+                        
                         <div class="form-group">
-                            <label for="property_name" class="col-form-label">Property:</label>
-                            <input type="text" name="listing" class="form-control" value="{{ listing.title }}">
+                            <label for="property_name">Property:</label>
+                            <input type="text" name="listing" class="form-control" value="{{ listing.title }}" readonly>
                         </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">Full Name:</label>
+                                    <input type="text" name="name" class="form-control" 
+                                           {% if user.is_authenticated %}value="{{ user.first_name }} {{ user.last_name }}"{% endif %} 
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Email Address:</label>
+                                    <input type="email" name="email" class="form-control" 
+                                           {% if user.is_authenticated %}value="{{ user.email }}"{% endif %} 
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
-                            <label for="name" class="col-form-label">Name:</label>
-                            <input type="text" name="name" class="form-control" {% if user.is_authenticated %}
-                                   value="{{ user.first_name }} {{ user.last_name }}" {% endif %} required>
+                            <label for="phone">Phone Number:</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="(555) 123-4567">
                         </div>
+                        
                         <div class="form-group">
-                            <label for="email" class="col-form-label">Email:</label>
-                            <input type="email" name="email" class="form-control" {% if user.is_authenticated %}
-                                   value="{{ user.email }}" {% endif %} required>
+                            <label for="message">Message:</label>
+                            <textarea name="message" class="form-control" rows="4" 
+                                      placeholder="I am interested in this property and would like more information..."></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="phone" class="col-form-label">Phone:</label>
-                            <input type="text" name="phone" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="message" class="col-form-label">Message:</label>
-                            <textarea name="message" class="form-control"></textarea>
-                        </div>
-                        <hr>
-                        <input type="submit" value="Send" class="btn btn-block btn-secondary">
+                        
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Inquiry
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-image-container {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-50 {
+            min-height: 400px;
+        }
+        
+        .feature-box {
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .gallery-item img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+            padding: 0.75rem 0;
+        }
+        
+        .list-group-item:first-child {
+            border-top: none;
+        }
+        
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        
+        .property-description p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .badge {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+    </style>
 {% endblock %}
