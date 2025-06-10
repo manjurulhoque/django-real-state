@@ -1,0 +1,413 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Contact Us {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="contact-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-50">
+                        <div class="col-lg-8 mx-auto text-center">
+                            <div class="hero-content text-white">
+                                <h1 class="display-3 font-weight-bold mb-4">Contact BT Real Estate</h1>
+                                <p class="lead mb-4">Ready to find your dream home or sell your property? Our expert team is here to help you every step of the way. Get in touch with us today!</p>
+                                <div class="hero-contact-info row text-center">
+                                    <div class="col-md-4">
+                                        <div class="contact-item mb-3">
+                                            <i class="fas fa-phone fa-2x mb-2"></i>
+                                            <p class="mb-0">(555) 123-4567</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="contact-item mb-3">
+                                            <i class="fas fa-envelope fa-2x mb-2"></i>
+                                            <p class="mb-0">info@btrealestate.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="contact-item mb-3">
+                                            <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
+                                            <p class="mb-0">123 Main St, City, State</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Contact Us</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Form -->
+                <div class="col-lg-8 mb-5">
+                    <div class="card contact-card">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">
+                                <i class="fas fa-envelope mr-2"></i>Send Us a Message
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-4">Have a question about buying, selling, or renting? Fill out the form below and our team will get back to you within 24 hours.</p>
+                            
+                            <form action="{% url 'contact' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name" class="form-label">
+                                                <i class="fas fa-user text-primary mr-1"></i>Full Name *
+                                            </label>
+                                            <input type="text" name="name" class="form-control" id="name" 
+                                                   placeholder="Enter your full name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="email" class="form-label">
+                                                <i class="fas fa-envelope text-primary mr-1"></i>Email Address *
+                                            </label>
+                                            <input type="email" name="email" class="form-control" id="email" 
+                                                   placeholder="Enter your email address" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone" class="form-label">
+                                                <i class="fas fa-phone text-primary mr-1"></i>Phone Number
+                                            </label>
+                                            <input type="tel" name="phone" class="form-control" id="phone" 
+                                                   placeholder="(555) 123-4567">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="subject" class="form-label">
+                                                <i class="fas fa-tag text-primary mr-1"></i>Subject
+                                            </label>
+                                            <select name="subject" class="form-control" id="subject">
+                                                <option value="">Select a subject</option>
+                                                <option value="buying">Buying a Property</option>
+                                                <option value="selling">Selling a Property</option>
+                                                <option value="renting">Renting a Property</option>
+                                                <option value="general">General Inquiry</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message" class="form-label">
+                                        <i class="fas fa-comment text-primary mr-1"></i>Message *
+                                    </label>
+                                    <textarea name="message" class="form-control" id="message" rows="5" 
+                                              placeholder="Tell us about your real estate needs..." required></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            I would like to receive updates about new properties and market insights
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                    <i class="fas fa-paper-plane mr-2"></i>Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Office Info -->
+                    <div class="card contact-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-4">
+                                <i class="fas fa-building mr-2"></i>Our Office
+                            </h5>
+                            <div class="contact-info">
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-map-marker-alt text-primary mr-3"></i>
+                                    <div>
+                                        <strong>Address</strong><br>
+                                        <span class="text-muted">123 Main Street<br>Business District<br>City, State 12345</span>
+                                    </div>
+                                </div>
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-phone text-primary mr-3"></i>
+                                    <div>
+                                        <strong>Phone</strong><br>
+                                        <a href="tel:+15551234567" class="text-muted">(555) 123-4567</a>
+                                    </div>
+                                </div>
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-envelope text-primary mr-3"></i>
+                                    <div>
+                                        <strong>Email</strong><br>
+                                        <a href="mailto:info@btrealestate.com" class="text-muted">info@btrealestate.com</a>
+                                    </div>
+                                </div>
+                                <div class="info-item mb-3">
+                                    <i class="fas fa-clock text-primary mr-3"></i>
+                                    <div>
+                                        <strong>Business Hours</strong><br>
+                                        <span class="text-muted">
+                                            Mon - Fri: 9:00 AM - 6:00 PM<br>
+                                            Sat: 10:00 AM - 4:00 PM<br>
+                                            Sun: By Appointment
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Why Choose Us -->
+                    <div class="card contact-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-4">
+                                <i class="fas fa-star mr-2"></i>Why Choose Us?
+                            </h5>
+                            <div class="feature-list">
+                                <div class="feature-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>15+ Years of Experience</span>
+                                </div>
+                                <div class="feature-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Local Market Expertise</span>
+                                </div>
+                                <div class="feature-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>24/7 Customer Support</span>
+                                </div>
+                                <div class="feature-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Professional Photography</span>
+                                </div>
+                                <div class="feature-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Negotiation Experts</span>
+                                </div>
+                                <div class="feature-item mb-0">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Free Market Analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="card contact-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-danger mb-3">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>Emergency Contact
+                            </h5>
+                            <p class="text-muted mb-3">For urgent property matters outside business hours</p>
+                            <a href="tel:+15551234567" class="btn btn-outline-danger btn-block">
+                                <i class="fas fa-phone mr-2"></i>Call Emergency Line
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-4">
+                    <h2 class="text-primary mb-3">Find Our Office</h2>
+                    <p class="lead text-muted">Visit us at our convenient downtown location</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="map-container">
+                        <!-- Placeholder for Google Maps -->
+                        <div class="map-placeholder text-center py-5">
+                            <i class="fas fa-map-marked-alt fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">Interactive Map</h4>
+                            <p class="text-muted">Google Maps integration would go here</p>
+                            <p class="text-muted"><strong>123 Main Street, Business District, City, State 12345</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-primary text-white py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="mb-4">Ready to Get Started?</h2>
+                    <p class="lead mb-4">Don't wait to find your perfect home or sell your property at the best price. Our team of experts is ready to help you achieve your real estate goals.</p>
+                    <div class="cta-buttons">
+                        <a href="{% url 'listings:listings' %}" class="btn btn-light btn-lg mr-3 mb-2">
+                            <i class="fas fa-search mr-2"></i>Browse Properties
+                        </a>
+                        <a href="tel:+15551234567" class="btn btn-outline-light btn-lg mb-2">
+                            <i class="fas fa-phone mr-2"></i>Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            min-height: 500px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-50 {
+            min-height: 500px;
+        }
+        
+        .contact-item {
+            padding: 1rem;
+        }
+        
+        .contact-card {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-header.bg-primary {
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .info-item i {
+            margin-top: 0.25rem;
+            width: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .map-placeholder {
+            background: #f8f9fa;
+            border-radius: 15px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn {
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .cta-buttons a {
+            min-width: 180px;
+        }
+        
+        @media (max-width: 768px) {
+            .display-3 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-contact-info {
+                margin-top: 2rem;
+            }
+            
+            .contact-item {
+                margin-bottom: 1rem;
+            }
+            
+            .cta-buttons a {
+                min-width: auto;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+{% endblock %} 
