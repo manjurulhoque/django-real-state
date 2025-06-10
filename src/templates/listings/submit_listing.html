@@ -1,0 +1,556 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Submit Your Property {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="submit-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-50">
+                        <div class="col-lg-8 mx-auto text-center">
+                            <div class="hero-content text-white">
+                                <h1 class="display-3 font-weight-bold mb-4">Submit Your Property</h1>
+                                <p class="lead mb-4">List your property with BT Real Estate and reach thousands of potential buyers. Our expert team will help you get the best price for your property.</p>
+                                <div class="hero-features row text-center">
+                                    <div class="col-md-4">
+                                        <div class="feature-item mb-3">
+                                            <i class="fas fa-camera fa-2x mb-2"></i>
+                                            <p class="mb-0">Professional Photography</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="feature-item mb-3">
+                                            <i class="fas fa-chart-line fa-2x mb-2"></i>
+                                            <p class="mb-0">Market Analysis</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="feature-item mb-3">
+                                            <i class="fas fa-handshake fa-2x mb-2"></i>
+                                            <p class="mb-0">Expert Negotiation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'listings:listings' %}">Properties</a>
+                    </li>
+                    <li class="breadcrumb-item active">Submit Property</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Submit Form Section -->
+    <section id="submit-form" class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Main Form -->
+                <div class="col-lg-8">
+                    <div class="card submit-card">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">
+                                <i class="fas fa-home mr-2"></i>Property Information
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <!-- Property Basic Info -->
+                                <div class="form-section mb-5">
+                                    <h5 class="section-title text-primary mb-4">
+                                        <i class="fas fa-info-circle mr-2"></i>Basic Information
+                                    </h5>
+                                    
+                                    <div class="form-group">
+                                        <label for="title" class="form-label">
+                                            <i class="fas fa-tag text-primary mr-1"></i>Property Title *
+                                        </label>
+                                        <input type="text" name="title" class="form-control" id="title" 
+                                               placeholder="e.g., Beautiful 3BR Home in Downtown" required>
+                                        <small class="form-text text-muted">Create an attractive title that highlights your property's best features</small>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="price" class="form-label">
+                                                    <i class="fas fa-dollar-sign text-primary mr-1"></i>Asking Price *
+                                                </label>
+                                                <input type="number" name="price" class="form-control" id="price" 
+                                                       placeholder="500000" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="sqft" class="form-label">
+                                                    <i class="fas fa-expand-arrows-alt text-primary mr-1"></i>Square Feet *
+                                                </label>
+                                                <input type="number" name="sqft" class="form-control" id="sqft" 
+                                                       placeholder="2500" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Property Features -->
+                                <div class="form-section mb-5">
+                                    <h5 class="section-title text-primary mb-4">
+                                        <i class="fas fa-list mr-2"></i>Property Features
+                                    </h5>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="bedrooms" class="form-label">
+                                                    <i class="fas fa-bed text-primary mr-1"></i>Bedrooms *
+                                                </label>
+                                                <select name="bedrooms" class="form-control" id="bedrooms" required>
+                                                    <option value="">Select Bedrooms</option>
+                                                    {% for key,value in bedroom_choices.items %}
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="bathrooms" class="form-label">
+                                                    <i class="fas fa-bath text-primary mr-1"></i>Bathrooms *
+                                                </label>
+                                                <select name="bathrooms" class="form-control" id="bathrooms" required>
+                                                    <option value="">Select Bathrooms</option>
+                                                    <option value="1">1</option>
+                                                    <option value="1.5">1.5</option>
+                                                    <option value="2">2</option>
+                                                    <option value="2.5">2.5</option>
+                                                    <option value="3">3</option>
+                                                    <option value="3.5">3.5</option>
+                                                    <option value="4">4+</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="garage" class="form-label">
+                                                    <i class="fas fa-car text-primary mr-1"></i>Garage Spaces
+                                                </label>
+                                                <select name="garage" class="form-control" id="garage">
+                                                    <option value="0">No Garage</option>
+                                                    <option value="1">1 Car</option>
+                                                    <option value="2">2 Car</option>
+                                                    <option value="3">3 Car</option>
+                                                    <option value="4">4+ Car</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="lot_size" class="form-label">
+                                            <i class="fas fa-square text-primary mr-1"></i>Lot Size (Acres)
+                                        </label>
+                                        <input type="number" step="0.1" name="lot_size" class="form-control" id="lot_size" 
+                                               placeholder="0.5">
+                                    </div>
+                                </div>
+
+                                <!-- Location Information -->
+                                <div class="form-section mb-5">
+                                    <h5 class="section-title text-primary mb-4">
+                                        <i class="fas fa-map-marker-alt mr-2"></i>Location Details
+                                    </h5>
+                                    
+                                    <div class="form-group">
+                                        <label for="address" class="form-label">
+                                            <i class="fas fa-road text-primary mr-1"></i>Street Address *
+                                        </label>
+                                        <input type="text" name="address" class="form-control" id="address" 
+                                               placeholder="123 Main Street" required>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="city" class="form-label">
+                                                    <i class="fas fa-city text-primary mr-1"></i>City *
+                                                </label>
+                                                <input type="text" name="city" class="form-control" id="city" 
+                                                       placeholder="Boston" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="state" class="form-label">
+                                                    <i class="fas fa-flag text-primary mr-1"></i>State *
+                                                </label>
+                                                <select name="state" class="form-control" id="state" required>
+                                                    <option value="">Select State</option>
+                                                    {% for key,value in state_choices.items %}
+                                                        <option value="{{ key }}">{{ value }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="zipcode" class="form-label">
+                                                    <i class="fas fa-mail-bulk text-primary mr-1"></i>Zip Code *
+                                                </label>
+                                                <input type="text" name="zipcode" class="form-control" id="zipcode" 
+                                                       placeholder="12345" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Property Description -->
+                                <div class="form-section mb-5">
+                                    <h5 class="section-title text-primary mb-4">
+                                        <i class="fas fa-file-alt mr-2"></i>Property Description
+                                    </h5>
+                                    
+                                    <div class="form-group">
+                                        <label for="description" class="form-label">
+                                            <i class="fas fa-comment text-primary mr-1"></i>Detailed Description
+                                        </label>
+                                        <textarea name="description" class="form-control" id="description" rows="6" 
+                                                  placeholder="Describe your property's features, amenities, neighborhood, and what makes it special..."></textarea>
+                                        <small class="form-text text-muted">Include details about renovations, special features, nearby amenities, and neighborhood highlights</small>
+                                    </div>
+                                </div>
+
+                                <!-- Photo Upload -->
+                                <div class="form-section mb-5">
+                                    <h5 class="section-title text-primary mb-4">
+                                        <i class="fas fa-camera mr-2"></i>Property Photos
+                                    </h5>
+                                    
+                                    <div class="form-group">
+                                        <label for="photo_main" class="form-label">
+                                            <i class="fas fa-image text-primary mr-1"></i>Main Photo * (Featured Image)
+                                        </label>
+                                        <input type="file" name="photo_main" class="form-control-file" id="photo_main" 
+                                               accept="image/*" required>
+                                        <small class="form-text text-muted">This will be the main image shown in search results</small>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_1" class="form-label">Additional Photo 1</label>
+                                                <input type="file" name="photo_1" class="form-control-file" id="photo_1" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_2" class="form-label">Additional Photo 2</label>
+                                                <input type="file" name="photo_2" class="form-control-file" id="photo_2" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_3" class="form-label">Additional Photo 3</label>
+                                                <input type="file" name="photo_3" class="form-control-file" id="photo_3" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_4" class="form-label">Additional Photo 4</label>
+                                                <input type="file" name="photo_4" class="form-control-file" id="photo_4" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_5" class="form-label">Additional Photo 5</label>
+                                                <input type="file" name="photo_5" class="form-control-file" id="photo_5" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="photo_6" class="form-label">Additional Photo 6</label>
+                                                <input type="file" name="photo_6" class="form-control-file" id="photo_6" 
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Terms and Submit -->
+                                <div class="form-section">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="terms" required>
+                                            <label class="form-check-label" for="terms">
+                                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and confirm that I have the legal right to list this property *
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="marketing">
+                                            <label class="form-check-label" for="marketing">
+                                                I would like to receive marketing updates and property market insights
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                        <i class="fas fa-upload mr-2"></i>Submit Property for Review
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Information -->
+                <div class="col-lg-4">
+                    <!-- Process Steps -->
+                    <div class="card submit-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-4">
+                                <i class="fas fa-tasks mr-2"></i>How It Works
+                            </h5>
+                            <div class="process-steps">
+                                <div class="step-item mb-4">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h6>Submit Your Property</h6>
+                                        <p class="text-muted mb-0">Fill out the form with your property details and photos</p>
+                                    </div>
+                                </div>
+                                <div class="step-item mb-4">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h6>Professional Review</h6>
+                                        <p class="text-muted mb-0">Our team reviews and optimizes your listing</p>
+                                    </div>
+                                </div>
+                                <div class="step-item mb-4">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h6>Go Live</h6>
+                                        <p class="text-muted mb-0">Your property goes live within 24 hours</p>
+                                    </div>
+                                </div>
+                                <div class="step-item mb-0">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h6>Expert Support</h6>
+                                        <p class="text-muted mb-0">We handle showings, negotiations, and closing</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Support -->
+                    <div class="card submit-card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-3">
+                                <i class="fas fa-life-ring mr-2"></i>Need Help?
+                            </h5>
+                            <p class="text-muted mb-3">Our property listing experts are here to help you create the perfect listing.</p>
+                            <a href="{% url 'contact' %}" class="btn btn-outline-primary btn-block mb-2">
+                                <i class="fas fa-envelope mr-2"></i>Contact Support
+                            </a>
+                            <a href="tel:+15551234567" class="btn btn-outline-secondary btn-block">
+                                <i class="fas fa-phone mr-2"></i>Call (555) 123-4567
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Listing Benefits -->
+                    <div class="card submit-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-4">
+                                <i class="fas fa-star mr-2"></i>Why List With Us?
+                            </h5>
+                            <div class="benefit-list">
+                                <div class="benefit-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Maximum Market Exposure</span>
+                                </div>
+                                <div class="benefit-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Professional Photography</span>
+                                </div>
+                                <div class="benefit-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Expert Pricing Strategy</span>
+                                </div>
+                                <div class="benefit-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Skilled Negotiations</span>
+                                </div>
+                                <div class="benefit-item mb-3">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Marketing on Multiple Platforms</span>
+                                </div>
+                                <div class="benefit-item mb-0">
+                                    <i class="fas fa-check-circle text-success mr-2"></i>
+                                    <span>Full-Service Support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-50 {
+            min-height: 400px;
+        }
+        
+        .feature-item {
+            padding: 1rem;
+        }
+        
+        .submit-card {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .submit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-header.bg-primary {
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .form-section {
+            position: relative;
+        }
+        
+        .section-title {
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-control-file {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h6 {
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .btn {
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .display-3 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-features {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+{% endblock %} 
