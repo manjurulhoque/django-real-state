@@ -71,63 +71,32 @@
     <br>
 
     <!-- Listings -->
-    <section id="listings" class="py-5">
+    <section id="listings" class="py-5 bg-light">
         <div class="container">
-            <h3 class="text-center mb-3">Latest Listings</h3>
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold text-primary mb-3">Latest Properties</h2>
+                <p class="lead text-muted">Discover our newest and most exclusive property listings</p>
+            </div>
             <div class="row">
                 {% if listings %}
                     {% for listing in listings %}
-                        <!-- Listing 1 -->
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card listing-preview">
-                                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="">
-                                <div class="card-img-overlay">
-                                    <h2>
-                                        <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
-                                    </h2>
-                                </div>
-                                <div class="card-body">
-                                    <div class="listing-heading text-center">
-                                        <h4 class="text-primary">{{ listing.title }}</h4>
-                                        <p>
-                                            <i class="fas fa-map-marker text-secondary"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}
-                                        </p>
-                                    </div>
-                                    <hr>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-6">
-                                            <i class="fas fa-th-large"></i> Sqft: {{ listing.sqft }}</div>
-                                        <div class="col-6">
-                                            <i class="fas fa-car"></i> Garage: {{ listing.garage }}</div>
-                                    </div>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-6">
-                                            <i class="fas fa-bed"></i> Bedrooms: {{ listing.bedrooms }}</div>
-                                        <div class="col-6">
-                                            <i class="fas fa-bath"></i> Bathrooms: {{ listing.bathrooms }}</div>
-                                    </div>
-                                    <hr>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-6">
-                                            <i class="fas fa-user"></i> {{ listing.realtor }}</div>
-                                    </div>
-                                    <div class="row text-secondary pb-2">
-                                        <div class="col-6">
-                                            <i class="fas fa-clock"></i> {{ listing.list_date | timesince }}</div>
-                                    </div>
-                                    <hr>
-                                    <a href="{% url 'listings:listing' listing.id %}" class="btn btn-primary btn-block">More
-                                        Info</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'partials/_listing_card.html' %}
                     {% endfor %}
                 {% else %}
-                    <div class="col-md-12">
-                        <p>No Listings Available</p>
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="fas fa-home fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Listings Available</h4>
+                            <p class="text-muted">Check back soon for new property listings!</p>
+                        </div>
                     </div>
                 {% endif %}
-
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="{% url 'listings:listings' %}" class="btn btn-primary btn-lg rounded-pill px-5">
+                    <i class="fas fa-search me-2"></i>View All Properties
+                </a>
             </div>
         </div>
     </section>
@@ -139,25 +108,19 @@
                     <i class="fas fa-comment fa-4x mr-4"></i>
                     <hr>
                     <h3>Consulting Services</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae,
-                        provident iste consequatur
-                        hic dignissimos ratione ea quae.</p>
+                    <p>Get expert advice on real estate investments, market analysis, and property valuation. Our experienced consultants help you make informed decisions whether you're a first-time buyer or seasoned investor.</p>
                 </div>
                 <div class="col-md-4">
                     <i class="fas fa-home fa-4x mr-4"></i>
                     <hr>
-                    <h3>Propery Management</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae,
-                        provident iste consequatur
-                        hic dignissimos ratione ea quae.</p>
+                    <h3>Property Management</h3>
+                    <p>Comprehensive property management services including tenant screening, rent collection, maintenance coordination, and property inspections. Let us handle the day-to-day operations while you enjoy the returns.</p>
                 </div>
                 <div class="col-md-4">
                     <i class="fas fa-suitcase fa-4x mr-4"></i>
                     <hr>
                     <h3>Renting & Selling</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, debitis nam! Repudiandae,
-                        provident iste consequatur
-                        hic dignissimos ratione ea quae.</p>
+                    <p>Professional buying, selling, and rental services with personalized attention. We provide market expertise, negotiation skills, and complete transaction support to ensure the best outcomes for our clients.</p>
                 </div>
             </div>
         </div>

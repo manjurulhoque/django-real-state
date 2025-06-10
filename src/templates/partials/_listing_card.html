@@ -1,0 +1,155 @@
+{% load humanize %}
+
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="card listing-card h-100 shadow-sm">
+        <div class="position-relative overflow-hidden">
+            <img class="card-img-top listing-image" src="{{ listing.photo_main.url }}" alt="{{ listing.title }}">
+            <div class="card-img-overlay p-0">
+                <div class="position-absolute top-0 end-0 m-3">
+                    <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">
+                        ${{ listing.price | intcomma }}
+                    </span>
+                </div>
+                {% if listing.is_published %}
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span class="badge bg-success text-white rounded-pill">Available</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="listing-overlay">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <a href="{% url 'listings:listing' listing.id %}" class="btn btn-light btn-lg rounded-pill px-4">
+                        <i class="fas fa-eye me-2"></i>View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body d-flex flex-column">
+            <div class="listing-header mb-3">
+                <h5 class="card-title text-primary fw-bold mb-2">{{ listing.title }}</h5>
+                <p class="text-muted mb-0">
+                    <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                    {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}
+                </p>
+            </div>
+            
+            <div class="listing-features mb-3">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <i class="fas fa-bed text-primary"></i>
+                            <small class="ms-1">{{ listing.bedrooms }} Bed{{ listing.bedrooms|pluralize }}</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <i class="fas fa-bath text-primary"></i>
+                            <small class="ms-1">{{ listing.bathrooms }} Bath{{ listing.bathrooms|pluralize }}</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <i class="fas fa-expand-arrows-alt text-primary"></i>
+                            <small class="ms-1">{{ listing.sqft | intcomma }} sqft</small>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="feature-item">
+                            <i class="fas fa-car text-primary"></i>
+                            <small class="ms-1">{{ listing.garage }} Garage</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="listing-footer mt-auto">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="realtor-info">
+                        <small class="text-muted">
+                            <i class="fas fa-user-tie text-primary me-1"></i>
+                            {{ listing.realtor }}
+                        </small>
+                    </div>
+                    <div class="listing-date">
+                        <small class="text-muted">
+                            <i class="fas fa-clock text-primary me-1"></i>
+                            {{ listing.list_date | timesince }} ago
+                        </small>
+                    </div>
+                </div>
+                <a href="{% url 'listings:listing' listing.id %}" class="btn btn-primary w-100 rounded-pill">
+                    <i class="fas fa-info-circle me-2"></i> More Info
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.listing-card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 15px;
+}
+
+.listing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.listing-image {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.listing-card:hover .listing-image {
+    transform: scale(1.05);
+}
+
+.listing-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.listing-card:hover .listing-overlay {
+    opacity: 1;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.feature-item i {
+    width: 16px;
+    font-size: 14px;
+}
+
+.listing-header .card-title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+}
+
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+</style> 
