@@ -5,55 +5,126 @@
 {% block title %} | About Us {% endblock %}
 
 {% block content %}
-    <section id="showcase-inner" class="py-5 text-white">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <h1 class="display-4">About BT Real Estate</h1>
-                    <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt, pariatur!</p>
+    <!-- Hero Section -->
+    <section id="about-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-50">
+                        <div class="col-lg-8 mx-auto text-center">
+                            <div class="hero-content text-white">
+                                <h1 class="display-3 font-weight-bold mb-4">About BT Real Estate</h1>
+                                <p class="lead mb-4">Your trusted partner in finding the perfect home. With years of experience and deep local knowledge, we're committed to making your real estate dreams a reality.</p>
+                                <div class="hero-stats row text-center">
+                                    <div class="col-4">
+                                        <h3 class="text-white font-weight-bold">15+</h3>
+                                        <p class="mb-0">Years Experience</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="text-white font-weight-bold">500+</h3>
+                                        <p class="mb-0">Happy Clients</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="text-white font-weight-bold">1000+</h3>
+                                        <p class="mb-0">Properties Sold</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Breadcrumb -->
-    <section id="bc" class="mt-3">
+    <section class="bg-light py-3">
         <div class="container">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item">
                         <a href="{% url 'pages:index' %}">
-                            <i class="fas fa-home"></i> Home</a>
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
                     </li>
-                    <li class="breadcrumb-item active"> About</li>
+                    <li class="breadcrumb-item active">About Us</li>
                 </ol>
             </nav>
         </div>
     </section>
 
-    <section id="about" class="py-4">
+    <!-- About Section -->
+    <section id="about" class="py-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    <h2>We Search For The Perfect Home</h2>
-                    <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt, pariatur!</p>
-                    <img src="{% static 'img/about.jpg' %}" alt="">
-                    <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis esse officia
-                        repudiandae ad saepe ex, amet
-                        neque quod accusamus rem quia magnam magni dolorum facilis ullam minima perferendis?
-                        Exercitationem at quaerat
-                        commodi id libero eveniet harum perferendis laborum molestias quia.</p>
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="about-content">
+                        <h2 class="text-primary mb-4">We Search For The Perfect Home</h2>
+                        <p class="lead text-muted mb-4">At BT Real Estate, we understand that buying or selling a home is one of life's most important decisions. That's why we're dedicated to providing exceptional service and expert guidance every step of the way.</p>
+                        
+                        <div class="about-image mb-4">
+                            <img src="{% static 'img/about.jpg' %}" alt="About BT Real Estate" class="img-fluid rounded shadow">
+                        </div>
+                        
+                        <div class="about-description">
+                            <p class="mb-4">Our team of experienced professionals combines deep local market knowledge with cutting-edge technology to deliver results that exceed expectations. Whether you're a first-time homebuyer, seasoned investor, or looking to sell your current property, we have the expertise and resources to help you achieve your goals.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>Expert Market Analysis</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>Professional Photography</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>Strategic Marketing</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>Negotiation Expertise</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>24/7 Client Support</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-check-circle text-primary mr-2"></i>
+                                        <span>Local Market Knowledge</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4">
+                
+                <!-- MVP Realtor Sidebar -->
+                <div class="col-lg-4">
                     {% if mvp_realtors %}
                         {% for realtor in mvp_realtors %}
-                            <div class="card">
-                                <img class="card-img-top" src="{{ realtor.photo.url }}" alt="Seller of the month">
-                                <div class="card-body">
-                                    <h5 class="card-title">Seller Of The Month</h5>
-                                    <h6 class="text-secondary">{{ realtor.name }}</h6>
-                                    <p class="card-text">{{ realtor.description }}
-                                    </p>
+                            <div class="card shadow-sm mb-4">
+                                <div class="position-relative">
+                                    <img class="card-img-top" src="{{ realtor.photo.url }}" alt="Seller of the month">
+                                    <div class="position-absolute top-0 left-0 m-3">
+                                        <span class="badge badge-warning px-3 py-2">
+                                            <i class="fas fa-trophy mr-1"></i>MVP
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-2">Agent of the Month</h5>
+                                    <h4 class="font-weight-bold mb-3">{{ realtor.name }}</h4>
+                                    <p class="card-text text-muted">{{ realtor.description }}</p>
+                                    <div class="agent-contact mt-3">
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="fas fa-envelope mr-1"></i>Contact Agent
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
@@ -63,40 +134,241 @@
         </div>
     </section>
 
-    <!-- Work -->
-    <section id="work" class="bg-dark text-white text-center">
-        <h2 class="display-4">We Work For You</h2>
-        <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem velit aperiam, unde aliquid at
-            similique!</h4>
-        <hr>
-        <a href="listings.html" class="btn btn-secondary text-white btn-lg">View Our Featured Listings</a>
+    <!-- Values Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="text-primary mb-3">Our Core Values</h2>
+                    <p class="lead text-muted">The principles that guide everything we do</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="value-card text-center h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-handshake fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="mb-3">Integrity</h4>
+                        <p class="text-muted">We conduct business with honesty, transparency, and ethical practices in every transaction.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card text-center h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-heart fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="mb-3">Dedication</h4>
+                        <p class="text-muted">We're committed to going above and beyond to ensure our clients achieve their real estate goals.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="value-card text-center h-100">
+                        <div class="value-icon mb-3">
+                            <i class="fas fa-lightbulb fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="mb-3">Innovation</h4>
+                        <p class="text-muted">We leverage the latest technology and marketing strategies to deliver exceptional results.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Team -->
+    <!-- Call to Action -->
+    <section id="work" class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="display-4 mb-4">We Work For You</h2>
+                    <p class="lead mb-4">Ready to start your real estate journey? Our expert team is here to guide you through every step of the process, from initial consultation to closing day.</p>
+                    <div class="cta-buttons">
+                        <a href="{% url 'listings:listings' %}" class="btn btn-light btn-lg mr-3 mb-2">
+                            <i class="fas fa-search mr-2"></i>View Properties
+                        </a>
+                        <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg mb-2">
+                            <i class="fas fa-phone mr-2"></i>Contact Us Today
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
     <section id="team" class="py-5">
         <div class="container">
-            <h2 class="text-center">Our Team</h2>
-            <div class="row text-center">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="text-primary mb-3">Meet Our Expert Team</h2>
+                    <p class="lead text-muted">Professional real estate agents dedicated to your success</p>
+                </div>
+            </div>
+            <div class="row">
                 {% if realtors %}
                     {% for realtor in realtors %}
-                        <div class="col-md-4">
-                            <img src="{{ realtor.photo.url }}" alt="" class="rounded-circle mb-3">
-                            <h4>{{ realtor.name }}</h4>
-                            <p class="text-success">
-                                <i class="fas fa-award text-success mb-3"></i> Realtor</p>
-                            <hr>
-                            <p>
-                                <i class="fas fa-phone"></i> {{ realtor.phone }}</p>
-                            <p>
-                                <i class="fas fa-envelope-open"></i> {{ realtor.email }}</p>
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="team-card text-center h-100">
+                                <div class="team-image mb-3">
+                                    <img src="{{ realtor.photo.url }}" alt="{{ realtor.name }}" class="rounded-circle shadow" width="150" height="150" style="object-fit: cover;">
+                                </div>
+                                <div class="team-info">
+                                    <h4 class="mb-2">{{ realtor.name }}</h4>
+                                    <div class="team-badge mb-3">
+                                        <span class="badge badge-primary px-3 py-2">
+                                            <i class="fas fa-award mr-1"></i>Licensed Realtor
+                                        </span>
+                                    </div>
+                                    <div class="team-contact">
+                                        <p class="mb-2">
+                                            <i class="fas fa-phone text-primary mr-2"></i>
+                                            <a href="tel:{{ realtor.phone }}" class="text-dark">{{ realtor.phone }}</a>
+                                        </p>
+                                        <p class="mb-3">
+                                            <i class="fas fa-envelope text-primary mr-2"></i>
+                                            <a href="mailto:{{ realtor.email }}" class="text-dark">{{ realtor.email }}</a>
+                                        </p>
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-user mr-1"></i>View Profile
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class="col-md-12">
-                        <p>No Realtors Available</p>
+                    <div class="col-12 text-center">
+                        <div class="no-team-message py-5">
+                            <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">Our Team Is Growing</h4>
+                            <p class="text-muted">We're currently expanding our team of expert real estate professionals.</p>
+                        </div>
                     </div>
                 {% endif %}
             </div>
         </div>
     </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            min-height: 500px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-50 {
+            min-height: 500px;
+        }
+        
+        .hero-stats h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .about-image img {
+            max-height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .value-card {
+            padding: 2rem 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .value-icon {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .team-card {
+            padding: 2rem 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+        
+        .team-image img {
+            border: 4px solid #f8f9fa;
+        }
+        
+        .team-contact a {
+            text-decoration: none;
+        }
+        
+        .team-contact a:hover {
+            color: #007bff !important;
+        }
+        
+        .card {
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .cta-buttons a {
+            min-width: 180px;
+        }
+        
+        .badge {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .no-team-message {
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-stats h3 {
+                font-size: 2rem;
+            }
+            
+            .display-3 {
+                font-size: 2.5rem;
+            }
+            
+            .cta-buttons a {
+                min-width: auto;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 {% endblock %}
