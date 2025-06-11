@@ -39,7 +39,7 @@
                         <button class="btn btn-outline-light btn-sm wishlist-btn rounded-circle p-2" 
                                 data-listing-id="{{ listing.id }}"
                                 title="Add to wishlist">
-                            <i class="fas fa-heart"></i>
+                            <i class="far fa-heart"></i>
                         </button>
                     </div>
                 {% endif %}
@@ -47,7 +47,7 @@
                 <!-- Bottom Left - Property Type -->
                 <div class="position-absolute" style="bottom: 15px; left: 15px;">
                     <span class="badge bg-dark text-white rounded px-3 py-2">
-                        {{ listing.home_type|title }}
+                        {{ listing.property_type|title }}
                     </span>
                 </div>
                 
@@ -198,44 +198,112 @@
 .wishlist-btn {
     width: 40px;
     height: 40px;
-    border: 2px solid rgba(255,255,255,0.8);
-    background: rgba(0,0,0,0.5);
+    border: 2px solid rgba(255,255,255,0.8) !important;
+    background: rgba(0,0,0,0.5) !important;
     transition: all 0.3s ease;
     z-index: 10;
     position: relative;
 }
 
-.wishlist-btn:hover {
-    background: rgba(255,255,255,0.9);
-    border-color: #e91e63;
+.wishlist-btn i {
+    transition: all 0.3s ease;
+    color: rgba(255,255,255,0.9) !important;
+}
+
+.wishlist-btn:hover,
+.wishlist-btn:focus {
+    background: rgba(255,255,255,0.9) !important;
+    border-color: #e91e63 !important;
     color: #e91e63 !important;
     transform: scale(1.1);
 }
 
-.wishlist-btn.active {
-    background: #e91e63;
-    border-color: #e91e63;
-    color: white !important;
+.wishlist-btn:hover i,
+.wishlist-btn:focus i {
+    color: #e91e63 !important;
 }
 
-.wishlist-btn.active:hover {
-    background: #ad1457;
-    border-color: #ad1457;
+.wishlist-btn.active,
+.wishlist-btn:not(:disabled):not(.disabled).active {
+    background: #e91e63 !important;
+    border-color: #e91e63 !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+.wishlist-btn.active i,
+.wishlist-btn:not(:disabled):not(.disabled).active i {
+    color: white !important;
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+.wishlist-btn.active:hover,
+.wishlist-btn.active:focus,
+.wishlist-btn:not(:disabled):not(.disabled).active:hover,
+.wishlist-btn:not(:disabled):not(.disabled).active:focus {
+    background: #ad1457 !important;
+    border-color: #ad1457 !important;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+.wishlist-btn.active:hover i,
+.wishlist-btn.active:focus i,
+.wishlist-btn:not(:disabled):not(.disabled).active:hover i,
+.wishlist-btn:not(:disabled):not(.disabled).active:focus i {
+    color: white !important;
 }
 
 /* Enhanced visibility when overlay is active */
 .listing-card:hover .wishlist-btn {
-    background: rgba(255,255,255,0.95);
-    border-color: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.95) !important;
+    border-color: rgba(255,255,255,0.95) !important;
     color: #333 !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
-.listing-card:hover .wishlist-btn.active {
+.listing-card:hover .wishlist-btn i {
+    color: #333 !important;
+}
+
+.listing-card:hover .wishlist-btn.active,
+.listing-card:hover .wishlist-btn:not(:disabled):not(.disabled).active {
     background: #e91e63 !important;
     border-color: #e91e63 !important;
     color: white !important;
-    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.4);
+}
+
+.listing-card:hover .wishlist-btn.active i,
+.listing-card:hover .wishlist-btn:not(:disabled):not(.disabled).active i {
+    color: white !important;
+}
+
+/* Override Bootstrap's focus states */
+.wishlist-btn:focus,
+.wishlist-btn.focus {
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25) !important;
+}
+
+/* Heart beat animation */
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    20% {
+        transform: scale(1.3);
+    }
+    40% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1.2);
+    }
+    80% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 </style>
 

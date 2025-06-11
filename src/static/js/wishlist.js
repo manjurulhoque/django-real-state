@@ -45,9 +45,19 @@ function checkWishlistStatus(button, listingId) {
             if (data.in_wishlist) {
                 button.classList.add('active');
                 button.title = 'Remove from wishlist';
+                // Change to filled heart
+                const heartIcon = button.querySelector('i');
+                if (heartIcon) {
+                    heartIcon.className = 'fas fa-heart';
+                }
             } else {
                 button.classList.remove('active');
                 button.title = 'Add to wishlist';
+                // Change to outline heart
+                const heartIcon = button.querySelector('i');
+                if (heartIcon) {
+                    heartIcon.className = 'far fa-heart';
+                }
             }
         })
         .catch(error => {
@@ -115,12 +125,22 @@ function handleWishlistClick(e) {
  * @param {string} action - The action performed ('add' or 'remove')
  */
 function updateButtonState(button, action) {
+    const heartIcon = button.querySelector('i');
+    
     if (action === 'add') {
         button.classList.add('active');
         button.title = 'Remove from wishlist';
+        // Change to filled heart
+        if (heartIcon) {
+            heartIcon.className = 'fas fa-heart';
+        }
     } else {
         button.classList.remove('active');
         button.title = 'Add to wishlist';
+        // Change to outline heart
+        if (heartIcon) {
+            heartIcon.className = 'far fa-heart';
+        }
     }
 }
 

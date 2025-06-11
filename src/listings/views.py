@@ -2,10 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
 
 from listings.choices import state_choices, bedroom_choices, price_choices
-from .models import Listing, LISTING_TYPE_CHOICES
+from .models import Listing, LISTING_TYPE_CHOICES, Amenity
 from realtors.models import Realtor
 
 
@@ -294,12 +293,16 @@ def edit_listing(request, listing_id):
         except Exception as e:
             messages.error(request, 'There was an error updating your property. Please check all fields and try again.')
     
+    # Get all amenities for the form
+    all_amenities = Amenity.objects.all().order_by('name')
+    
     # GET request - show the form with current data
     context = {
         'listing': listing,
         'state_choices': state_choices,
         'bedroom_choices': bedroom_choices,
         'listing_type_choices': LISTING_TYPE_CHOICES,
+        'all_amenities': all_amenities,
         'is_edit': True,
     }
     return render(request, 'listings/edit_listing.html', context)
