@@ -93,16 +93,52 @@
                                         <small class="form-text text-muted">Create an attractive title that highlights your property's best features</small>
                                     </div>
                                     
+                                    <div class="form-group">
+                                        <label for="listing_type" class="form-label">
+                                            <i class="fas fa-tags text-primary mr-1"></i>Listing Type *
+                                        </label>
+                                        <select name="listing_type" class="form-control" id="listing_type" required>
+                                            {% for value, label in listing_type_choices %}
+                                                <option value="{{ value }}">{{ label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <small class="form-text text-muted">Choose whether this property is for sale, rent, or both</small>
+                                    </div>
+                                    
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="col-md-4">
+                                            <div class="form-group sale-price-group">
                                                 <label for="price" class="form-label">
-                                                    <i class="fas fa-dollar-sign text-primary mr-1"></i>Asking Price *
+                                                    <i class="fas fa-dollar-sign text-primary mr-1"></i>Sale Price
                                                 </label>
                                                 <input type="number" name="price" class="form-control" id="price" 
-                                                       placeholder="500000" required>
+                                                       placeholder="500000">
+                                                <small class="form-text text-muted">Required for sale listings</small>
                                             </div>
                                         </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group rent-price-group" style="display: none;">
+                                                <label for="rent_price" class="form-label">
+                                                    <i class="fas fa-dollar-sign text-primary mr-1"></i>Monthly Rent
+                                                </label>
+                                                <input type="number" name="rent_price" class="form-control" id="rent_price" 
+                                                       placeholder="2500">
+                                                <small class="form-text text-muted">Required for rental listings</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group deposit-group" style="display: none;">
+                                                <label for="deposit_amount" class="form-label">
+                                                    <i class="fas fa-hand-holding-usd text-primary mr-1"></i>Security Deposit
+                                                </label>
+                                                <input type="number" name="deposit_amount" class="form-control" id="deposit_amount" 
+                                                       placeholder="5000">
+                                                <small class="form-text text-muted">Optional deposit amount</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="sqft" class="form-label">
@@ -553,4 +589,51 @@
             }
         }
     </style>
+
+    <!-- JavaScript for dynamic form fields -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const listingTypeSelect = document.getElementById('listing_type');
+            const salePriceGroup = document.querySelector('.sale-price-group');
+            const rentPriceGroup = document.querySelector('.rent-price-group');
+            const depositGroup = document.querySelector('.deposit-group');
+            const priceInput = document.getElementById('price');
+            const rentPriceInput = document.getElementById('rent_price');
+
+            function togglePriceFields() {
+                const listingType = listingTypeSelect.value;
+                
+                // Hide all groups first
+                salePriceGroup.style.display = 'none';
+                rentPriceGroup.style.display = 'none';
+                depositGroup.style.display = 'none';
+                
+                // Remove required attributes
+                priceInput.removeAttribute('required');
+                rentPriceInput.removeAttribute('required');
+                
+                // Show relevant fields based on listing type
+                if (listingType === 'sale') {
+                    salePriceGroup.style.display = 'block';
+                    priceInput.setAttribute('required', 'required');
+                } else if (listingType === 'rent') {
+                    rentPriceGroup.style.display = 'block';
+                    depositGroup.style.display = 'block';
+                    rentPriceInput.setAttribute('required', 'required');
+                } else if (listingType === 'both') {
+                    salePriceGroup.style.display = 'block';
+                    rentPriceGroup.style.display = 'block';
+                    depositGroup.style.display = 'block';
+                    priceInput.setAttribute('required', 'required');
+                    rentPriceInput.setAttribute('required', 'required');
+                }
+            }
+
+            // Initial toggle
+            togglePriceFields();
+            
+            // Toggle on change
+            listingTypeSelect.addEventListener('change', togglePriceFields);
+        });
+    </script>
 {% endblock %} 

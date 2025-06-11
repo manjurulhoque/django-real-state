@@ -145,6 +145,9 @@ def submit_listing(request):
         zipcode = request.POST.get('zipcode')
         description = request.POST.get('description')
         price = request.POST.get('price')
+        listing_type = request.POST.get('listing_type', 'sale')
+        rent_price = request.POST.get('rent_price')
+        deposit_amount = request.POST.get('deposit_amount')
         bedrooms = request.POST.get('bedrooms')
         bathrooms = request.POST.get('bathrooms')
         garage = request.POST.get('garage')
@@ -180,6 +183,9 @@ def submit_listing(request):
                 zipcode=zipcode,
                 description=description,
                 price=int(price) if price else 0,
+                listing_type=listing_type,
+                rent_price=int(rent_price) if rent_price else None,
+                deposit_amount=int(deposit_amount) if deposit_amount else None,
                 bedrooms=int(bedrooms) if bedrooms else 0,
                 bathrooms=float(bathrooms) if bathrooms else 0,
                 garage=int(garage) if garage else 0,
@@ -224,6 +230,9 @@ def edit_listing(request, listing_id):
         zipcode = request.POST.get('zipcode')
         description = request.POST.get('description')
         price = request.POST.get('price')
+        listing_type = request.POST.get('listing_type', 'sale')
+        rent_price = request.POST.get('rent_price')
+        deposit_amount = request.POST.get('deposit_amount')
         bedrooms = request.POST.get('bedrooms')
         bathrooms = request.POST.get('bathrooms')
         garage = request.POST.get('garage')
@@ -248,6 +257,9 @@ def edit_listing(request, listing_id):
             listing.zipcode = zipcode
             listing.description = description
             listing.price = int(price) if price else 0
+            listing.listing_type = listing_type
+            listing.rent_price = int(rent_price) if rent_price else None
+            listing.deposit_amount = int(deposit_amount) if deposit_amount else None
             listing.bedrooms = int(bedrooms) if bedrooms else 0
             listing.bathrooms = float(bathrooms) if bathrooms else 0
             listing.garage = int(garage) if garage else 0
@@ -287,6 +299,7 @@ def edit_listing(request, listing_id):
         'listing': listing,
         'state_choices': state_choices,
         'bedroom_choices': bedroom_choices,
+        'listing_type_choices': LISTING_TYPE_CHOICES,
         'is_edit': True,
     }
     return render(request, 'listings/edit_listing.html', context)
@@ -297,4 +310,5 @@ def get_submit_context():
     return {
         'state_choices': state_choices,
         'bedroom_choices': bedroom_choices,
+        'listing_type_choices': LISTING_TYPE_CHOICES,
     }

@@ -123,11 +123,36 @@
                                     <h5 class="section-title mb-3">
                                         <i class="fas fa-home mr-2 text-primary"></i>Property Details
                                     </h5>
+                                    
+                                    <!-- Listing Type -->
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label for="price" class="form-label required">Price ($)</label>
-                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0" required>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="listing_type" class="form-label required">Listing Type</label>
+                                            <select class="form-control" id="listing_type" name="listing_type" required>
+                                                {% for value, label in listing_type_choices %}
+                                                    <option value="{{ value }}" {% if listing.listing_type == value %}selected{% endif %}>{{ label }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
+                                    </div>
+                                    
+                                    <!-- Price Fields -->
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3 sale-price-group">
+                                            <label for="price" class="form-label">Sale Price ($)</label>
+                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0">
+                                        </div>
+                                        <div class="col-md-4 mb-3 rent-price-group" style="display: none;">
+                                            <label for="rent_price" class="form-label">Monthly Rent ($)</label>
+                                            <input type="number" class="form-control" id="rent_price" name="rent_price" value="{{ listing.rent_price }}" min="0">
+                                        </div>
+                                        <div class="col-md-4 mb-3 deposit-group" style="display: none;">
+                                            <label for="deposit_amount" class="form-label">Security Deposit ($)</label>
+                                            <input type="number" class="form-control" id="deposit_amount" name="deposit_amount" value="{{ listing.deposit_amount }}" min="0">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="bedrooms" class="form-label required">Bedrooms</label>
                                             <select class="form-control" id="bedrooms" name="bedrooms" required>
@@ -457,4 +482,51 @@
             }
         }
     </style>
+
+    <!-- JavaScript for dynamic form fields -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const listingTypeSelect = document.getElementById('listing_type');
+            const salePriceGroup = document.querySelector('.sale-price-group');
+            const rentPriceGroup = document.querySelector('.rent-price-group');
+            const depositGroup = document.querySelector('.deposit-group');
+            const priceInput = document.getElementById('price');
+            const rentPriceInput = document.getElementById('rent_price');
+
+            function togglePriceFields() {
+                const listingType = listingTypeSelect.value;
+                
+                // Hide all groups first
+                salePriceGroup.style.display = 'none';
+                rentPriceGroup.style.display = 'none';
+                depositGroup.style.display = 'none';
+                
+                // Remove required attributes
+                priceInput.removeAttribute('required');
+                rentPriceInput.removeAttribute('required');
+                
+                // Show relevant fields based on listing type
+                if (listingType === 'sale') {
+                    salePriceGroup.style.display = 'block';
+                    priceInput.setAttribute('required', 'required');
+                } else if (listingType === 'rent') {
+                    rentPriceGroup.style.display = 'block';
+                    depositGroup.style.display = 'block';
+                    rentPriceInput.setAttribute('required', 'required');
+                } else if (listingType === 'both') {
+                    salePriceGroup.style.display = 'block';
+                    rentPriceGroup.style.display = 'block';
+                    depositGroup.style.display = 'block';
+                    priceInput.setAttribute('required', 'required');
+                    rentPriceInput.setAttribute('required', 'required');
+                }
+            }
+
+            // Initial toggle based on current value
+            togglePriceFields();
+            
+            // Toggle on change
+            listingTypeSelect.addEventListener('change', togglePriceFields);
+        });
+    </script>
 {% endblock %} 
