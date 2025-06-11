@@ -1,0 +1,396 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | Admin - All Projects {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="admin-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-12">
+                            <div class="hero-content text-white text-center">
+                                <h1 class="display-5 font-weight-bold mb-3">
+                                    <i class="fas fa-building mr-3"></i>Admin - Project Management
+                                </h1>
+                                <p class="lead mb-0">Manage all real estate projects in the system</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Admin Projects</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Admin Projects Management -->
+    <section id="admin-projects" class="py-5">
+        <div class="container">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-building fa-2x mb-2"></i>
+                            <h4>{{ total_projects }}</h4>
+                            <small>Total Projects</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-eye fa-2x mb-2"></i>
+                            <h4>{{ published_count }}</h4>
+                            <small>Published</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-eye-slash fa-2x mb-2"></i>
+                            <h4>{{ unpublished_count }}</h4>
+                            <small>Unpublished</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-star fa-2x mb-2"></i>
+                            <h4>{{ featured_count }}</h4>
+                            <small>Featured</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search mr-2"></i>Search & Filter Projects
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="{% url 'accounts:admin_all_projects' %}">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="search">Search</label>
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Project name..." value="{{ values.search }}">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="project_type">Type</label>
+                                <select name="project_type" class="form-control">
+                                    <option value="">All Types</option>
+                                    <option value="residential" {% if values.project_type == 'residential' %}selected{% endif %}>Residential</option>
+                                    <option value="commercial" {% if values.project_type == 'commercial' %}selected{% endif %}>Commercial</option>
+                                    <option value="mixed_use" {% if values.project_type == 'mixed_use' %}selected{% endif %}>Mixed Use</option>
+                                    <option value="industrial" {% if values.project_type == 'industrial' %}selected{% endif %}>Industrial</option>
+                                    <option value="retail" {% if values.project_type == 'retail' %}selected{% endif %}>Retail</option>
+                                    <option value="office" {% if values.project_type == 'office' %}selected{% endif %}>Office</option>
+                                    <option value="hospitality" {% if values.project_type == 'hospitality' %}selected{% endif %}>Hospitality</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="status">Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="">All Status</option>
+                                    <option value="planning" {% if values.status == 'planning' %}selected{% endif %}>Planning</option>
+                                    <option value="under_construction" {% if values.status == 'under_construction' %}selected{% endif %}>Under Construction</option>
+                                    <option value="nearing_completion" {% if values.status == 'nearing_completion' %}selected{% endif %}>Nearing Completion</option>
+                                    <option value="completed" {% if values.status == 'completed' %}selected{% endif %}>Completed</option>
+                                    <option value="on_hold" {% if values.status == 'on_hold' %}selected{% endif %}>On Hold</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="published">Published</label>
+                                <select name="published" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="published" {% if values.published == 'published' %}selected{% endif %}>Published</option>
+                                    <option value="unpublished" {% if values.published == 'unpublished' %}selected{% endif %}>Unpublished</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary mr-2">
+                                    <i class="fas fa-search mr-1"></i>Search
+                                </button>
+                                <a href="{% url 'accounts:admin_all_projects' %}" class="btn btn-secondary">
+                                    <i class="fas fa-times mr-1"></i>Clear
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>All Projects ({{ projects.paginator.count }})</h3>
+                <a href="{% url 'accounts:admin_create_project' %}" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus mr-2"></i>Create New Project
+                </a>
+            </div>
+
+            <!-- Projects Table -->
+            <div class="card">
+                <div class="card-body p-0">
+                    {% if projects %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Project Details</th>
+                                        <th>Developer</th>
+                                        <th>Status</th>
+                                        <th>Units</th>
+                                        <th>Price Range</th>
+                                        <th>Flags</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for project in projects %}
+                                        <tr>
+                                            <td>
+                                                {% if project.main_image %}
+                                                    <img src="{{ project.main_image.url }}" alt="{{ project.name }}" 
+                                                         class="img-thumbnail" width="80" height="60" style="object-fit: cover;">
+                                                {% else %}
+                                                    <div class="bg-secondary text-white text-center" style="width: 80px; height: 60px; line-height: 60px;">
+                                                        <i class="fas fa-image"></i>
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="project-info">
+                                                    <strong class="d-block">{{ project.name }}</strong>
+                                                    <small class="text-muted">{{ project.project_type|title }}</small><br>
+                                                    <small class="text-muted">
+                                                        <i class="fas fa-map-marker-alt"></i> {{ project.city }}, {{ project.state }}
+                                                    </small><br>
+                                                    <small class="text-muted">Created: {{ project.created_at|date:"M d, Y" }}</small>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>{{ project.developer.name }}</strong><br>
+                                                <small class="text-muted">{{ project.developer.email }}</small>
+                                            </td>
+                                            <td>
+                                                {% if project.status == 'planning' %}
+                                                    <span class="badge badge-info">Planning</span>
+                                                {% elif project.status == 'under_construction' %}
+                                                    <span class="badge badge-warning">Under Construction</span>
+                                                {% elif project.status == 'nearing_completion' %}
+                                                    <span class="badge badge-success">Nearing Completion</span>
+                                                {% elif project.status == 'completed' %}
+                                                    <span class="badge badge-primary">Completed</span>
+                                                {% elif project.status == 'on_hold' %}
+                                                    <span class="badge badge-secondary">On Hold</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <small class="d-block">Total: <strong>{{ project.total_units }}</strong></small>
+                                                <small class="text-success">Available: <strong>{{ project.available_units }}</strong></small>
+                                            </td>
+                                            <td>
+                                                <small class="text-primary">
+                                                    ${{ project.price_range_min|intcomma }} - ${{ project.price_range_max|intcomma }}
+                                                </small>
+                                            </td>
+                                            <td>
+                                                {% if project.is_published %}
+                                                    <span class="badge badge-success mb-1">Published</span>
+                                                {% else %}
+                                                    <span class="badge badge-warning mb-1">Unpublished</span>
+                                                {% endif %}
+                                                {% if project.featured %}
+                                                    <span class="badge badge-danger">Featured</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group-vertical" role="group">
+                                                    <a href="{% url 'accounts:admin_edit_project' project.id %}" 
+                                                       class="btn btn-sm btn-primary mb-1" title="Edit Project">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <form method="post" action="{% url 'accounts:admin_toggle_project_status' project.id %}" 
+                                                          class="d-inline mb-1">
+                                                        {% csrf_token %}
+                                                        {% if project.is_published %}
+                                                            <button type="submit" class="btn btn-sm btn-warning" 
+                                                                    title="Unpublish Project"
+                                                                    onclick="return confirm('Unpublish this project?')">
+                                                                <i class="fas fa-eye-slash"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button type="submit" class="btn btn-sm btn-success" 
+                                                                    title="Publish Project"
+                                                                    onclick="return confirm('Publish this project?')">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        {% endif %}
+                                                    </form>
+                                                    <form method="post" action="{% url 'accounts:admin_toggle_project_featured' project.id %}" 
+                                                          class="d-inline mb-1">
+                                                        {% csrf_token %}
+                                                        {% if project.featured %}
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                                    title="Remove from Featured"
+                                                                    onclick="return confirm('Remove from featured?')">
+                                                                <i class="fas fa-star-half-alt"></i>
+                                                            </button>
+                                                        {% else %}
+                                                            <button type="submit" class="btn btn-sm btn-danger" 
+                                                                    title="Make Featured"
+                                                                    onclick="return confirm('Make this project featured?')">
+                                                                <i class="fas fa-star"></i>
+                                                            </button>
+                                                        {% endif %}
+                                                    </form>
+                                                    <a href="{% url 'accounts:admin_delete_project' project.id %}" 
+                                                       class="btn btn-sm btn-outline-danger" title="Delete Project">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        {% if projects.has_other_pages %}
+                            <div class="card-footer">
+                                <nav aria-label="Projects pagination">
+                                    <ul class="pagination justify-content-center mb-0">
+                                        {% if projects.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.project_type %}project_type={{ values.project_type }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}{% if values.published %}published={{ values.published }}&{% endif %}page={{ projects.previous_page_number }}">
+                                                    <i class="fas fa-chevron-left"></i>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for num in projects.paginator.page_range %}
+                                            {% if projects.number == num %}
+                                                <li class="page-item active">
+                                                    <span class="page-link">{{ num }}</span>
+                                                </li>
+                                            {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.project_type %}project_type={{ values.project_type }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}{% if values.published %}published={{ values.published }}&{% endif %}page={{ num }}">{{ num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if projects.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.project_type %}project_type={{ values.project_type }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}{% if values.published %}published={{ values.published }}&{% endif %}page={{ projects.next_page_number }}">
+                                                    <i class="fas fa-chevron-right"></i>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-building fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Projects Found</h4>
+                            <p class="text-muted mb-3">No projects match your search criteria.</p>
+                            <a href="{% url 'accounts:admin_create_project' %}" class="btn btn-primary">
+                                <i class="fas fa-plus mr-2"></i>Create First Project
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-30 {
+            min-height: 200px;
+        }
+        
+        .project-info {
+            max-width: 200px;
+        }
+        
+        .table td {
+            vertical-align: middle;
+        }
+        
+        .btn-group-vertical .btn {
+            margin-bottom: 2px;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+            
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+            
+            .btn-group-vertical .btn {
+                padding: 0.25rem 0.5rem;
+            }
+        }
+    </style>
+{% endblock %} 

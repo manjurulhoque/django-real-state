@@ -379,3 +379,354 @@ def admin_toggle_listing_status(request, listing_id):
     messages.success(request, f'Listing "{listing.title}" has been {status}.')
     
     return redirect('accounts:admin_all_listings')
+
+
+# =================== ADMIN PROJECT CRUD FUNCTIONALITY ===================
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_all_projects(request):
+    """View all projects for super-admin"""
+    from projects.models import Project
+    
+    projects_list = Project.objects.all().select_related('developer').order_by('-created_at')
+    
+    # Search functionality
+    if 'search' in request.GET:
+        search = request.GET['search']
+        if search:
+            projects_list = projects_list.filter(name__icontains=search)
+    
+    # Status filter
+    if 'status' in request.GET:
+        status = request.GET['status']
+        if status:
+            projects_list = projects_list.filter(status=status)
+    
+    # Project type filter
+    if 'project_type' in request.GET:
+        project_type = request.GET['project_type']
+        if project_type:
+            projects_list = projects_list.filter(project_type=project_type)
+    
+    # Published filter
+    if 'published' in request.GET:
+        published = request.GET['published']
+        if published == 'published':
+            projects_list = projects_list.filter(is_published=True)
+        elif published == 'unpublished':
+            projects_list = projects_list.filter(is_published=False)
+    
+    # Pagination
+    paginator = Paginator(projects_list, 10)  # Show 10 projects per page
+    page = request.GET.get('page')
+    projects = paginator.get_page(page)
+    
+    context = {
+        'projects': projects,
+        'total_projects': Project.objects.count(),
+        'published_count': Project.objects.filter(is_published=True).count(),
+        'unpublished_count': Project.objects.filter(is_published=False).count(),
+        'featured_count': Project.objects.filter(featured=True).count(),
+        'values': request.GET
+    }
+    return render(request, 'accounts/admin_all_projects.html', context)
+
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_create_project(request):
+    """Create new project for super-admin"""
+    from projects.models import Project, ProjectAmenity
+    from realtors.models import Realtor
+    
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        developer_id = request.POST.get('developer')
+        project_type = request.POST.get('project_type')
+        status = request.POST.get('status')
+        
+        # Location
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zipcode = request.POST.get('zipcode')
+        
+        # Project details
+        description = request.POST.get('description')
+        total_units = request.POST.get('total_units')
+        available_units = request.POST.get('available_units')
+        price_range_min = request.POST.get('price_range_min')
+        price_range_max = request.POST.get('price_range_max')
+        
+        # Timeline
+        start_date = request.POST.get('start_date')
+        expected_completion = request.POST.get('expected_completion')
+        launch_date = request.POST.get('launch_date')
+        
+        # Features
+        total_area = request.POST.get('total_area')
+        floors = request.POST.get('floors')
+        parking_spaces = request.POST.get('parking_spaces')
+        green_building_certified = request.POST.get('green_building_certified') == 'on'
+        
+        # External links
+        virtual_tour_url = request.POST.get('virtual_tour_url')
+        website_url = request.POST.get('website_url')
+        
+        # Admin controls
+        featured = request.POST.get('featured') == 'on'
+        is_published = request.POST.get('is_published') == 'on'
+        
+        # Handle file uploads
+        main_image = request.FILES.get('main_image')
+        floor_plan = request.FILES.get('floor_plan')
+        brochure = request.FILES.get('brochure')
+        gallery_images = {}
+        for i in range(1, 7):
+            gallery_images[f'gallery_image_{i}'] = request.FILES.get(f'gallery_image_{i}')
+        
+        try:
+            # Create project
+            project = Project.objects.create(
+                name=name,
+                developer_id=developer_id,
+                project_type=project_type,
+                status=status,
+                address=address,
+                city=city,
+                state=state,
+                zipcode=zipcode,
+                description=description,
+                total_units=int(total_units) if total_units else 0,
+                available_units=int(available_units) if available_units else 0,
+                price_range_min=int(price_range_min) if price_range_min else 0,
+                price_range_max=int(price_range_max) if price_range_max else 0,
+                start_date=start_date if start_date else None,
+                expected_completion=expected_completion if expected_completion else None,
+                launch_date=launch_date if launch_date else None,
+                total_area=float(total_area) if total_area else 0,
+                floors=int(floors) if floors else None,
+                parking_spaces=int(parking_spaces) if parking_spaces else None,
+                green_building_certified=green_building_certified,
+                virtual_tour_url=virtual_tour_url or '',
+                website_url=website_url or '',
+                featured=featured,
+                is_published=is_published,
+                main_image=main_image,
+                floor_plan=floor_plan,
+                brochure=brochure,
+            )
+            
+            # Update gallery images
+            for field, image in gallery_images.items():
+                if image:
+                    setattr(project, field, image)
+            
+            project.save()
+            
+            messages.success(request, f'Project "{project.name}" has been created successfully!')
+            return redirect('accounts:admin_all_projects')
+            
+        except Exception as e:
+            messages.error(request, f'There was an error creating the project: {str(e)}')
+    
+    # Get context data for form
+    realtors = Realtor.objects.all().order_by('name')
+    project_amenities = ProjectAmenity.objects.all().order_by('name')
+    
+    context = {
+        'realtors': realtors,
+        'project_amenities': project_amenities,
+    }
+    return render(request, 'accounts/admin_create_project.html', context)
+
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_edit_project(request, project_id):
+    """Edit project for super-admin"""
+    from projects.models import Project, ProjectAmenity, ProjectFeature
+    from realtors.models import Realtor
+    
+    project = get_object_or_404(Project, id=project_id)
+    
+    if request.method == 'POST':
+        # Get form data
+        name = request.POST.get('name')
+        developer_id = request.POST.get('developer')
+        project_type = request.POST.get('project_type')
+        status = request.POST.get('status')
+        
+        # Location
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zipcode = request.POST.get('zipcode')
+        
+        # Project details
+        description = request.POST.get('description')
+        total_units = request.POST.get('total_units')
+        available_units = request.POST.get('available_units')
+        price_range_min = request.POST.get('price_range_min')
+        price_range_max = request.POST.get('price_range_max')
+        
+        # Timeline
+        start_date = request.POST.get('start_date')
+        expected_completion = request.POST.get('expected_completion')
+        launch_date = request.POST.get('launch_date')
+        
+        # Features
+        total_area = request.POST.get('total_area')
+        floors = request.POST.get('floors')
+        parking_spaces = request.POST.get('parking_spaces')
+        green_building_certified = request.POST.get('green_building_certified') == 'on'
+        
+        # External links
+        virtual_tour_url = request.POST.get('virtual_tour_url')
+        website_url = request.POST.get('website_url')
+        
+        # Admin controls
+        featured = request.POST.get('featured') == 'on'
+        is_published = request.POST.get('is_published') == 'on'
+        
+        # Project amenities
+        amenities = request.POST.getlist('amenities')
+        
+        # Handle file uploads - only update if new files are provided
+        main_image = request.FILES.get('main_image')
+        floor_plan = request.FILES.get('floor_plan')
+        brochure = request.FILES.get('brochure')
+        gallery_images = {}
+        for i in range(1, 7):
+            gallery_images[f'gallery_image_{i}'] = request.FILES.get(f'gallery_image_{i}')
+        
+        try:
+            # Update project
+            project.name = name
+            project.developer_id = developer_id
+            project.project_type = project_type
+            project.status = status
+            project.address = address
+            project.city = city
+            project.state = state
+            project.zipcode = zipcode
+            project.description = description
+            project.total_units = int(total_units) if total_units else 0
+            project.available_units = int(available_units) if available_units else 0
+            project.price_range_min = int(price_range_min) if price_range_min else 0
+            project.price_range_max = int(price_range_max) if price_range_max else 0
+            project.start_date = start_date if start_date else None
+            project.expected_completion = expected_completion if expected_completion else None
+            project.launch_date = launch_date if launch_date else None
+            project.total_area = float(total_area) if total_area else 0
+            project.floors = int(floors) if floors else None
+            project.parking_spaces = int(parking_spaces) if parking_spaces else None
+            project.green_building_certified = green_building_certified
+            project.virtual_tour_url = virtual_tour_url or ''
+            project.website_url = website_url or ''
+            project.featured = featured
+            project.is_published = is_published
+            
+            # Update images only if new ones are provided
+            if main_image:
+                project.main_image = main_image
+            if floor_plan:
+                project.floor_plan = floor_plan
+            if brochure:
+                project.brochure = brochure
+            
+            # Update gallery images
+            for field, image in gallery_images.items():
+                if image:
+                    setattr(project, field, image)
+            
+            project.save()
+            
+            # Update project amenities
+            # First, clear existing features
+            ProjectFeature.objects.filter(project=project).delete()
+            
+            # Add selected amenities
+            for amenity_id in amenities:
+                try:
+                    amenity = ProjectAmenity.objects.get(id=amenity_id)
+                    ProjectFeature.objects.create(
+                        project=project,
+                        amenity=amenity,
+                        included=True
+                    )
+                except ProjectAmenity.DoesNotExist:
+                    pass
+            
+            messages.success(request, f'Project "{project.name}" has been updated successfully!')
+            return redirect('accounts:admin_all_projects')
+            
+        except Exception as e:
+            messages.error(request, f'There was an error updating the project: {str(e)}')
+    
+    # Get context data for form
+    realtors = Realtor.objects.all().order_by('name')
+    project_amenities = ProjectAmenity.objects.all().order_by('name')
+    project_features = ProjectFeature.objects.filter(project=project, included=True).values_list('amenity_id', flat=True)
+    
+    context = {
+        'project': project,
+        'realtors': realtors,
+        'project_amenities': project_amenities,
+        'project_features': list(project_features),
+    }
+    return render(request, 'accounts/admin_edit_project.html', context)
+
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_delete_project(request, project_id):
+    """Delete project for super-admin"""
+    from projects.models import Project
+    
+    project = get_object_or_404(Project, id=project_id)
+    
+    if request.method == 'POST':
+        project_name = project.name
+        project.delete()
+        messages.success(request, f'Project "{project_name}" has been deleted successfully!')
+        return redirect('accounts:admin_all_projects')
+    
+    context = {
+        'project': project,
+    }
+    return render(request, 'accounts/admin_delete_project.html', context)
+
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_toggle_project_status(request, project_id):
+    """Toggle project published status"""
+    from projects.models import Project
+    
+    project = get_object_or_404(Project, id=project_id)
+    project.is_published = not project.is_published
+    project.save()
+    
+    status = "published" if project.is_published else "unpublished"
+    messages.success(request, f'Project "{project.name}" has been {status}.')
+    
+    return redirect('accounts:admin_all_projects')
+
+
+@login_required
+@user_passes_test(is_superuser)
+def admin_toggle_project_featured(request, project_id):
+    """Toggle project featured status"""
+    from projects.models import Project
+    
+    project = get_object_or_404(Project, id=project_id)
+    project.featured = not project.featured
+    project.save()
+    
+    status = "featured" if project.featured else "unfeatured"
+    messages.success(request, f'Project "{project.name}" has been {status}.')
+    
+    return redirect('accounts:admin_all_projects')

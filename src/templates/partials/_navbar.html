@@ -81,6 +81,14 @@
                             <a class="dropdown-item" href="{% url 'accounts:profile_update' %}">
                                 <i class="fas fa-user-edit mr-2"></i>Update Profile
                             </a>
+                            {% if user.is_superuser %}
+                                <a class="dropdown-item" href="{% url 'accounts:admin_all_listings' %}">
+                                    <i class="fas fa-list mr-2"></i>Admin Listings
+                                </a>
+                                <a class="dropdown-item" href="{% url 'accounts:admin_all_projects' %}">
+                                    <i class="fas fa-building mr-2"></i>Admin Projects
+                                </a>
+                            {% endif %}
                             <a class="dropdown-item" href="{% url 'accounts:wishlist' %}">
                                 <i class="fas fa-heart mr-2"></i>My Wishlist
                             </a>

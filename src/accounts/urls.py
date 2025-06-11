@@ -23,4 +23,12 @@ urlpatterns = [
     path('admin/listings/', views.admin_all_listings, name='admin_all_listings'),
     path('admin/listings/<int:listing_id>/edit/', views.admin_edit_listing, name='admin_edit_listing'),
     path('admin/listings/<int:listing_id>/toggle/', views.admin_toggle_listing_status, name='admin_toggle_listing_status'),
+    
+    # Super Admin Project URLs
+    path('admin/projects/', views.admin_all_projects, name='admin_all_projects'),
+    path('admin/projects/create/', views.admin_create_project, name='admin_create_project'),
+    path('admin/projects/<int:project_id>/edit/', views.admin_edit_project, name='admin_edit_project'),
+    path('admin/projects/<int:project_id>/delete/', views.admin_delete_project, name='admin_delete_project'),
+    path('admin/projects/<int:project_id>/toggle/', views.admin_toggle_project_status, name='admin_toggle_project_status'),
+    path('admin/projects/<int:project_id>/featured/', views.admin_toggle_project_featured, name='admin_toggle_project_featured'),
 ]
