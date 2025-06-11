@@ -34,7 +34,7 @@
                                         </span>
                                     </div>
                                     <input type="text" name="city" class="form-control border-left-0 ps-0" placeholder="City"
-                                           value="{{ values.city }}">
+                                       value="{{ values.city }}">
                                 </div>
                             </div>
 
@@ -48,14 +48,14 @@
                                     </div>
                                     <select name="state" class="form-control border-left-0">
                                         <option selected="true" disabled="disabled">Select State</option>
-                                        {% for key,value in state_choices.items %}
-                                            <option value="{{ key }}"
-                                                    {% if key == values.state %}
-                                                    selected
-                                                    {% endif %}
-                                            >{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {% for key,value in state_choices.items %}
+                                        <option value="{{ key }}"
+                                                {% if key == values.state %}
+                                                selected
+                                                {% endif %}
+                                        >{{ value }}</option>
+                                    {% endfor %}
+                                </select>
                                 </div>
                             </div>
                         </div>
@@ -71,14 +71,14 @@
                                     </div>
                                     <select name="bedrooms" class="form-control border-left-0">
                                         <option selected="true" disabled="disabled">Bedrooms</option>
-                                        {% for key,value in bedroom_choices.items %}
-                                            <option value="{{ key }}"
-                                                    {% if key == values.bedrooms %}
-                                                    selected
-                                                    {% endif %}
-                                            >{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {% for key,value in bedroom_choices.items %}
+                                        <option value="{{ key }}"
+                                                {% if key == values.bedrooms %}
+                                                selected
+                                                {% endif %}
+                                        >{{ value }}</option>
+                                    {% endfor %}
+                                </select>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -90,16 +90,16 @@
                                     </div>
                                     <select name="price" class="form-control border-left-0">
                                         <option selected="true" disabled="disabled">Max Price</option>
-                                        {% for key,value in price_choices.items %}
-                                            <option value="{{ key }}"
-                                                    {% if key == values.price %}
-                                                    selected
-                                                    {% endif %}
-                                            >{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                                    {% for key,value in price_choices.items %}
+                                        <option value="{{ key }}"
+                                                {% if key == values.price %}
+                                                selected
+                                                {% endif %}
+                                        >{{ value }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
+                        </div>
                             <div class="col-md-6 mb-3">
                                 <div class="input-group">
                                     <div class="input-group-prepend">

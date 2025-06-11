@@ -7,7 +7,7 @@
     <section id="dashboard-hero" class="position-relative">
         <div class="hero-background">
             <div class="hero-overlay">
-                <div class="container">
+        <div class="container">
                     <div class="row align-items-center min-vh-40">
                         <div class="col-lg-8">
                             <div class="hero-content text-white">
@@ -277,14 +277,14 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {% if contacts %}
+                    {% if contacts %}
                                 <p class="text-muted mb-4">Here are the property listings that you have inquired about. Click "View Listing" to see more details or contact the realtor.</p>
                                 
                                 <!-- Desktop Table -->
                                 <div class="table-responsive d-none d-md-block">
                                     <table class="table table-hover">
                                         <thead class="bg-light">
-                                            <tr>
+                            <tr>
                                                 <th scope="col" width="10%">
                                                     <i class="fas fa-hashtag mr-1"></i>ID
                                                 </th>
@@ -297,11 +297,11 @@
                                                 <th scope="col" width="20%" class="text-center">
                                                     <i class="fas fa-cog mr-1"></i>Actions
                                                 </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for contact in contacts %}
-                                                <tr>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for contact in contacts %}
+                                <tr>
                                                     <td class="align-middle">
                                                         <span class="badge badge-primary">#{{ contact.id }}</span>
                                                     </td>
@@ -320,11 +320,11 @@
                                                         <a class="btn btn-primary btn-sm" href="{% url 'listings:listing' contact.listing_id %}">
                                                             <i class="fas fa-eye mr-1"></i>View Listing
                                                         </a>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                                 </div>
 
                                 <!-- Mobile Cards -->
@@ -347,7 +347,7 @@
                                         </div>
                                     {% endfor %}
                                 </div>
-                            {% else %}
+                    {% else %}
                                 <div class="no-inquiries text-center py-5">
                                     <div class="mb-4">
                                         <i class="fas fa-search-minus fa-4x text-muted"></i>
@@ -424,7 +424,7 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
+                    {% endif %}
 
             <!-- Quick Actions -->
             <div class="row mt-5">

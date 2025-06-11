@@ -10,7 +10,7 @@
         <div class="hero-image-container">
             <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="hero-image">
             <div class="hero-overlay">
-                <div class="container">
+        <div class="container">
                     <div class="row align-items-center min-vh-50">
                         <div class="col-lg-8">
                             <div class="hero-content text-white">
@@ -26,7 +26,7 @@
                                 <p class="lead mb-0">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
                                     {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}
-                                </p>
+                    </p>
                             </div>
                         </div>
                     </div>
@@ -134,57 +134,57 @@
                         <div class="card-body">
                             <h3 class="card-title text-primary mb-4">Photo Gallery</h3>
                             <div class="row">
-                                {% if listing.photo_1 %}
+                        {% if listing.photo_1 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_1.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_1.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
-                                    </div>
-                                {% endif %}
-                                {% if listing.photo_2 %}
+                            </div>
+                        {% endif %}
+                        {% if listing.photo_2 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_2.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_2.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
-                                    </div>
-                                {% endif %}
-                                {% if listing.photo_3 %}
+                            </div>
+                        {% endif %}
+                        {% if listing.photo_3 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_3.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_3.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
-                                    </div>
-                                {% endif %}
-                                {% if listing.photo_4 %}
+                            </div>
+                        {% endif %}
+                        {% if listing.photo_4 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_4.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_4.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
-                                    </div>
-                                {% endif %}
-                                {% if listing.photo_5 %}
+                            </div>
+                        {% endif %}
+                        {% if listing.photo_5 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_5.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_5.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
-                                    </div>
-                                {% endif %}
-                                {% if listing.photo_6 %}
+                            </div>
+                        {% endif %}
+                        {% if listing.photo_6 %}
                                     <div class="col-md-4 col-6 mb-3">
                                         <div class="gallery-item">
                                             <a href="{{ listing.photo_6.url }}" data-lightbox="property-gallery">
                                                 <img src="{{ listing.photo_6.url }}" alt="Property Image" class="img-fluid">
-                                            </a>
+                                </a>
                                         </div>
                                     </div>
                                 {% endif %}
@@ -197,7 +197,7 @@
                         <div class="card-body">
                             <h3 class="card-title text-primary mb-4">Property Details</h3>
                             <div class="row">
-                                <div class="col-md-6">
+                        <div class="col-md-6">
                                     <h6 class="text-muted mb-3">Financial Information</h6>
                                     <div class="list-group list-group-flush mb-4">
                                         <div class="list-group-item d-flex justify-content-between">
@@ -217,9 +217,9 @@
                                             <strong>{{ listing.bathrooms }}</strong>
                                         </div>
                                     </div>
-                                </div>
+                        </div>
                                 
-                                <div class="col-md-6">
+                        <div class="col-md-6">
                                     <h6 class="text-muted mb-3">Property Size</h6>
                                     <div class="list-group list-group-flush mb-4">
                                         <div class="list-group-item d-flex justify-content-between">
@@ -338,15 +338,15 @@
                         
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
+                        <div class="form-group">
                                     <label for="name">Full Name:</label>
                                     <input type="text" name="name" class="form-control" 
                                            {% if user.is_authenticated %}value="{{ user.first_name }} {{ user.last_name }}"{% endif %} 
                                            required>
                                 </div>
-                            </div>
+                        </div>
                             <div class="col-md-6">
-                                <div class="form-group">
+                        <div class="form-group">
                                     <label for="email">Email Address:</label>
                                     <input type="email" name="email" class="form-control" 
                                            {% if user.is_authenticated %}value="{{ user.email }}"{% endif %} 

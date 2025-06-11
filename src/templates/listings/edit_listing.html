@@ -138,15 +138,15 @@
                                     
                                     <!-- Price Fields -->
                                     <div class="row">
-                                        <div class="col-md-4 mb-3 sale-price-group">
+                                        <div class="col-md-4 mb-3 sale-price-group" {% if listing.listing_type == 'rent' %}style="display: none;"{% endif %}>
                                             <label for="price" class="form-label">Sale Price ($)</label>
                                             <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0">
                                         </div>
-                                        <div class="col-md-4 mb-3 rent-price-group" style="display: none;">
+                                        <div class="col-md-4 mb-3 rent-price-group" {% if listing.listing_type == 'sale' %}style="display: none;"{% endif %}>
                                             <label for="rent_price" class="form-label">Monthly Rent ($)</label>
                                             <input type="number" class="form-control" id="rent_price" name="rent_price" value="{{ listing.rent_price }}" min="0">
                                         </div>
-                                        <div class="col-md-4 mb-3 deposit-group" style="display: none;">
+                                        <div class="col-md-4 mb-3 deposit-group" {% if listing.listing_type == 'sale' %}style="display: none;"{% endif %}>
                                             <label for="deposit_amount" class="form-label">Security Deposit ($)</label>
                                             <input type="number" class="form-control" id="deposit_amount" name="deposit_amount" value="{{ listing.deposit_amount }}" min="0">
                                         </div>

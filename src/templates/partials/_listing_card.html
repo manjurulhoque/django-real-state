@@ -16,7 +16,11 @@
                 
                 <!-- Top Left - Listing Type Badge (below featured if both exist) -->
                 {% if listing.is_published %}
-                    <div class="position-absolute" style="top: {% if listing.featured %}60px{% else %}15px{% endif %}; left: 15px;">
+                    {% if listing.featured %}
+                        <div class="position-absolute" style="top: 60px; left: 15px;">
+                    {% else %}
+                        <div class="position-absolute" style="top: 15px; left: 15px;">
+                    {% endif %}
                         {% if listing.listing_type == 'sale' %}
                             <span class="badge bg-info text-white rounded-pill px-3 py-2">For Sale</span>
                         {% elif listing.listing_type == 'rent' %}
