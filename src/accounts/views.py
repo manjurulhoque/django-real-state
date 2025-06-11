@@ -250,6 +250,7 @@ def admin_all_listings(request):
 @user_passes_test(is_superuser)
 def admin_edit_listing(request, listing_id):
     """Edit any listing for super-admin"""
+    from listings.models import Amenity
     listing = get_object_or_404(Listing, id=listing_id)
     
     if request.method == 'POST':
@@ -260,13 +261,31 @@ def admin_edit_listing(request, listing_id):
         state = request.POST.get('state')
         zipcode = request.POST.get('zipcode')
         description = request.POST.get('description')
+        
+        # Pricing fields
         price = request.POST.get('price')
+        rent_price = request.POST.get('rent_price')
+        deposit_amount = request.POST.get('deposit_amount')
+        listing_type = request.POST.get('listing_type')
+        
+        # Property specifications
+        property_type = request.POST.get('property_type')
         bedrooms = request.POST.get('bedrooms')
         bathrooms = request.POST.get('bathrooms')
         garage = request.POST.get('garage')
         sqft = request.POST.get('sqft')
         lot_size = request.POST.get('lot_size')
+        year_built = request.POST.get('year_built')
+        hoa_fee = request.POST.get('hoa_fee')
+        energy_rating = request.POST.get('energy_rating')
+        virtual_tour_url = request.POST.get('virtual_tour_url')
+        
+        # Admin controls
         is_published = request.POST.get('is_published') == 'on'
+        featured = request.POST.get('featured') == 'on'
+        
+        # Amenities (many-to-many)
+        amenities = request.POST.getlist('amenities')
         
         # Handle file uploads - only update if new files are provided
         photo_main = request.FILES.get('photo_main')
@@ -285,13 +304,28 @@ def admin_edit_listing(request, listing_id):
             listing.state = state
             listing.zipcode = zipcode
             listing.description = description
+            
+            # Update pricing
             listing.price = int(price) if price else 0
+            listing.rent_price = int(rent_price) if rent_price else None
+            listing.deposit_amount = int(deposit_amount) if deposit_amount else None
+            listing.listing_type = listing_type or 'sale'
+            
+            # Update property specifications
+            listing.property_type = property_type or 'house'
             listing.bedrooms = int(bedrooms) if bedrooms else 0
             listing.bathrooms = float(bathrooms) if bathrooms else 0
             listing.garage = int(garage) if garage else 0
             listing.sqft = int(sqft) if sqft else 0
             listing.lot_size = float(lot_size) if lot_size else 0
+            listing.year_built = int(year_built) if year_built else None
+            listing.hoa_fee = float(hoa_fee) if hoa_fee else None
+            listing.energy_rating = energy_rating or ''
+            listing.virtual_tour_url = virtual_tour_url or ''
+            
+            # Update admin controls
             listing.is_published = is_published
+            listing.featured = featured
             
             # Update photos only if new ones are provided
             if photo_main:
@@ -310,14 +344,25 @@ def admin_edit_listing(request, listing_id):
                 listing.photo_6 = photo_6
             
             listing.save()
+            
+            # Update amenities (many-to-many relationship)
+            if amenities:
+                listing.amenities.set(amenities)
+            else:
+                listing.amenities.clear()
+            
             messages.success(request, f'Listing "{listing.title}" has been updated successfully!')
             return redirect('accounts:admin_all_listings')
             
         except Exception as e:
-            messages.error(request, 'There was an error updating the listing. Please try again.')
+            messages.error(request, f'There was an error updating the listing: {str(e)}')
+    
+    # Get all amenities for the form
+    all_amenities = Amenity.objects.all().order_by('name')
     
     context = {
         'listing': listing,
+        'all_amenities': all_amenities,
     }
     return render(request, 'accounts/admin_edit_listing.html', context)
 

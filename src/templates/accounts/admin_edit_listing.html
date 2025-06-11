@@ -58,7 +58,7 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <form method="post" enctype="multipart/form-data">
+                            <form method="post" enctype="multipart/form-data" novalidate class="needs-validation">
                                 {% csrf_token %}
                                 
                                 <!-- Basic Information -->
@@ -69,28 +69,80 @@
                                     <div class="row">
                                         <div class="col-12 mb-3">
                                             <label for="title" class="form-label required">Property Title</label>
-                                            <input type="text" class="form-control" id="title" name="title" value="{{ listing.title }}" required>
+                                            <input type="text" class="form-control" id="title" name="title" value="{{ listing.title }}" required maxlength="200">
+                                            <div class="invalid-feedback">Please provide a valid property title.</div>
                                         </div>
                                         <div class="col-md-8 mb-3">
                                             <label for="address" class="form-label required">Address</label>
-                                            <input type="text" class="form-control" id="address" name="address" value="{{ listing.address }}" required>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ listing.address }}" required maxlength="200">
+                                            <div class="invalid-feedback">Please provide a valid address.</div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="zipcode" class="form-label required">Zip Code</label>
-                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ listing.zipcode }}" required>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ listing.zipcode }}" required maxlength="20">
+                                            <div class="invalid-feedback">Please provide a valid zip code.</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="city" class="form-label required">City</label>
-                                            <input type="text" class="form-control" id="city" name="city" value="{{ listing.city }}" required>
+                                            <input type="text" class="form-control" id="city" name="city" value="{{ listing.city }}" required maxlength="100">
+                                            <div class="invalid-feedback">Please provide a valid city name.</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="state" class="form-label required">State</label>
                                             <select class="form-control" id="state" name="state" required>
                                                 <option value="">Select State</option>
-                                                {% for key, value in state_choices.items %}
-                                                    <option value="{{ key }}" {% if listing.state == key %}selected{% endif %}>{{ value }}</option>
-                                                {% endfor %}
+                                                <option value="AK" {% if listing.state == 'AK' %}selected{% endif %}>Alaska</option>
+                                                <option value="AL" {% if listing.state == 'AL' %}selected{% endif %}>Alabama</option>
+                                                <option value="AR" {% if listing.state == 'AR' %}selected{% endif %}>Arkansas</option>
+                                                <option value="AZ" {% if listing.state == 'AZ' %}selected{% endif %}>Arizona</option>
+                                                <option value="CA" {% if listing.state == 'CA' %}selected{% endif %}>California</option>
+                                                <option value="CO" {% if listing.state == 'CO' %}selected{% endif %}>Colorado</option>
+                                                <option value="CT" {% if listing.state == 'CT' %}selected{% endif %}>Connecticut</option>
+                                                <option value="DE" {% if listing.state == 'DE' %}selected{% endif %}>Delaware</option>
+                                                <option value="FL" {% if listing.state == 'FL' %}selected{% endif %}>Florida</option>
+                                                <option value="GA" {% if listing.state == 'GA' %}selected{% endif %}>Georgia</option>
+                                                <option value="HI" {% if listing.state == 'HI' %}selected{% endif %}>Hawaii</option>
+                                                <option value="IA" {% if listing.state == 'IA' %}selected{% endif %}>Iowa</option>
+                                                <option value="ID" {% if listing.state == 'ID' %}selected{% endif %}>Idaho</option>
+                                                <option value="IL" {% if listing.state == 'IL' %}selected{% endif %}>Illinois</option>
+                                                <option value="IN" {% if listing.state == 'IN' %}selected{% endif %}>Indiana</option>
+                                                <option value="KS" {% if listing.state == 'KS' %}selected{% endif %}>Kansas</option>
+                                                <option value="KY" {% if listing.state == 'KY' %}selected{% endif %}>Kentucky</option>
+                                                <option value="LA" {% if listing.state == 'LA' %}selected{% endif %}>Louisiana</option>
+                                                <option value="MA" {% if listing.state == 'MA' %}selected{% endif %}>Massachusetts</option>
+                                                <option value="MD" {% if listing.state == 'MD' %}selected{% endif %}>Maryland</option>
+                                                <option value="ME" {% if listing.state == 'ME' %}selected{% endif %}>Maine</option>
+                                                <option value="MI" {% if listing.state == 'MI' %}selected{% endif %}>Michigan</option>
+                                                <option value="MN" {% if listing.state == 'MN' %}selected{% endif %}>Minnesota</option>
+                                                <option value="MO" {% if listing.state == 'MO' %}selected{% endif %}>Missouri</option>
+                                                <option value="MS" {% if listing.state == 'MS' %}selected{% endif %}>Mississippi</option>
+                                                <option value="MT" {% if listing.state == 'MT' %}selected{% endif %}>Montana</option>
+                                                <option value="NC" {% if listing.state == 'NC' %}selected{% endif %}>North Carolina</option>
+                                                <option value="ND" {% if listing.state == 'ND' %}selected{% endif %}>North Dakota</option>
+                                                <option value="NE" {% if listing.state == 'NE' %}selected{% endif %}>Nebraska</option>
+                                                <option value="NH" {% if listing.state == 'NH' %}selected{% endif %}>New Hampshire</option>
+                                                <option value="NJ" {% if listing.state == 'NJ' %}selected{% endif %}>New Jersey</option>
+                                                <option value="NM" {% if listing.state == 'NM' %}selected{% endif %}>New Mexico</option>
+                                                <option value="NV" {% if listing.state == 'NV' %}selected{% endif %}>Nevada</option>
+                                                <option value="NY" {% if listing.state == 'NY' %}selected{% endif %}>New York</option>
+                                                <option value="OH" {% if listing.state == 'OH' %}selected{% endif %}>Ohio</option>
+                                                <option value="OK" {% if listing.state == 'OK' %}selected{% endif %}>Oklahoma</option>
+                                                <option value="OR" {% if listing.state == 'OR' %}selected{% endif %}>Oregon</option>
+                                                <option value="PA" {% if listing.state == 'PA' %}selected{% endif %}>Pennsylvania</option>
+                                                <option value="RI" {% if listing.state == 'RI' %}selected{% endif %}>Rhode Island</option>
+                                                <option value="SC" {% if listing.state == 'SC' %}selected{% endif %}>South Carolina</option>
+                                                <option value="SD" {% if listing.state == 'SD' %}selected{% endif %}>South Dakota</option>
+                                                <option value="TN" {% if listing.state == 'TN' %}selected{% endif %}>Tennessee</option>
+                                                <option value="TX" {% if listing.state == 'TX' %}selected{% endif %}>Texas</option>
+                                                <option value="UT" {% if listing.state == 'UT' %}selected{% endif %}>Utah</option>
+                                                <option value="VA" {% if listing.state == 'VA' %}selected{% endif %}>Virginia</option>
+                                                <option value="VT" {% if listing.state == 'VT' %}selected{% endif %}>Vermont</option>
+                                                <option value="WA" {% if listing.state == 'WA' %}selected{% endif %}>Washington</option>
+                                                <option value="WI" {% if listing.state == 'WI' %}selected{% endif %}>Wisconsin</option>
+                                                <option value="WV" {% if listing.state == 'WV' %}selected{% endif %}>West Virginia</option>
+                                                <option value="WY" {% if listing.state == 'WY' %}selected{% endif %}>Wyoming</option>
                                             </select>
+                                            <div class="invalid-feedback">Please select a state.</div>
                                         </div>
                                     </div>
                                 </div>
@@ -101,18 +153,81 @@
                                         <i class="fas fa-home mr-2 text-primary"></i>Property Details
                                     </h5>
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            <label for="price" class="form-label required">Price ($)</label>
-                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0" required>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="property_type" class="form-label required">Property Type</label>
+                                            <select class="form-control" id="property_type" name="property_type" required>
+                                                <option value="">Select Property Type</option>
+                                                <option value="house" {% if listing.property_type == 'house' %}selected{% endif %}>House</option>
+                                                <option value="apartment" {% if listing.property_type == 'apartment' %}selected{% endif %}>Apartment</option>
+                                                <option value="condo" {% if listing.property_type == 'condo' %}selected{% endif %}>Condo</option>
+                                                <option value="townhouse" {% if listing.property_type == 'townhouse' %}selected{% endif %}>Townhouse</option>
+                                                <option value="villa" {% if listing.property_type == 'villa' %}selected{% endif %}>Villa</option>
+                                                <option value="commercial" {% if listing.property_type == 'commercial' %}selected{% endif %}>Commercial</option>
+                                                <option value="land" {% if listing.property_type == 'land' %}selected{% endif %}>Land</option>
+                                                <option value="other" {% if listing.property_type == 'other' %}selected{% endif %}>Other</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a property type.</div>
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="listing_type" class="form-label required">Listing Type</label>
+                                            <select class="form-control" id="listing_type" name="listing_type" required>
+                                                <option value="">Select Listing Type</option>
+                                                <option value="sale" {% if listing.listing_type == 'sale' %}selected{% endif %}>For Sale</option>
+                                                <option value="rent" {% if listing.listing_type == 'rent' %}selected{% endif %}>For Rent</option>
+                                                <option value="both" {% if listing.listing_type == 'both' %}selected{% endif %}>Sale or Rent</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a listing type.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pricing Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-dollar-sign mr-2 text-success"></i>Pricing Information
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="price" class="form-label">Sale Price ($)</label>
+                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0" max="50000000">
+                                            <small class="form-text text-muted">Required for sale listings</small>
+                                            <div class="invalid-feedback">Please provide a valid price.</div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="rent_price" class="form-label">Monthly Rent ($)</label>
+                                            <input type="number" class="form-control" id="rent_price" name="rent_price" value="{{ listing.rent_price }}" min="0" max="100000">
+                                            <small class="form-text text-muted">Required for rental listings</small>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="deposit_amount" class="form-label">Security Deposit ($)</label>
+                                            <input type="number" class="form-control" id="deposit_amount" name="deposit_amount" value="{{ listing.deposit_amount }}" min="0" max="100000">
+                                            <small class="form-text text-muted">For rental properties</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Property Specifications -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-ruler-combined mr-2 text-primary"></i>Property Specifications
+                                    </h5>
+                                    <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <label for="bedrooms" class="form-label required">Bedrooms</label>
                                             <select class="form-control" id="bedrooms" name="bedrooms" required>
                                                 <option value="">Select Bedrooms</option>
-                                                {% for key, value in bedroom_choices.items %}
-                                                    <option value="{{ key }}" {% if listing.bedrooms == key|add:0 %}selected{% endif %}>{{ value }}</option>
-                                                {% endfor %}
+                                                <option value="1" {% if listing.bedrooms == 1 %}selected{% endif %}>1</option>
+                                                <option value="2" {% if listing.bedrooms == 2 %}selected{% endif %}>2</option>
+                                                <option value="3" {% if listing.bedrooms == 3 %}selected{% endif %}>3</option>
+                                                <option value="4" {% if listing.bedrooms == 4 %}selected{% endif %}>4</option>
+                                                <option value="5" {% if listing.bedrooms == 5 %}selected{% endif %}>5</option>
+                                                <option value="6" {% if listing.bedrooms == 6 %}selected{% endif %}>6</option>
+                                                <option value="7" {% if listing.bedrooms == 7 %}selected{% endif %}>7</option>
+                                                <option value="8" {% if listing.bedrooms == 8 %}selected{% endif %}>8</option>
+                                                <option value="9" {% if listing.bedrooms == 9 %}selected{% endif %}>9</option>
+                                                <option value="10" {% if listing.bedrooms == 10 %}selected{% endif %}>10+</option>
                                             </select>
+                                            <div class="invalid-feedback">Please select number of bedrooms.</div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="bathrooms" class="form-label required">Bathrooms</label>
@@ -128,18 +243,80 @@
                                                 <option value="4.5" {% if listing.bathrooms == 4.5 %}selected{% endif %}>4.5</option>
                                                 <option value="5" {% if listing.bathrooms == 5.0 %}selected{% endif %}>5+</option>
                                             </select>
+                                            <div class="invalid-feedback">Please select number of bathrooms.</div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="garage" class="form-label">Garage Spaces</label>
                                             <input type="number" class="form-control" id="garage" name="garage" value="{{ listing.garage }}" min="0" max="10">
+                                            <small class="form-text text-muted">Leave blank if no garage</small>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="sqft" class="form-label required">Square Feet</label>
-                                            <input type="number" class="form-control" id="sqft" name="sqft" value="{{ listing.sqft }}" min="0" required>
+                                            <input type="number" class="form-control" id="sqft" name="sqft" value="{{ listing.sqft }}" min="0" max="100000" required>
+                                            <div class="invalid-feedback">Please provide valid square footage.</div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label for="lot_size" class="form-label">Lot Size (acres)</label>
-                                            <input type="number" step="0.1" class="form-control" id="lot_size" name="lot_size" value="{{ listing.lot_size }}" min="0">
+                                            <input type="number" step="0.1" class="form-control" id="lot_size" name="lot_size" value="{{ listing.lot_size }}" min="0" max="1000">
+                                            <small class="form-text text-muted">Decimal values allowed (e.g., 0.5)</small>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="year_built" class="form-label">Year Built</label>
+                                            <input type="number" class="form-control" id="year_built" name="year_built" value="{{ listing.year_built }}" min="1800" max="2030">
+                                            <small class="form-text text-muted">Year the property was built</small>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="hoa_fee" class="form-label">HOA Fee ($/month)</label>
+                                            <input type="number" step="0.01" class="form-control" id="hoa_fee" name="hoa_fee" value="{{ listing.hoa_fee }}" min="0" max="10000">
+                                            <small class="form-text text-muted">Monthly HOA fee if applicable</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="energy_rating" class="form-label">Energy Rating</label>
+                                            <select class="form-control" id="energy_rating" name="energy_rating">
+                                                <option value="">Select Energy Rating</option>
+                                                <option value="A+" {% if listing.energy_rating == 'A+' %}selected{% endif %}>A+ (Excellent)</option>
+                                                <option value="A" {% if listing.energy_rating == 'A' %}selected{% endif %}>A (Very Good)</option>
+                                                <option value="B" {% if listing.energy_rating == 'B' %}selected{% endif %}>B (Good)</option>
+                                                <option value="C" {% if listing.energy_rating == 'C' %}selected{% endif %}>C (Fair)</option>
+                                                <option value="D" {% if listing.energy_rating == 'D' %}selected{% endif %}>D (Poor)</option>
+                                                <option value="E" {% if listing.energy_rating == 'E' %}selected{% endif %}>E (Very Poor)</option>
+                                                <option value="F" {% if listing.energy_rating == 'F' %}selected{% endif %}>F (Extremely Poor)</option>
+                                            </select>
+                                            <small class="form-text text-muted">Energy efficiency rating</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="virtual_tour_url" class="form-label">Virtual Tour URL</label>
+                                            <input type="url" class="form-control" id="virtual_tour_url" name="virtual_tour_url" value="{{ listing.virtual_tour_url }}" placeholder="https://example.com/tour">
+                                            <small class="form-text text-muted">Link to virtual tour or 360° view</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Features & Amenities -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-star mr-2 text-warning"></i>Features & Amenities
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Property Amenities</label>
+                                            <div class="amenities-grid">
+                                                {% for amenity in all_amenities %}
+                                                    <div class="form-check form-check-inline amenity-item">
+                                                        <input class="form-check-input" type="checkbox" id="amenity_{{ amenity.id }}" name="amenities" value="{{ amenity.id }}" 
+                                                               {% if amenity in listing.amenities.all %}checked{% endif %}>
+                                                        <label class="form-check-label" for="amenity_{{ amenity.id }}">
+                                                            {% if amenity.icon %}
+                                                                <i class="fas fa-{{ amenity.icon }} mr-1"></i>
+                                                            {% endif %}
+                                                            {{ amenity.name }}
+                                                        </label>
+                                                    </div>
+                                                {% empty %}
+                                                    <p class="text-muted">No amenities available. <a href="/admin/listings/amenity/" target="_blank">Add amenities</a> in the admin panel.</p>
+                                                {% endfor %}
+                                            </div>
+                                            <small class="form-text text-muted">Select all amenities that apply to this property</small>
                                         </div>
                                     </div>
                                 </div>
@@ -150,13 +327,28 @@
                                         <i class="fas fa-cog mr-2 text-danger"></i>Admin Controls
                                     </h5>
                                     <div class="row">
-                                        <div class="col-12 mb-3">
-                                            <div class="form-check">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check form-check-lg">
                                                 <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {% if listing.is_published %}checked{% endif %}>
                                                 <label class="form-check-label" for="is_published">
                                                     <strong>Publish this listing</strong>
                                                     <small class="text-muted d-block">Check this box to make the listing visible to the public</small>
                                                 </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="form-check form-check-lg">
+                                                <input class="form-check-input" type="checkbox" id="featured" name="featured" {% if listing.featured %}checked{% endif %}>
+                                                <label class="form-check-label" for="featured">
+                                                    <strong>Feature this listing</strong>
+                                                    <small class="text-muted d-block">Featured listings appear at the top of search results</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="alert alert-info">
+                                                <i class="fas fa-info-circle mr-2"></i>
+                                                <strong>Admin Note:</strong> Unpublished listings are only visible to administrators and can be reviewed before making them public. Featured listings get priority placement.
                                             </div>
                                         </div>
                                     </div>
@@ -167,8 +359,13 @@
                                     <h5 class="section-title mb-3">
                                         <i class="fas fa-align-left mr-2 text-primary"></i>Property Description
                                     </h5>
-                                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe the property, its features, and what makes it special...">{{ listing.description }}</textarea>
-                                    <small class="form-text text-muted">Provide a detailed description to attract potential buyers</small>
+                                    <textarea class="form-control" id="description" name="description" rows="6" placeholder="Describe the property, its features, and what makes it special..." maxlength="2000">{{ listing.description }}</textarea>
+                                    <small class="form-text text-muted">Provide a detailed description to attract potential buyers (max 2000 characters)</small>
+                                    <div class="character-count text-right">
+                                        <small class="text-muted">
+                                            <span id="char-count">{{ listing.description|length|default:0 }}</span>/2000 characters
+                                        </small>
+                                    </div>
                                 </div>
 
                                 <!-- Photos -->
@@ -176,40 +373,100 @@
                                     <h5 class="section-title mb-3">
                                         <i class="fas fa-camera mr-2 text-primary"></i>Property Photos
                                     </h5>
-                                    <p class="text-muted mb-3">Upload new photos to replace existing ones. Leave blank to keep current photos.</p>
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                                        <strong>Note:</strong> Upload new photos to replace existing ones. Leave blank to keep current photos. Recommended image size: 1200x800px.
+                                    </div>
                                     
                                     <!-- Current Photos Preview -->
                                     <div class="current-photos mb-4">
-                                        <h6 class="text-muted mb-2">Current Photos:</h6>
+                                        <h6 class="text-muted mb-3">
+                                            <i class="fas fa-images mr-2"></i>Current Photos:
+                                        </h6>
                                         <div class="row">
                                             {% if listing.photo_main %}
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="photo-preview">
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
                                                         <img src="{{ listing.photo_main.url }}" alt="Main Photo" class="img-thumbnail">
-                                                        <small class="text-muted d-block text-center">Main Photo</small>
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-primary">Main Photo</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
                                             {% if listing.photo_1 %}
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="photo-preview">
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
                                                         <img src="{{ listing.photo_1.url }}" alt="Photo 1" class="img-thumbnail">
-                                                        <small class="text-muted d-block text-center">Photo 1</small>
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 1</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
                                             {% if listing.photo_2 %}
-                                                <div class="col-md-4 mb-2">
-                                                    <div class="photo-preview">
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
                                                         <img src="{{ listing.photo_2.url }}" alt="Photo 2" class="img-thumbnail">
-                                                        <small class="text-muted d-block text-center">Photo 2</small>
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 2</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_3 %}
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
+                                                        <img src="{{ listing.photo_3.url }}" alt="Photo 3" class="img-thumbnail">
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 3</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_4 %}
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
+                                                        <img src="{{ listing.photo_4.url }}" alt="Photo 4" class="img-thumbnail">
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 4</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_5 %}
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
+                                                        <img src="{{ listing.photo_5.url }}" alt="Photo 5" class="img-thumbnail">
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 5</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_6 %}
+                                                <div class="col-md-4 mb-3">
+                                                    <div class="photo-preview position-relative">
+                                                        <img src="{{ listing.photo_6.url }}" alt="Photo 6" class="img-thumbnail">
+                                                        <div class="photo-label">
+                                                            <span class="badge badge-secondary">Photo 6</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             {% endif %}
                                         </div>
+                                        {% if not listing.photo_main and not listing.photo_1 and not listing.photo_2 and not listing.photo_3 and not listing.photo_4 and not listing.photo_5 and not listing.photo_6 %}
+                                            <div class="no-photos text-center py-4">
+                                                <i class="fas fa-camera fa-3x text-muted mb-3"></i>
+                                                <p class="text-muted">No photos uploaded yet</p>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                     
                                     <!-- Photo Upload Fields -->
+                                    <h6 class="text-muted mb-3">
+                                        <i class="fas fa-upload mr-2"></i>Upload New Photos:
+                                    </h6>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="photo_main" class="form-label">Main Photo</label>
@@ -236,15 +493,19 @@
                                             <label for="photo_5" class="form-label">Photo 5</label>
                                             <input type="file" class="form-control-file" id="photo_5" name="photo_5" accept="image/*">
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_6" class="form-label">Photo 6</label>
+                                            <input type="file" class="form-control-file" id="photo_6" name="photo_6" accept="image/*">
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Submit Buttons -->
-                                <div class="form-actions text-center">
+                                <div class="form-actions text-center mt-4">
                                     <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-secondary btn-lg mr-3">
                                         <i class="fas fa-times mr-2"></i>Cancel
                                     </a>
-                                    <button type="submit" class="btn btn-danger btn-lg">
+                                    <button type="submit" class="btn btn-danger btn-lg" id="submit-btn">
                                         <i class="fas fa-save mr-2"></i>Update Listing
                                     </button>
                                 </div>
@@ -271,8 +532,15 @@
                             <div class="info-item mb-3">
                                 <i class="fas fa-calendar-alt text-info mr-2"></i>
                                 <strong>Originally Submitted:</strong><br>
-                                <small class="text-muted">{{ listing.list_date|date:"F d, Y" }}</small>
+                                <small class="text-muted">{{ listing.list_date|date:"F d, Y \a\t g:i A" }}</small>
                             </div>
+                            {% if listing.last_updated %}
+                            <div class="info-item mb-3">
+                                <i class="fas fa-clock text-info mr-2"></i>
+                                <strong>Last Updated:</strong><br>
+                                <small class="text-muted">{{ listing.last_updated|date:"F d, Y \a\t g:i A" }}</small>
+                            </div>
+                            {% endif %}
                             <div class="info-item mb-3">
                                 <i class="fas fa-user text-info mr-2"></i>
                                 <strong>Submitted By:</strong><br>
@@ -280,18 +548,29 @@
                                     <small class="text-muted">{{ listing.submitted_by.first_name }} {{ listing.submitted_by.last_name }}</small>
                                     <br><small class="text-muted">{{ listing.submitted_by.email }}</small>
                                 {% else %}
-                                    <small class="text-muted">System</small>
+                                    <small class="text-muted">System/Admin</small>
                                 {% endif %}
                             </div>
                             <div class="info-item mb-3">
                                 <i class="fas fa-check-circle text-info mr-2"></i>
                                 <strong>Current Status:</strong><br>
                                 {% if listing.is_published %}
-                                    <span class="badge badge-success">Published</span>
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-eye mr-1"></i>Published
+                                    </span>
                                 {% else %}
-                                    <span class="badge badge-warning">Unpublished</span>
+                                    <span class="badge badge-warning">
+                                        <i class="fas fa-eye-slash mr-1"></i>Unpublished
+                                    </span>
                                 {% endif %}
                             </div>
+                            {% if listing.view_count %}
+                            <div class="info-item mb-3">
+                                <i class="fas fa-chart-line text-info mr-2"></i>
+                                <strong>Total Views:</strong><br>
+                                <span class="badge badge-info">{{ listing.view_count }} views</span>
+                            </div>
+                            {% endif %}
                             {% if listing.is_published %}
                                 <a href="{% url 'listings:listing' listing.id %}" class="btn btn-info btn-block" target="_blank">
                                     <i class="fas fa-external-link-alt mr-2"></i>View Live Listing
@@ -311,11 +590,11 @@
                             <form method="post" action="{% url 'accounts:admin_toggle_listing_status' listing.id %}" class="mb-3">
                                 {% csrf_token %}
                                 {% if listing.is_published %}
-                                    <button type="submit" class="btn btn-warning btn-block" onclick="return confirm('Unpublish this listing?')">
+                                    <button type="submit" class="btn btn-warning btn-block" onclick="return confirm('Are you sure you want to unpublish this listing? It will no longer be visible to the public.')">
                                         <i class="fas fa-eye-slash mr-2"></i>Unpublish Listing
                                     </button>
                                 {% else %}
-                                    <button type="submit" class="btn btn-success btn-block">
+                                    <button type="submit" class="btn btn-success btn-block" onclick="return confirm('Are you sure you want to publish this listing? It will become visible to the public.')">
                                         <i class="fas fa-check mr-2"></i>Publish Listing
                                     </button>
                                 {% endif %}
@@ -323,6 +602,13 @@
                             <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-outline-secondary btn-block">
                                 <i class="fas fa-list mr-2"></i>Back to All Listings
                             </a>
+                            <hr>
+                            <h6 class="text-muted mb-2">
+                                <i class="fas fa-question-circle mr-1"></i>Need Help?
+                            </h6>
+                            <p class="small text-muted mb-0">
+                                Contact support if you need assistance with listing management or have questions about the admin panel.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -355,7 +641,7 @@
         
         .form-section {
             border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
+            padding-bottom: 1.5rem;
         }
         
         .form-section:last-child {
@@ -370,21 +656,247 @@
         .required::after {
             content: " *";
             color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .photo-preview {
+            position: relative;
         }
         
         .photo-preview img {
             width: 100%;
-            height: 150px;
+            height: 200px;
             object-fit: cover;
+            border-radius: 0.375rem;
+        }
+        
+        .photo-label {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
         }
         
         .info-item {
-            padding: 0.5rem 0;
+            padding: 0.75rem 0;
             border-bottom: 1px solid #f0f0f0;
         }
         
         .info-item:last-child {
             border-bottom: none;
         }
+        
+        .form-check-lg .form-check-input {
+            transform: scale(1.2);
+            margin-top: 0.1rem;
+        }
+        
+        .form-check-lg .form-check-label {
+            margin-left: 0.5rem;
+        }
+        
+        .character-count {
+            margin-top: 0.25rem;
+        }
+        
+        .no-photos {
+            border: 2px dashed #dee2e6;
+            border-radius: 0.375rem;
+        }
+        
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.375rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .amenity-item {
+            margin: 0;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 0.25rem;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+        
+        .amenity-item:hover {
+            border-color: #007bff;
+            box-shadow: 0 2px 4px rgba(0,123,255,0.1);
+        }
+        
+        .amenity-item .form-check-input:checked + .form-check-label {
+            color: #007bff;
+            font-weight: 500;
+        }
+        
+        /* Form validation styles */
+        .was-validated .form-control:valid,
+        .form-control.is-valid {
+            border-color: #28a745;
+        }
+        
+        .was-validated .form-control:invalid,
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        
+        /* Loading state */
+        .btn[disabled] {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+            
+            .photo-preview img {
+                height: 150px;
+            }
+            
+            .form-actions .btn {
+                display: block;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
     </style>
+
+    <!-- JavaScript for form enhancements -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Character counter for description
+            const descriptionField = document.getElementById('description');
+            const charCount = document.getElementById('char-count');
+            
+            if (descriptionField && charCount) {
+                descriptionField.addEventListener('input', function() {
+                    const currentLength = this.value.length;
+                    charCount.textContent = currentLength;
+                    
+                    // Change color based on usage
+                    if (currentLength > 1800) {
+                        charCount.className = 'text-danger';
+                    } else if (currentLength > 1500) {
+                        charCount.className = 'text-warning';
+                    } else {
+                        charCount.className = 'text-muted';
+                    }
+                });
+            }
+            
+            // Form submission handling
+            const form = document.querySelector('form[method="post"]');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if (form && submitBtn) {
+                form.addEventListener('submit', function(e) {
+                    // Disable submit button to prevent double submission
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Updating...';
+                    
+                    // Re-enable after 5 seconds as fallback
+                    setTimeout(function() {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Update Listing';
+                    }, 5000);
+                });
+            }
+            
+            // Photo upload preview (basic implementation)
+            const photoInputs = document.querySelectorAll('input[type="file"]');
+            photoInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const fileName = this.files[0].name;
+                        const label = this.previousElementSibling;
+                        if (label && label.tagName === 'LABEL') {
+                            label.innerHTML = `${label.textContent.split(' (')[0]} (${fileName})`;
+                            label.style.color = '#28a745';
+                        }
+                    }
+                });
+            });
+            
+            // Form validation
+            const requiredFields = document.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                field.addEventListener('blur', function() {
+                    if (this.value.trim() === '') {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+                
+                field.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid') && this.value.trim() !== '') {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+            });
+            
+            // Price validation
+            const priceField = document.getElementById('price');
+            if (priceField) {
+                priceField.addEventListener('input', function() {
+                    const value = parseFloat(this.value);
+                    if (isNaN(value) || value < 0 || value > 50000000) {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+            }
+            
+            // Dynamic price field requirements based on listing type
+            const listingTypeField = document.getElementById('listing_type');
+            const salePriceField = document.getElementById('price');
+            const rentPriceField = document.getElementById('rent_price');
+            const depositField = document.getElementById('deposit_amount');
+            
+            function updatePriceFieldRequirements() {
+                const listingType = listingTypeField.value;
+                
+                // Reset all requirements
+                salePriceField.removeAttribute('required');
+                rentPriceField.removeAttribute('required');
+                
+                // Update labels and requirements based on listing type
+                if (listingType === 'sale') {
+                    salePriceField.setAttribute('required', 'required');
+                    salePriceField.previousElementSibling.innerHTML = 'Sale Price ($) <span class="text-danger">*</span>';
+                    rentPriceField.previousElementSibling.innerHTML = 'Monthly Rent ($)';
+                } else if (listingType === 'rent') {
+                    rentPriceField.setAttribute('required', 'required');
+                    salePriceField.previousElementSibling.innerHTML = 'Sale Price ($)';
+                    rentPriceField.previousElementSibling.innerHTML = 'Monthly Rent ($) <span class="text-danger">*</span>';
+                } else if (listingType === 'both') {
+                    salePriceField.setAttribute('required', 'required');
+                    rentPriceField.setAttribute('required', 'required');
+                    salePriceField.previousElementSibling.innerHTML = 'Sale Price ($) <span class="text-danger">*</span>';
+                    rentPriceField.previousElementSibling.innerHTML = 'Monthly Rent ($) <span class="text-danger">*</span>';
+                } else {
+                    salePriceField.previousElementSibling.innerHTML = 'Sale Price ($)';
+                    rentPriceField.previousElementSibling.innerHTML = 'Monthly Rent ($)';
+                }
+            }
+            
+            if (listingTypeField) {
+                listingTypeField.addEventListener('change', updatePriceFieldRequirements);
+                // Initialize on page load
+                updatePriceFieldRequirements();
+            }
+        });
+    </script>
 {% endblock %} 
