@@ -10,23 +10,32 @@
         <div class="hero-image-container">
             <img src="{{ listing.photo_main.url }}" alt="{{ listing.title }}" class="hero-image">
             <div class="hero-overlay">
-        <div class="container">
+                <div class="container">
                     <div class="row align-items-center min-vh-50">
                         <div class="col-lg-8">
                             <div class="hero-content text-white">
                                 <div class="mb-3">
-                                    <span class="badge badge-primary px-3 py-2">
-                                        ${{ listing.price | intcomma }}
-                                    </span>
+                                    {% if listing.price and listing.listing_type != 'rent' %}
+                                        <span class="badge badge-primary px-3 py-2">
+                                            ${{ listing.price | intcomma }}
+                                            {% if listing.listing_type == 'both' %} Sale{% endif %}
+                                        </span>
+                                    {% endif %}
+                                    {% if listing.rent_price and listing.listing_type != 'sale' %}
+                                        <span class="badge badge-success px-3 py-2 {% if listing.price %}ml-2{% endif %}">
+                                            ${{ listing.rent_price | intcomma }}/mo
+                                            {% if listing.listing_type == 'both' %} Rent{% endif %}
+                                        </span>
+                                    {% endif %}
                                     {% if listing.is_published %}
-                                        <span class="badge badge-success ml-2">Available</span>
+                                        <span class="badge badge-info ml-2">Available</span>
                                     {% endif %}
                                 </div>
                                 <h1 class="display-4 font-weight-bold mb-3">{{ listing.title }}</h1>
                                 <p class="lead mb-0">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
                                     {{ listing.city }}, {{ listing.state }} {{ listing.zipcode }}
-                    </p>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -197,13 +206,69 @@
                         <div class="card-body">
                             <h3 class="card-title text-primary mb-4">Property Details</h3>
                             <div class="row">
-                        <div class="col-md-6">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted mb-3">Property Information</h6>
+                                    <div class="list-group list-group-flush mb-4">
+                                        {% if listing.property_type %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-home text-primary mr-2"></i>Property Type</span>
+                                            <strong>{{ listing.property_type|title }}</strong>
+                                        </div>
+                                        {% endif %}
+                                        {% if listing.listing_type %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-tag text-primary mr-2"></i>Listing Type</span>
+                                            <strong>
+                                                {% if listing.listing_type == 'sale' %}For Sale
+                                                {% elif listing.listing_type == 'rent' %}For Rent
+                                                {% elif listing.listing_type == 'both' %}Sale or Rent
+                                                {% else %}{{ listing.listing_type|title }}
+                                                {% endif %}
+                                            </strong>
+                                        </div>
+                                        {% endif %}
+                                        {% if listing.year_built %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-calendar-alt text-primary mr-2"></i>Year Built</span>
+                                            <strong>{{ listing.year_built }}</strong>
+                                        </div>
+                                        {% endif %}
+                                        {% if listing.energy_rating %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-leaf text-primary mr-2"></i>Energy Rating</span>
+                                            <strong class="badge badge-success">{{ listing.energy_rating }}</strong>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
                                     <h6 class="text-muted mb-3">Financial Information</h6>
                                     <div class="list-group list-group-flush mb-4">
+                                        {% if listing.price and listing.listing_type != 'rent' %}
                                         <div class="list-group-item d-flex justify-content-between">
-                                            <span><i class="fas fa-dollar-sign text-primary mr-2"></i>Asking Price</span>
+                                            <span><i class="fas fa-dollar-sign text-primary mr-2"></i>
+                                                {% if listing.listing_type == 'both' %}Sale Price{% else %}Asking Price{% endif %}
+                                            </span>
                                             <strong class="text-primary">${{ listing.price | intcomma }}</strong>
                                         </div>
+                                        {% endif %}
+                                        {% if listing.rent_price and listing.listing_type != 'sale' %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-calendar text-primary mr-2"></i>Monthly Rent</span>
+                                            <strong class="text-success">${{ listing.rent_price | intcomma }}/month</strong>
+                                        </div>
+                                        {% endif %}
+                                        {% if listing.deposit_amount %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-shield-alt text-primary mr-2"></i>Security Deposit</span>
+                                            <strong>${{ listing.deposit_amount | intcomma }}</strong>
+                                        </div>
+                                        {% endif %}
+                                        {% if listing.hoa_fee %}
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span><i class="fas fa-building text-primary mr-2"></i>HOA Fee</span>
+                                            <strong>${{ listing.hoa_fee | intcomma }}/month</strong>
+                                        </div>
+                                        {% endif %}
                                     </div>
 
                                     <h6 class="text-muted mb-3">Interior Features</h6>
@@ -217,36 +282,71 @@
                                             <strong>{{ listing.bathrooms }}</strong>
                                         </div>
                                     </div>
-                        </div>
+                                </div>
                                 
-                        <div class="col-md-6">
+                                <div class="col-md-6">
                                     <h6 class="text-muted mb-3">Property Size</h6>
                                     <div class="list-group list-group-flush mb-4">
                                         <div class="list-group-item d-flex justify-content-between">
                                             <span><i class="fas fa-expand-arrows-alt text-primary mr-2"></i>Square Feet</span>
                                             <strong>{{ listing.sqft | intcomma }} sq ft</strong>
                                         </div>
+                                        {% if listing.lot_size %}
                                         <div class="list-group-item d-flex justify-content-between">
                                             <span><i class="fas fa-square text-primary mr-2"></i>Lot Size</span>
                                             <strong>{{ listing.lot_size }} Acres</strong>
                                         </div>
+                                        {% endif %}
                                     </div>
 
                                     <h6 class="text-muted mb-3">Additional Features</h6>
-                                    <div class="list-group list-group-flush">
+                                    <div class="list-group list-group-flush mb-4">
+                                        {% if listing.garage %}
                                         <div class="list-group-item d-flex justify-content-between">
                                             <span><i class="fas fa-car text-primary mr-2"></i>Garage</span>
                                             <strong>{{ listing.garage }} Space{{ listing.garage|pluralize }}</strong>
                                         </div>
+                                        {% endif %}
                                         <div class="list-group-item d-flex justify-content-between">
                                             <span><i class="fas fa-calendar text-primary mr-2"></i>Listed Date</span>
                                             <strong>{{ listing.list_date | date:"M d, Y" }}</strong>
                                         </div>
+                                        {% if listing.virtual_tour_url %}
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-vr-cardboard text-primary mr-2"></i>Virtual Tour</span>
+                                            <a href="{{ listing.virtual_tour_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-external-link-alt mr-1"></i>View Tour
+                                            </a>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Features & Amenities -->
+                    {% if listing.amenities.all %}
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title text-primary mb-4">
+                                <i class="fas fa-star mr-2"></i>Features & Amenities
+                            </h3>
+                            <div class="amenities-display">
+                                {% for amenity in listing.amenities.all %}
+                                    <div class="amenity-badge">
+                                        {% if amenity.icon %}
+                                            <i class="fas fa-{{ amenity.icon }} mr-2"></i>
+                                        {% else %}
+                                            <i class="fas fa-check mr-2"></i>
+                                        {% endif %}
+                                        {{ amenity.name }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
 
                     <!-- Description -->
                     <div class="card shadow-sm mb-4">
@@ -548,6 +648,56 @@
             100% {
                 transform: scale(1);
             }
+        }
+        
+        /* Amenities display */
+        .amenities-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .amenity-badge {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #495057;
+            transition: all 0.3s ease;
+        }
+        
+        .amenity-badge:hover {
+            background-color: #e9ecef;
+            border-color: #007bff;
+            color: #007bff;
+            transform: translateY(-1px);
+        }
+        
+        .amenity-badge i {
+            color: #28a745;
+        }
+        
+        /* Responsive amenities */
+        @media (max-width: 768px) {
+            .amenities-display {
+                gap: 0.5rem;
+            }
+            
+            .amenity-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+        
+        /* Virtual tour button styling */
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+        }
+        
+        .badge-info {
+            background-color: #17a2b8 !important;
         }
     </style>
 
