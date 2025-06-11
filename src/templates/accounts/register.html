@@ -1,52 +1,398 @@
 {% extends 'base.html' %}
 
-{% block title %} | Register Account {% endblock %}
+{% block title %} | Create Account {% endblock %}
 
 {% block content %}
-    <section id="register" class="bg-light py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h4>
-                                <i class="fas fa-user-plus"></i> Register</h4>
+    <!-- Hero Section -->
+    <section id="register-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-100">
+                        <div class="col-lg-6">
+                            <div class="hero-content text-white text-center text-lg-left">
+                                <h1 class="display-4 font-weight-bold mb-4">Join Our Community!</h1>
+                                <p class="lead mb-4">Create your account and start your real estate journey with us today.</p>
+                                <div class="hero-features">
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-plus-circle mr-3"></i>
+                                        <span>List Your Properties</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-search mr-3"></i>
+                                        <span>Find Dream Homes</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-handshake mr-3"></i>
+                                        <span>Connect with Professionals</span>
+                                    </div>
+                                </div>
+                                <div class="stats-row mt-5">
+                                    <div class="stat-item">
+                                        <h3 class="text-white font-weight-bold">1000+</h3>
+                                        <p class="mb-0">Properties Listed</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3 class="text-white font-weight-bold">500+</h3>
+                                        <p class="mb-0">Happy Clients</p>
+                                    </div>
+                                    <div class="stat-item">
+                                        <h3 class="text-white font-weight-bold">50+</h3>
+                                        <p class="mb-0">Expert Realtors</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Alerts -->
-                            {% include 'partials/_alerts.html' %}
-                            <form action="{% url 'register' %}" method="POST">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="first_name">First Name</label>
-                                    <input type="text" name="first_name" class="form-control" required>
+                        <div class="col-lg-6">
+                            <div class="register-form-container">
+                                <div class="card register-card">
+                                    <div class="card-header text-center">
+                                        <h3 class="mb-0">
+                                            <i class="fas fa-user-plus mr-2 text-success"></i>Create Account
+                                        </h3>
+                                        <p class="text-muted mb-0 mt-2">Join thousands of property owners and buyers</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Alerts -->
+                                        {% include 'partials/_alerts.html' %}
+                                        
+                                        <form action="{% url 'accounts:register' %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="first_name" class="form-label">
+                                                            <i class="fas fa-user mr-2"></i>First Name
+                                                        </label>
+                                                        <input type="text" name="first_name" id="first_name" class="form-control form-control-lg" placeholder="John" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="last_name" class="form-label">
+                                                            <i class="fas fa-user mr-2"></i>Last Name
+                                                        </label>
+                                                        <input type="text" name="last_name" id="last_name" class="form-control form-control-lg" placeholder="Doe" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="username" class="form-label">
+                                                    <i class="fas fa-at mr-2"></i>Username
+                                                </label>
+                                                <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="johndoe" required>
+                                                <small class="form-text text-muted">Choose a unique username</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">
+                                                    <i class="fas fa-envelope mr-2"></i>Email Address
+                                                </label>
+                                                <input type="email" name="email" id="email" class="form-control form-control-lg" placeholder="john@example.com" required>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password" class="form-label">
+                                                            <i class="fas fa-lock mr-2"></i>Password
+                                                        </label>
+                                                        <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Enter password" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password2" class="form-label">
+                                                            <i class="fas fa-lock mr-2"></i>Confirm Password
+                                                        </label>
+                                                        <input type="password" name="password2" id="password2" class="form-control form-control-lg" placeholder="Confirm password" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="terms" required>
+                                                    <label class="custom-control-label" for="terms">
+                                                        I agree to the <a href="#" class="text-primary">Terms of Service</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-success btn-lg btn-block mb-3">
+                                                <i class="fas fa-user-plus mr-2"></i>Create My Account
+                                            </button>
+                                        </form>
+                                        
+                                        <div class="text-center">
+                                            <p class="mb-0">Already have an account?</p>
+                                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-success btn-sm mt-2">
+                                                <i class="fas fa-sign-in-alt mr-1"></i>Sign In Instead
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="last_name">Last Name</label>
-                                    <input type="text" name="last_name" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" name="username" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password2">Password</label>
-                                    <input type="password" name="password" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Confirm Password</label>
-                                    <input type="password" name="password2" class="form-control" required>
-                                </div>
-                                <input type="submit" value="Register" class="btn btn-secondary btn-block">
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Benefits Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="font-weight-bold">Why Choose Us?</h2>
+                    <p class="text-muted lead">Join thousands of satisfied property owners and buyers</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-box text-center">
+                        <div class="benefit-icon mb-3">
+                            <i class="fas fa-bolt fa-3x text-warning"></i>
+                        </div>
+                        <h5>Lightning Fast</h5>
+                        <p class="text-muted">List your property in minutes with our streamlined process.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-box text-center">
+                        <div class="benefit-icon mb-3">
+                            <i class="fas fa-chart-line fa-3x text-success"></i>
+                        </div>
+                        <h5>Market Insights</h5>
+                        <p class="text-muted">Get valuable analytics and market trends for better decisions.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-box text-center">
+                        <div class="benefit-icon mb-3">
+                            <i class="fas fa-users fa-3x text-info"></i>
+                        </div>
+                        <h5>Expert Network</h5>
+                        <p class="text-muted">Connect with certified realtors and industry professionals.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="benefit-box text-center">
+                        <div class="benefit-icon mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                        </div>
+                        <h5>Secure Platform</h5>
+                        <p class="text-muted">Your data and transactions are protected with bank-level security.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            /* background: linear-gradient(135deg, rgba(40,167,69,0.9) 0%, rgba(25,135,84,0.9) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="%23f8f9fa"/><path d="M0,216L48,240C96,264,192,312,288,312C384,312,480,264,576,250.7C672,237,768,259,864,250.7C960,243,1056,205,1152,186.7C1248,168,1344,168,1392,168L1440,168L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" fill="%2328a745" opacity="0.1"/></svg>');
+             */
+            
+            background-image: url('https://images.unsplash.com/photo-1524813686514-a57563d77965?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-100 {
+            min-height: 100vh;
+        }
+        
+        .register-form-container {
+            padding: 2rem 0;
+        }
+        
+        .register-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .register-card .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0 !important;
+            padding: 2rem 2rem 1rem;
+        }
+        
+        .register-card .card-body {
+            padding: 2rem;
+        }
+        
+        .form-control-lg {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-lg:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.25);
+            transform: translateY(-1px);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #198754 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(40,167,69,0.3);
+        }
+        
+        .btn-outline-success {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-success:hover {
+            transform: translateY(-1px);
+        }
+        
+        .hero-features .feature-item {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .stats-row {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 0.5rem;
+        }
+        
+        .stat-item h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .benefit-box {
+            padding: 2rem 1rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 15px;
+        }
+        
+        .benefit-box:hover {
+            transform: translateY(-5px);
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .benefit-icon {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .custom-control-label {
+            font-weight: 500;
+        }
+        
+        .form-text {
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 991px) {
+            .hero-content {
+                text-align: center !important;
+                margin-bottom: 2rem;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+            
+            .register-form-container {
+                padding: 1rem 0;
+            }
+            
+            .stats-row {
+                margin-top: 2rem !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .register-card .card-header,
+            .register-card .card-body {
+                padding: 1.5rem;
+            }
+            
+            .hero-content {
+                margin-bottom: 1rem;
+            }
+            
+            .stats-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-item {
+                margin: 0.25rem 0;
+            }
+        }
+        
+        /* Custom scrollbar for the form */
+        .register-card::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .register-card::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .register-card::-webkit-scrollbar-thumb {
+            background: #28a745;
+            border-radius: 10px;
+        }
+        
+        .register-card::-webkit-scrollbar-thumb:hover {
+            background: #198754;
+        }
+    </style>
 {% endblock %}

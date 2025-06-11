@@ -1,38 +1,269 @@
 {% extends 'base.html' %}
 
-{% block title %} | Account Login {% endblock %}
+{% block title %} | Login {% endblock %}
 
 {% block content %}
-    <section id="login" class="bg-light py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h4>
-                                <i class="fas fa-sign-in-alt"></i> Login</h4>
+    <!-- Hero Section -->
+    <section id="login-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-100">
+                        <div class="col-lg-6 order-lg-2">
+                            <div class="hero-content text-white text-center text-lg-left">
+                                <h1 class="display-4 font-weight-bold mb-4">Welcome Back!</h1>
+                                <p class="lead mb-4">Access your real estate dashboard and manage your property listings with ease.</p>
+                                <div class="hero-features">
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-home mr-3"></i>
+                                        <span>Manage Your Properties</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-chart-line mr-3"></i>
+                                        <span>Track Your Inquiries</span>
+                                    </div>
+                                    <div class="feature-item mb-3">
+                                        <i class="fas fa-users mr-3"></i>
+                                        <span>Connect with Buyers</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Alerts -->
-                            {% include 'partials/_alerts.html' %}
-                            <form action="{% url 'login' %}" method="POST">
-                                {% csrf_token %}
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" name="username" class="form-control" required>
-                                </div>
+                        <div class="col-lg-6 order-lg-1">
+                            <div class="login-form-container">
+                                <div class="card login-card">
+                                    <div class="card-header text-center">
+                                        <h3 class="mb-0">
+                                            <i class="fas fa-sign-in-alt mr-2 text-primary"></i>Sign In
+                                        </h3>
+                                        <p class="text-muted mb-0 mt-2">Sign in to your account</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Alerts -->
+                                        {% include 'partials/_alerts.html' %}
+                                        
+                                        <form action="{% url 'accounts:login' %}" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="username" class="form-label">
+                                                    <i class="fas fa-user mr-2"></i>Username
+                                                </label>
+                                                <input type="text" name="username" id="username" class="form-control form-control-lg" placeholder="Enter your username" required>
+                                            </div>
 
-                                <div class="form-group">
-                                    <label for="password2">Password</label>
-                                    <input type="password" name="password" class="form-control" required>
-                                </div>
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">
+                                                    <i class="fas fa-lock mr-2"></i>Password
+                                                </label>
+                                                <input type="password" name="password" id="password" class="form-control form-control-lg" placeholder="Enter your password" required>
+                                            </div>
 
-                                <input type="submit" value="Login" class="btn btn-secondary btn-block">
-                            </form>
+                                            <div class="form-group">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="remember-me">
+                                                    <label class="custom-control-label" for="remember-me">Remember me</label>
+                                                </div>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block mb-3 sign-in-btn">
+                                                <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                                            </button>
+                                        </form>
+                                        
+                                        <div class="text-center">
+                                            <p class="mb-0">Don't have an account?</p>
+                                            <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-sm mt-2">
+                                                <i class="fas fa-user-plus mr-1"></i>Create New Account
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                        </div>
+                        <h5>Secure & Protected</h5>
+                        <p class="text-muted">Your data is protected with enterprise-level security measures.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-mobile-alt fa-3x text-primary"></i>
+                        </div>
+                        <h5>Mobile Friendly</h5>
+                        <p class="text-muted">Access your dashboard from any device, anywhere, anytime.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="feature-box">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-headset fa-3x text-primary"></i>
+                        </div>
+                        <h5>24/7 Support</h5>
+                        <p class="text-muted">Get help whenever you need it with our dedicated support team.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            /* background: linear-gradient(135deg, rgba(0,123,255,0.9) 0%, rgba(0,86,179,0.9) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="%23f8f9fa"/><path d="M0,864L48,832C96,800,192,736,288,693.3C384,651,480,629,576,629.3C672,629,768,651,864,666.7C960,683,1056,693,1152,682.7C1248,672,1344,640,1392,624L1440,608L1440,1080L1392,1080C1344,1080,1248,1080,1152,1080C1056,1080,960,1080,864,1080C768,1080,672,1080,576,1080C480,1080,384,1080,288,1080C192,1080,96,1080,48,1080L0,1080Z" fill="%23007bff" opacity="0.1"/></svg>'); */
+            background-image: url('https://images.unsplash.com/photo-1524813686514-a57563d77965?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-100 {
+            min-height: 100vh;
+        }
+        
+        .login-form-container {
+            padding: 2rem 0;
+        }
+        
+        .login-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .login-card .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0 !important;
+            padding: 2rem 2rem 1rem;
+        }
+        
+        .login-card .card-body {
+            padding: 2rem;
+        }
+        
+        .form-control-lg {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-lg:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+            transform: translateY(-1px);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sign-in-btn {
+            /* background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); */
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .sign-in-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,123,255,0.3);
+        }
+        
+        .btn-outline-primary {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            transform: translateY(-1px);
+        }
+        
+        .hero-features .feature-item {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .feature-box {
+            padding: 2rem 1rem;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .custom-control-label {
+            font-weight: 500;
+        }
+        
+        @media (max-width: 991px) {
+            .hero-content {
+                text-align: center !important;
+                margin-bottom: 2rem;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+            
+            .login-form-container {
+                padding: 1rem 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .login-card .card-header,
+            .login-card .card-body {
+                padding: 1.5rem;
+            }
+            
+            .hero-content {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
 {% endblock %}

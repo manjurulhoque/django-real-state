@@ -1,0 +1,460 @@
+{% extends 'base.html' %}
+
+{% block title %} | Edit Property Listing {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="submit-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-40">
+                        <div class="col-lg-8">
+                            <div class="hero-content text-white">
+                                <h1 class="display-4 font-weight-bold mb-3">Edit Your Property</h1>
+                                <p class="lead mb-4">Update your property information. Changes will be reviewed before being published.</p>
+                                <div class="hero-features">
+                                    <div class="row">
+                                        <div class="col-md-4 col-6">
+                                            <div class="feature-item text-center">
+                                                <i class="fas fa-edit fa-2x mb-2"></i>
+                                                <p class="mb-0">Easy Updates</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-6">
+                                            <div class="feature-item text-center">
+                                                <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                                                <p class="mb-0">Quality Review</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-12">
+                                            <div class="feature-item text-center">
+                                                <i class="fas fa-clock fa-2x mb-2"></i>
+                                                <p class="mb-0">Quick Process</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'dashboard' %}">
+                            <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit Property</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Edit Listing Form -->
+    <section id="edit-listing" class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Main Form -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-edit mr-2"></i>Edit Property Information
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- Messages -->
+                            {% include 'partials/_alerts.html' %}
+                            
+                            <form action="{% url 'listings:edit_listing' listing.id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <!-- Basic Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-info-circle mr-2 text-primary"></i>Basic Information
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="title" class="form-label required">Property Title</label>
+                                            <input type="text" class="form-control" id="title" name="title" value="{{ listing.title }}" required>
+                                            <small class="form-text text-muted">Enter a descriptive title for your property</small>
+                                        </div>
+                                        <div class="col-md-8 mb-3">
+                                            <label for="address" class="form-label required">Address</label>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ listing.address }}" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="zipcode" class="form-label required">ZIP Code</label>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ listing.zipcode }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="city" class="form-label required">City</label>
+                                            <input type="text" class="form-control" id="city" name="city" value="{{ listing.city }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="state" class="form-label required">State</label>
+                                            <select class="form-control" id="state" name="state" required>
+                                                <option value="">Select State</option>
+                                                {% for key, value in state_choices.items %}
+                                                    <option value="{{ key }}" {% if listing.state == key %}selected{% endif %}>{{ value }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Property Details -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-home mr-2 text-primary"></i>Property Details
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="price" class="form-label required">Price ($)</label>
+                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="bedrooms" class="form-label required">Bedrooms</label>
+                                            <select class="form-control" id="bedrooms" name="bedrooms" required>
+                                                <option value="">Select Bedrooms</option>
+                                                {% for key, value in bedroom_choices.items %}
+                                                    <option value="{{ key }}" {% if listing.bedrooms == key|add:0 %}selected{% endif %}>{{ value }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="bathrooms" class="form-label required">Bathrooms</label>
+                                            <select class="form-control" id="bathrooms" name="bathrooms" required>
+                                                <option value="">Select Bathrooms</option>
+                                                <option value="1" {% if listing.bathrooms == 1.0 %}selected{% endif %}>1</option>
+                                                <option value="1.5" {% if listing.bathrooms == 1.5 %}selected{% endif %}>1.5</option>
+                                                <option value="2" {% if listing.bathrooms == 2.0 %}selected{% endif %}>2</option>
+                                                <option value="2.5" {% if listing.bathrooms == 2.5 %}selected{% endif %}>2.5</option>
+                                                <option value="3" {% if listing.bathrooms == 3.0 %}selected{% endif %}>3</option>
+                                                <option value="3.5" {% if listing.bathrooms == 3.5 %}selected{% endif %}>3.5</option>
+                                                <option value="4" {% if listing.bathrooms == 4.0 %}selected{% endif %}>4</option>
+                                                <option value="4.5" {% if listing.bathrooms == 4.5 %}selected{% endif %}>4.5</option>
+                                                <option value="5" {% if listing.bathrooms == 5.0 %}selected{% endif %}>5+</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="garage" class="form-label">Garage Spaces</label>
+                                            <input type="number" class="form-control" id="garage" name="garage" value="{{ listing.garage }}" min="0" max="10">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="sqft" class="form-label required">Square Feet</label>
+                                            <input type="number" class="form-control" id="sqft" name="sqft" value="{{ listing.sqft }}" min="0" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="lot_size" class="form-label">Lot Size (acres)</label>
+                                            <input type="number" step="0.1" class="form-control" id="lot_size" name="lot_size" value="{{ listing.lot_size }}" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-align-left mr-2 text-primary"></i>Property Description
+                                    </h5>
+                                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe your property, its features, and what makes it special...">{{ listing.description }}</textarea>
+                                    <small class="form-text text-muted">Provide a detailed description to attract potential buyers</small>
+                                </div>
+
+                                <!-- Photos -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-camera mr-2 text-primary"></i>Property Photos
+                                    </h5>
+                                    <p class="text-muted mb-3">Upload new photos to replace existing ones. Leave blank to keep current photos.</p>
+                                    
+                                    <!-- Current Photos Preview -->
+                                    <div class="current-photos mb-4">
+                                        <h6 class="text-muted mb-2">Current Photos:</h6>
+                                        <div class="row">
+                                            {% if listing.photo_main %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_main.url }}" alt="Main Photo" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Main Photo</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_1 %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_1.url }}" alt="Photo 1" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Photo 1</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_2 %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_2.url }}" alt="Photo 2" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Photo 2</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Photo Upload Fields -->
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_main" class="form-label">Main Photo</label>
+                                            <input type="file" class="form-control-file" id="photo_main" name="photo_main" accept="image/*">
+                                            <small class="form-text text-muted">This will be the primary photo for your listing</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_1" class="form-label">Photo 1</label>
+                                            <input type="file" class="form-control-file" id="photo_1" name="photo_1" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_2" class="form-label">Photo 2</label>
+                                            <input type="file" class="form-control-file" id="photo_2" name="photo_2" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_3" class="form-label">Photo 3</label>
+                                            <input type="file" class="form-control-file" id="photo_3" name="photo_3" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_4" class="form-label">Photo 4</label>
+                                            <input type="file" class="form-control-file" id="photo_4" name="photo_4" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_5" class="form-label">Photo 5</label>
+                                            <input type="file" class="form-control-file" id="photo_5" name="photo_5" accept="image/*">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Buttons -->
+                                <div class="form-actions text-center">
+                                    <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-lg mr-3">
+                                        <i class="fas fa-times mr-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-save mr-2"></i>Update Property
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Edit Information -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-info-circle mr-2"></i>Edit Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item mb-3">
+                                <i class="fas fa-calendar-alt text-info mr-2"></i>
+                                <strong>Originally Submitted:</strong><br>
+                                <small class="text-muted">{{ listing.list_date|date:"F d, Y" }}</small>
+                            </div>
+                            <div class="info-item mb-3">
+                                <i class="fas fa-check-circle text-info mr-2"></i>
+                                <strong>Current Status:</strong><br>
+                                {% if listing.is_published %}
+                                    <span class="badge badge-success">Published</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Under Review</span>
+                                {% endif %}
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-lightbulb mr-2"></i>
+                                <strong>Note:</strong> After editing, your property will need to be reviewed again before being published.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lightbulb mr-2"></i>Edit Tips
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    Update photos for better visibility
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    Enhance your property description
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    Adjust pricing based on market
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    Ensure all details are accurate
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Contact Support -->
+                    <div class="card">
+                        <div class="card-header bg-warning text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-headset mr-2"></i>Need Help?
+                            </h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="mb-3">Having trouble editing your listing?</p>
+                            <a href="{% url 'contact' %}" class="btn btn-warning btn-block">
+                                <i class="fas fa-phone mr-2"></i>Contact Support
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            min-height: 350px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-40 {
+            min-height: 350px;
+        }
+        
+        .hero-features .feature-item {
+            padding: 1rem;
+        }
+        
+        .form-section {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            color: #333;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .form-label.required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            border-bottom: none;
+        }
+        
+        .form-control, .form-control-file {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 0.75rem;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .info-item {
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .current-photos {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-features .col-12 {
+                margin-top: 1rem;
+            }
+            
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .btn-lg {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+{% endblock %} 

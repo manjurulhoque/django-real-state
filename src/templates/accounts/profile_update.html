@@ -1,0 +1,380 @@
+{% extends 'base.html' %}
+
+{% block title %} | Update Profile {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="profile-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-8">
+                            <div class="hero-content text-white">
+                                <h1 class="display-4 font-weight-bold mb-3">
+                                    <i class="fas fa-user-edit mr-3"></i>Update Profile
+                                </h1>
+                                <p class="lead mb-0">Keep your profile information up to date to get the best experience.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">
+                            <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">Update Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Profile Update Form -->
+    <section id="profile-update" class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Profile Form -->
+                <div class="col-lg-8">
+                    <div class="card profile-card">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user mr-2"></i>Profile Information
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <!-- Basic Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="fas fa-info-circle mr-2"></i>Basic Information
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ user_form.first_name.id_for_label }}" class="form-label">
+                                                <i class="fas fa-user mr-1"></i>First Name
+                                            </label>
+                                            {{ user_form.first_name }}
+                                            {% if user_form.first_name.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ user_form.first_name.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ user_form.last_name.id_for_label }}" class="form-label">
+                                                <i class="fas fa-user mr-1"></i>Last Name
+                                            </label>
+                                            {{ user_form.last_name }}
+                                            {% if user_form.last_name.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ user_form.last_name.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label for="{{ user_form.email.id_for_label }}" class="form-label">
+                                                <i class="fas fa-envelope mr-1"></i>Email Address
+                                            </label>
+                                            {{ user_form.email }}
+                                            {% if user_form.email.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ user_form.email.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Profile Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="text-primary mb-3">
+                                        <i class="fas fa-user-cog mr-2"></i>Profile Details
+                                    </h5>
+                                    
+                                    <!-- Avatar -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <div class="current-avatar text-center">
+                                                {% if user.userprofile.avatar %}
+                                                    <img src="{{ user.userprofile.avatar.url }}" alt="Current Avatar" class="avatar-preview rounded-circle mb-2">
+                                                {% else %}
+                                                    <div class="avatar-placeholder rounded-circle mb-2">
+                                                        <i class="fas fa-user fa-3x text-muted"></i>
+                                                    </div>
+                                                {% endif %}
+                                                <p class="text-muted small">Current Avatar</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label for="{{ profile_form.avatar.id_for_label }}" class="form-label">
+                                                <i class="fas fa-camera mr-1"></i>Profile Picture
+                                            </label>
+                                            {{ profile_form.avatar }}
+                                            <small class="form-text text-muted">
+                                                Upload a profile picture (JPG, PNG, GIF - Max 5MB)
+                                            </small>
+                                            {% if profile_form.avatar.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.avatar.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ profile_form.phone.id_for_label }}" class="form-label">
+                                                <i class="fas fa-phone mr-1"></i>Phone Number
+                                            </label>
+                                            {{ profile_form.phone }}
+                                            {% if profile_form.phone.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.phone.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ profile_form.location.id_for_label }}" class="form-label">
+                                                <i class="fas fa-map-marker-alt mr-1"></i>Location
+                                            </label>
+                                            {{ profile_form.location }}
+                                            {% if profile_form.location.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.location.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ profile_form.website.id_for_label }}" class="form-label">
+                                                <i class="fas fa-globe mr-1"></i>Website
+                                            </label>
+                                            {{ profile_form.website }}
+                                            {% if profile_form.website.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.website.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ profile_form.date_of_birth.id_for_label }}" class="form-label">
+                                                <i class="fas fa-birthday-cake mr-1"></i>Date of Birth
+                                            </label>
+                                            {{ profile_form.date_of_birth }}
+                                            {% if profile_form.date_of_birth.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.date_of_birth.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label for="{{ profile_form.bio.id_for_label }}" class="form-label">
+                                                <i class="fas fa-comment mr-1"></i>Bio
+                                            </label>
+                                            {{ profile_form.bio }}
+                                            <small class="form-text text-muted">
+                                                Tell others about yourself (max 500 characters)
+                                            </small>
+                                            {% if profile_form.bio.errors %}
+                                                <div class="text-danger mt-1">
+                                                    {{ profile_form.bio.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Form Actions -->
+                                <div class="form-actions text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg mr-3">
+                                        <i class="fas fa-save mr-2"></i>Update Profile
+                                    </button>
+                                    <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary btn-lg">
+                                        <i class="fas fa-times mr-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Info Sidebar -->
+                <div class="col-lg-4">
+                    <div class="card info-card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lightbulb mr-2"></i>Profile Tips
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    <strong>Complete Profile:</strong> Fill out all fields for better visibility
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    <strong>Professional Photo:</strong> Use a clear, professional headshot
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    <strong>Contact Info:</strong> Keep your phone and email updated
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-check text-success mr-2"></i>
+                                    <strong>Bio:</strong> Write a compelling bio to attract inquiries
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card info-card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-shield-alt mr-2"></i>Privacy & Security
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">Your information is secure and only visible to verified realtors when you make inquiries.</p>
+                            <div class="verification-status">
+                                {% if user.userprofile.is_verified %}
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check-circle mr-1"></i>Verified Account
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-warning">
+                                        <i class="fas fa-clock mr-1"></i>Pending Verification
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            min-height: 250px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-30 {
+            min-height: 250px;
+        }
+        
+        .profile-card, .info-card {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        .card-header.bg-primary, .card-header.bg-success, .card-header.bg-info {
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .form-section {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 1.5rem;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+        
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+            margin: 0 auto;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .btn {
+            font-weight: 500;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .verification-status .badge {
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .text-danger {
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .btn-lg {
+                padding: 0.5rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .avatar-preview, .avatar-placeholder {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+{% endblock %} 

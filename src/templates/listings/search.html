@@ -14,59 +14,111 @@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label class="sr-only">Keywords</label>
-                                <input type="text" name="keywords" class="form-control"
-                                       placeholder="Keyword (Pool, Garage, etc)" value="{{ values.keywords }}">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-search text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="keywords" class="form-control border-left-0 ps-0"
+                                           placeholder="Keywords (Pool, Garage, etc)" value="{{ values.keywords }}">
+                                </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="sr-only">City</label>
-                                <input type="text" name="city" class="form-control" placeholder="City"
-                                       value="{{ values.city }}">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-map-marker-alt text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" name="city" class="form-control border-left-0 ps-0" placeholder="City"
+                                           value="{{ values.city }}">
+                                </div>
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="sr-only">State</label>
-                                <select name="state" class="form-control">
-                                    <option selected="true" disabled="disabled">State (All)</option>
-                                    {% for key,value in state_choices.items %}
-                                        <option value="{{ key }}"
-                                                {% if key == values.state %}
-                                                selected
-                                                {% endif %}
-                                        >{{ value }}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-map text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <select name="state" class="form-control border-left-0">
+                                        <option selected="true" disabled="disabled">Select State</option>
+                                        {% for key,value in state_choices.items %}
+                                            <option value="{{ key }}"
+                                                    {% if key == values.state %}
+                                                    selected
+                                                    {% endif %}
+                                            >{{ value }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <!-- Form Row 2 -->
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label class="sr-only">Bedrooms</label>
-                                <select name="bedrooms" class="form-control">
-                                    <option selected="true" disabled="disabled">Bedrooms (Any)</option>
-                                    {% for key,value in bedroom_choices.items %}
-                                        <option value="{{ key }}"
-                                                {% if key == values.bedrooms %}
-                                                selected
-                                                {% endif %}
-                                        >{{ value }}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-bed text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <select name="bedrooms" class="form-control border-left-0">
+                                        <option selected="true" disabled="disabled">Bedrooms</option>
+                                        {% for key,value in bedroom_choices.items %}
+                                            <option value="{{ key }}"
+                                                    {% if key == values.bedrooms %}
+                                                    selected
+                                                    {% endif %}
+                                            >{{ value }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <select name="price" class="form-control">
-                                    <option selected="true" disabled="disabled">Max Price (All)</option>
-                                    {% for key,value in price_choices.items %}
-                                        <option value="{{ key }}"
-                                                {% if key == values.price %}
-                                                selected
-                                                {% endif %}
-                                        >{{ value }}</option>
-                                    {% endfor %}
-                                </select>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <select name="price" class="form-control border-left-0">
+                                        <option selected="true" disabled="disabled">Max Price</option>
+                                        {% for key,value in price_choices.items %}
+                                            <option value="{{ key }}"
+                                                    {% if key == values.price %}
+                                                    selected
+                                                    {% endif %}
+                                            >{{ value }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-white border-right-0">
+                                            <i class="fas fa-tags text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <select name="listing_type" class="form-control border-left-0">
+                                        <option value="">All Types</option>
+                                        {% for value, label in listing_type_choices %}
+                                            <option value="{{ value }}" {% if value == values.listing_type %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                        <button class="btn btn-primary btn-lg btn-block mt-4 rounded-pill shadow" type="submit">
+                            <i class="fas fa-search me-2"></i>Search Properties
+                        </button>
                     </form>
                 </div>
             </div>
@@ -93,62 +145,34 @@
     </section>
 
     <!-- Listings -->
-    <section id="listings" class="py-4">
+    <section id="listings" class="py-5 bg-light">
         <div class="container">
             <div class="row">
                 {% if listings %}
                     {% for listing in listings %}
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card listing-preview">
-                                <img class="card-img-top" src="{{ listing.photo_main.url }}" alt="">
-                                <div class="card-img-overlay">
-                                    <h2>
-                                        <span class="badge badge-secondary text-white">${{ listing.price | intcomma }}</span>
-                                    </h2>
-                                </div>
-                                <div class="card-body">
-                                    <div class="listing-heading text-center">
-                                        <h4 class="text-primary">{{ listing.title }}</h4>
-                                        <p>
-                                            <i class="fas fa-map-marker text-secondary"></i> {{ listing.city }} {{ listing.state }}, {{ listing.zipcode }}
-                                        </p>
-                                    </div>
-                                    <hr>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-6">
-                                            <i class="fas fa-th-large"></i> Sqft: {{ listing.sqft }}</div>
-                                        <div class="col-6">
-                                            <i class="fas fa-car"></i> Garage: {{ listing.garage }}</div>
-                                    </div>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-6">
-                                            <i class="fas fa-bed"></i> Bedrooms: {{ listing.bedrooms }}</div>
-                                        <div class="col-6">
-                                            <i class="fas fa-bath"></i> Bathrooms: {{ listing.bathrooms }}</div>
-                                    </div>
-                                    <hr>
-                                    <div class="row py-2 text-secondary">
-                                        <div class="col-12">
-                                            <i class="fas fa-user"></i> {{ listing.realtor }}
-                                        </div>
-                                    </div>
-                                    <div class="row text-secondary pb-2">
-                                        <div class="col-6">
-                                            <i class="fas fa-clock"></i> {{ listing.list_date | timesince }}</div>
-                                    </div>
-                                    <hr>
-                                    <a href="{% url 'listings:listing' listing.id %}" class="btn btn-primary btn-block">More
-                                        Info</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'partials/_listing_card.html' %}
                     {% endfor %}
                 {% else %}
-                    <div class="col-md-12">
-                        <p>No Listings Available</p>
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Properties Found</h4>
+                            <p class="text-muted">Try adjusting your search criteria to find more properties.</p>
+                            <a href="{% url 'listings:listings' %}" class="btn btn-primary mt-3">
+                                <i class="fas fa-home me-2"></i> Browse All Properties
+                            </a>
+                        </div>
                     </div>
                 {% endif %}
             </div>
         </div>
     </section>
+
+    <style>
+        #showcase-inner {
+            background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 {% endblock %}

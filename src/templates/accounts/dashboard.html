@@ -12,7 +12,7 @@
                         <div class="col-lg-8">
                             <div class="hero-content text-white">
                                 <h1 class="display-4 font-weight-bold mb-3">Welcome Back, {{ user.first_name }}!</h1>
-                                <p class="lead mb-4">Manage your real estate inquiries and account settings from your personal dashboard.</p>
+                                <p class="lead mb-4">Manage your real estate inquiries and property listings from your personal dashboard.</p>
                                 <div class="hero-stats row">
                                     <div class="col-md-4 col-6">
                                         <div class="stat-item text-center">
@@ -22,14 +22,14 @@
                                     </div>
                                     <div class="col-md-4 col-6">
                                         <div class="stat-item text-center">
-                                            <h3 class="text-white font-weight-bold">{{ user.date_joined|timesince }}</h3>
-                                            <p class="mb-0">Member Since</p>
+                                            <h3 class="text-white font-weight-bold">{{ listings|length }}</h3>
+                                            <p class="mb-0">My Properties</p>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-12">
                                         <div class="stat-item text-center">
-                                            <h3 class="text-white font-weight-bold">Premium</h3>
-                                            <p class="mb-0">Account Status</p>
+                                            <h3 class="text-white font-weight-bold">{{ user.date_joined|timesince }}</h3>
+                                            <p class="mb-0">Member Since</p>
                                         </div>
                                     </div>
                                 </div>
@@ -71,9 +71,25 @@
                             <h5 class="card-title">Account Information</h5>
                             <p class="text-muted mb-3">{{ user.first_name }} {{ user.last_name }}</p>
                             <p class="text-muted mb-3">{{ user.email }}</p>
-                            <button class="btn btn-outline-primary btn-sm">
+                            <a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-primary btn-sm">
                                 <i class="fas fa-edit mr-1"></i>Edit Profile
-                            </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card dashboard-card h-100">
+                        <div class="card-body text-center">
+                            <div class="dashboard-icon mb-3">
+                                <i class="fas fa-home fa-3x text-success"></i>
+                            </div>
+                            <h5 class="card-title">My Properties</h5>
+                            <h3 class="text-primary font-weight-bold">{{ listings|length }}</h3>
+                            <p class="text-muted mb-3">Properties you've submitted for listing</p>
+                            <a href="{% url 'listings:submit_listing' %}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-plus mr-1"></i>Add Property
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -84,28 +100,165 @@
                             <div class="dashboard-icon mb-3">
                                 <i class="fas fa-heart fa-3x text-danger"></i>
                             </div>
-                            <h5 class="card-title">Saved Properties</h5>
-                            <h3 class="text-primary font-weight-bold">Coming Soon</h3>
-                            <p class="text-muted mb-3">Save your favorite listings for quick access</p>
-                            <button class="btn btn-outline-secondary btn-sm" disabled>
-                                <i class="fas fa-star mr-1"></i>View Saved
-                            </button>
+                            <h5 class="card-title">My Wishlist</h5>
+                            <h3 class="text-primary font-weight-bold">{{ wishlist_count|default:"0" }}</h3>
+                            <p class="text-muted mb-3">Saved favorite properties</p>
+                            <a href="{% url 'accounts:wishlist' %}" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-heart mr-1"></i>View Wishlist
+                            </a>
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card dashboard-card h-100">
-                        <div class="card-body text-center">
-                            <div class="dashboard-icon mb-3">
-                                <i class="fas fa-bell fa-3x text-warning"></i>
+            </div>
+
+            <!-- My Properties Section -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-success text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0">
+                                    <i class="fas fa-home mr-2"></i>My Properties
+                                </h4>
+                                <div>
+                                    <span class="badge badge-light mr-2">{{ listings|length }} Total</span>
+                                    <a href="{% url 'listings:submit_listing' %}" class="btn btn-light btn-sm">
+                                        <i class="fas fa-plus mr-1"></i>Add Property
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">Notifications</h5>
-                            <h3 class="text-primary font-weight-bold">0</h3>
-                            <p class="text-muted mb-3">New updates and messages</p>
-                            <button class="btn btn-outline-warning btn-sm">
-                                <i class="fas fa-cog mr-1"></i>Settings
-                            </button>
+                        </div>
+                        <div class="card-body">
+                            {% if listings %}
+                                <p class="text-muted mb-4">Here are the properties you've submitted for listing. Properties are reviewed by our team before going live.</p>
+                                
+                                <!-- Desktop Table -->
+                                <div class="table-responsive d-none d-md-block">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th scope="col" width="5%">
+                                                    <i class="fas fa-hashtag mr-1"></i>ID
+                                                </th>
+                                                <th scope="col" width="35%">
+                                                    <i class="fas fa-home mr-1"></i>Property
+                                                </th>
+                                                <th scope="col" width="15%">
+                                                    <i class="fas fa-dollar-sign mr-1"></i>Price
+                                                </th>
+                                                <th scope="col" width="15%">
+                                                    <i class="fas fa-check-circle mr-1"></i>Status
+                                                </th>
+                                                <th scope="col" width="15%">
+                                                    <i class="fas fa-calendar mr-1"></i>Submitted
+                                                </th>
+                                                <th scope="col" width="15%" class="text-center">
+                                                    <i class="fas fa-cog mr-1"></i>Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for listing in listings %}
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <span class="badge badge-primary">#{{ listing.id }}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="property-info">
+                                                            <h6 class="mb-1">{{ listing.title }}</h6>
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-map-marker-alt mr-1"></i>{{ listing.city }}, {{ listing.state }}
+                                                            </small>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <strong class="text-success">${{ listing.price|floatformat:0 }}</strong>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {% if listing.is_published %}
+                                                            <span class="badge badge-success">Published</span>
+                                                        {% else %}
+                                                            <span class="badge badge-warning">Under Review</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <small class="text-muted">{{ listing.list_date|date:"M d, Y" }}</small>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <div class="btn-group" role="group">
+                                                            <a class="btn btn-outline-primary btn-sm" href="{% url 'listings:edit_listing' listing.id %}">
+                                                                <i class="fas fa-edit mr-1"></i>Edit
+                                                            </a>
+                                                            {% if listing.is_published %}
+                                                                <a class="btn btn-primary btn-sm" href="{% url 'listings:listing' listing.id %}">
+                                                                    <i class="fas fa-eye mr-1"></i>View
+                                                                </a>
+                                                            {% else %}
+                                                                <button class="btn btn-secondary btn-sm" disabled>
+                                                                    <i class="fas fa-clock mr-1"></i>Pending
+                                                                </button>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Mobile Cards -->
+                                <div class="d-md-none">
+                                    {% for listing in listings %}
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="card-title mb-1">{{ listing.title }}</h6>
+                                                    <span class="badge badge-primary">#{{ listing.id }}</span>
+                                                </div>
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-map-marker-alt mr-1"></i>{{ listing.city }}, {{ listing.state }}
+                                                </p>
+                                                <p class="text-success font-weight-bold mb-2">${{ listing.price|floatformat:0 }}</p>
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    {% if listing.is_published %}
+                                                        <span class="badge badge-success">Published</span>
+                                                    {% else %}
+                                                        <span class="badge badge-warning">Under Review</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="btn-group w-100" role="group">
+                                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'listings:edit_listing' listing.id %}">
+                                                        <i class="fas fa-edit mr-1"></i>Edit
+                                                    </a>
+                                                    {% if listing.is_published %}
+                                                        <a class="btn btn-primary btn-sm" href="{% url 'listings:listing' listing.id %}">
+                                                            <i class="fas fa-eye mr-1"></i>View
+                                                        </a>
+                                                    {% else %}
+                                                        <button class="btn btn-secondary btn-sm" disabled>
+                                                            <i class="fas fa-clock mr-1"></i>Pending
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar mr-1"></i>Submitted {{ listing.list_date|date:"M d, Y" }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="no-properties text-center py-5">
+                                    <div class="mb-4">
+                                        <i class="fas fa-home fa-4x text-muted"></i>
+                                    </div>
+                                    <h4 class="text-muted mb-3">No Properties Listed Yet</h4>
+                                    <p class="text-muted mb-4">You haven't submitted any properties for listing yet. Start by adding your first property!</p>
+                                    <a href="{% url 'listings:submit_listing' %}" class="btn btn-success btn-lg">
+                                        <i class="fas fa-plus mr-2"></i>Submit Your First Property
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -211,6 +364,68 @@
                 </div>
             </div>
 
+            <!-- Super Admin Section -->
+            {% if user.is_superuser %}
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-shield-alt mr-2"></i>Super Admin Panel
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-4">Administrative tools for managing all listings and users.</p>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card admin-stat-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="admin-icon mb-3">
+                                                <i class="fas fa-list fa-2x text-danger"></i>
+                                            </div>
+                                            <h5 class="card-title">All Listings</h5>
+                                            <h3 class="text-danger font-weight-bold">{{ total_listings|default:"0" }}</h3>
+                                            <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-cog mr-1"></i>Manage All
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card admin-stat-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="admin-icon mb-3">
+                                                <i class="fas fa-check-circle fa-2x text-success"></i>
+                                            </div>
+                                            <h5 class="card-title">Published</h5>
+                                            <h3 class="text-success font-weight-bold">{{ published_count|default:"0" }}</h3>
+                                            <a href="{% url 'accounts:admin_all_listings' %}?status=published" class="btn btn-success btn-sm">
+                                                <i class="fas fa-eye mr-1"></i>View Published
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 mb-3">
+                                    <div class="card admin-stat-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="admin-icon mb-3">
+                                                <i class="fas fa-clock fa-2x text-warning"></i>
+                                            </div>
+                                            <h5 class="card-title">Pending Review</h5>
+                                            <h3 class="text-warning font-weight-bold">{{ unpublished_count|default:"0" }}</h3>
+                                            <a href="{% url 'accounts:admin_all_listings' %}?status=unpublished" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-clock mr-1"></i>Review Pending
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- Quick Actions -->
             <div class="row mt-5">
                 <div class="col-12">
@@ -226,9 +441,9 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 mb-3">
-                                    <button class="btn btn-outline-success btn-block">
-                                        <i class="fas fa-calculator mr-2"></i>Mortgage Calculator
-                                    </button>
+                                    <a href="{% url 'listings:submit_listing' %}" class="btn btn-outline-success btn-block">
+                                        <i class="fas fa-plus mr-2"></i>Submit Property
+                                    </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 mb-3">
                                     <a href="{% url 'contact' %}" class="btn btn-outline-info btn-block">
@@ -236,9 +451,9 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 mb-3">
-                                    <button class="btn btn-outline-warning btn-block">
-                                        <i class="fas fa-user-cog mr-2"></i>Account Settings
-                                    </button>
+                                    <a href="{% url 'accounts:profile_update' %}" class="btn btn-outline-warning btn-block">
+                                        <i class="fas fa-user-cog mr-2"></i>Update Profile
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -304,13 +519,13 @@
             font-weight: 600;
         }
         
-        .no-inquiries {
+        .no-inquiries, .no-properties {
             background: #f8f9fa;
             border-radius: 15px;
             margin: 2rem 0;
         }
         
-        .card-header.bg-primary {
+        .card-header.bg-primary, .card-header.bg-success {
             border-radius: 10px 10px 0 0 !important;
         }
         
@@ -350,6 +565,25 @@
             .stat-item {
                 margin-bottom: 1rem;
             }
+        }
+        
+        /* Admin styles */
+        .admin-stat-card {
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .admin-icon {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 {% endblock %}

@@ -66,10 +66,19 @@
                             <i class="fas fa-arrow-left mr-2"></i>Back to Properties
                         </a>
                         <div class="property-actions">
-                            <button class="btn btn-outline-secondary mr-2">
-                                <i class="fas fa-heart mr-1"></i>Save
-                            </button>
-                            <button class="btn btn-outline-secondary">
+                            {% if user.is_authenticated %}
+                                <button class="btn btn-outline-secondary mr-2 wishlist-btn-detail" 
+                                        data-listing-id="{{ listing.id }}"
+                                        title="Add to wishlist">
+                                    <i class="fas fa-heart mr-1"></i>
+                                    <span class="wishlist-text">Save</span>
+                                </button>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary mr-2" title="Login to save properties">
+                                    <i class="fas fa-heart mr-1"></i>Save
+                                </a>
+                            {% endif %}
+                            <button class="btn btn-outline-secondary" onclick="shareProperty()">
                                 <i class="fas fa-share-alt mr-1"></i>Share
                             </button>
                         </div>
@@ -454,5 +463,223 @@
             font-size: 0.9rem;
             padding: 0.5rem 1rem;
         }
+        
+        /* Wishlist button styling */
+        .wishlist-btn-detail {
+            transition: all 0.3s ease;
+        }
+        
+        .wishlist-btn-detail:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+            transform: translateY(-1px);
+        }
+        
+        .wishlist-btn-detail.active {
+            background-color: #e91e63;
+            border-color: #e91e63;
+            color: white;
+        }
+        
+        .wishlist-btn-detail.active:hover {
+            background-color: #ad1457;
+            border-color: #ad1457;
+            color: white;
+        }
     </style>
+
+    <!-- Wishlist & Share JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize wishlist button for detail page
+            const wishlistBtn = document.querySelector('.wishlist-btn-detail');
+            
+            if (wishlistBtn) {
+                const listingId = wishlistBtn.getAttribute('data-listing-id');
+                
+                // Check if property is already in wishlist
+                fetch(`/wishlist/check/${listingId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.in_wishlist) {
+                            wishlistBtn.classList.add('active');
+                            wishlistBtn.title = 'Remove from wishlist';
+                            wishlistBtn.querySelector('.wishlist-text').textContent = 'Saved';
+                        }
+                    })
+                    .catch(error => console.log('Error checking wishlist status:', error));
+                
+                // Handle wishlist button click
+                wishlistBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const isActive = this.classList.contains('active');
+                    const action = isActive ? 'remove' : 'add';
+                    
+                    fetch(`/wishlist/${action}/${listingId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            if (action === 'add') {
+                                this.classList.add('active');
+                                this.title = 'Remove from wishlist';
+                                this.querySelector('.wishlist-text').textContent = 'Saved';
+                                
+                                showNotification('Property added to your wishlist!', 'success');
+                            } else {
+                                this.classList.remove('active');
+                                this.title = 'Add to wishlist';
+                                this.querySelector('.wishlist-text').textContent = 'Save';
+                                
+                                showNotification('Property removed from your wishlist!', 'info');
+                            }
+                        } else {
+                            showNotification(data.message || 'Something went wrong. Please try again.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Something went wrong. Please try again.', 'error');
+                    });
+                });
+            }
+        });
+
+        // Share property function
+        function shareProperty() {
+            const propertyTitle = "{{ listing.title|escapejs }}";
+            const propertyUrl = window.location.href;
+            const shareText = `Check out this amazing property: ${propertyTitle}`;
+            
+            if (navigator.share) {
+                // Use native Web Share API if available
+                navigator.share({
+                    title: propertyTitle,
+                    text: shareText,
+                    url: propertyUrl
+                }).then(() => {
+                    showNotification('Property shared successfully!', 'success');
+                }).catch(error => {
+                    console.log('Error sharing:', error);
+                    fallbackShare(shareText, propertyUrl);
+                });
+            } else {
+                fallbackShare(shareText, propertyUrl);
+            }
+        }
+        
+        function fallbackShare(text, url) {
+            // Fallback to copying link to clipboard
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('Property link copied to clipboard!', 'success');
+                }).catch(() => {
+                    showManualShare(text, url);
+                });
+            } else {
+                showManualShare(text, url);
+            }
+        }
+        
+        function showManualShare(text, url) {
+            // Show share options modal or links
+            const shareOptions = `
+                <div class="share-options">
+                    <h6>Share this property:</h6>
+                    <div class="btn-group-vertical w-100">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" 
+                           target="_blank" class="btn btn-outline-primary mb-2">
+                            <i class="fab fa-facebook mr-2"></i>Share on Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}" 
+                           target="_blank" class="btn btn-outline-info mb-2">
+                            <i class="fab fa-twitter mr-2"></i>Share on Twitter
+                        </a>
+                        <a href="mailto:?subject=${encodeURIComponent('{{ listing.title|escapejs }}')}&body=${encodeURIComponent(text + ' ' + url)}" 
+                           class="btn btn-outline-secondary mb-2">
+                            <i class="fas fa-envelope mr-2"></i>Share via Email
+                        </a>
+                        <button onclick="copyToClipboard('${url}')" class="btn btn-outline-dark">
+                            <i class="fas fa-copy mr-2"></i>Copy Link
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Create and show modal with share options
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Share Property</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ${shareOptions}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            $(modal).modal('show');
+            
+            // Remove modal after it's hidden
+            $(modal).on('hidden.bs.modal', function() {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        function copyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('Link copied to clipboard!', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show notification-toast`;
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            `;
+            
+            // Add styles for positioning
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 4000);
+        }
+    </script>
 {% endblock %}

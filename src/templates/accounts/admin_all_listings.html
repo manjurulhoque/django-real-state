@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+
+{% block title %} | Admin - All Listings {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="admin-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-8">
+                            <div class="hero-content text-white">
+                                <h1 class="display-4 font-weight-bold mb-3">
+                                    <i class="fas fa-shield-alt mr-3"></i>Admin Panel
+                                </h1>
+                                <p class="lead mb-4">Manage all property listings and user submissions.</p>
+                                <div class="hero-stats row">
+                                    <div class="col-md-4 col-4">
+                                        <div class="stat-item text-center">
+                                            <h3 class="text-white font-weight-bold">{{ total_listings }}</h3>
+                                            <p class="mb-0">Total Listings</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-4">
+                                        <div class="stat-item text-center">
+                                            <h3 class="text-white font-weight-bold">{{ published_count }}</h3>
+                                            <p class="mb-0">Published</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-4">
+                                        <div class="stat-item text-center">
+                                            <h3 class="text-white font-weight-bold">{{ unpublished_count }}</h3>
+                                            <p class="mb-0">Pending</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Admin - All Listings</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Admin Content -->
+    <section id="admin-listings" class="py-5">
+        <div class="container">
+            <!-- Search and Filters -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="get" class="row align-items-end">
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <label for="search" class="form-label">Search Listings</label>
+                                    <input type="text" class="form-control" id="search" name="search" 
+                                           value="{{ values.search }}" placeholder="Search by title...">
+                                </div>
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <label for="status" class="form-label">Status Filter</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="">All Listings</option>
+                                        <option value="published" {% if values.status == 'published' %}selected{% endif %}>Published Only</option>
+                                        <option value="unpublished" {% if values.status == 'unpublished' %}selected{% endif %}>Unpublished Only</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-3 mb-md-0">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search mr-1"></i>Search
+                                    </button>
+                                    <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-outline-secondary ml-2">
+                                        <i class="fas fa-times mr-1"></i>Clear
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listings Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-list mr-2"></i>All Property Listings
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            {% if listings %}
+                                <!-- Desktop Table -->
+                                <div class="table-responsive d-none d-lg-block">
+                                    <table class="table table-hover">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th scope="col" width="5%">ID</th>
+                                                <th scope="col" width="30%">Property</th>
+                                                <th scope="col" width="15%">Owner</th>
+                                                <th scope="col" width="12%">Price</th>
+                                                <th scope="col" width="10%">Status</th>
+                                                <th scope="col" width="10%">Date</th>
+                                                <th scope="col" width="18%" class="text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for listing in listings %}
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <span class="badge badge-primary">#{{ listing.id }}</span>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <div class="property-info">
+                                                            <h6 class="mb-1">{{ listing.title }}</h6>
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-map-marker-alt mr-1"></i>{{ listing.city }}, {{ listing.state }}
+                                                            </small>
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {% if listing.submitted_by %}
+                                                            <small>{{ listing.submitted_by.first_name }} {{ listing.submitted_by.last_name }}</small>
+                                                        {% else %}
+                                                            <small class="text-muted">System</small>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <strong class="text-success">${{ listing.price|floatformat:0 }}</strong>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        {% if listing.is_published %}
+                                                            <span class="badge badge-success">Published</span>
+                                                        {% else %}
+                                                            <span class="badge badge-warning">Pending</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <small class="text-muted">{{ listing.list_date|date:"M d, Y" }}</small>
+                                                    </td>
+                                                    <td class="align-middle text-center">
+                                                        <div class="btn-group-vertical btn-group-sm" role="group">
+                                                            <a class="btn btn-outline-primary btn-sm mb-1" href="{% url 'accounts:admin_edit_listing' listing.id %}">
+                                                                <i class="fas fa-edit mr-1"></i>Edit
+                                                            </a>
+                                                            <form method="post" action="{% url 'accounts:admin_toggle_listing_status' listing.id %}" class="mb-1">
+                                                                {% csrf_token %}
+                                                                {% if listing.is_published %}
+                                                                    <button type="submit" class="btn btn-warning btn-sm w-100" onclick="return confirm('Unpublish this listing?')">
+                                                                        <i class="fas fa-eye-slash mr-1"></i>Unpublish
+                                                                    </button>
+                                                                {% else %}
+                                                                    <button type="submit" class="btn btn-success btn-sm w-100">
+                                                                        <i class="fas fa-check mr-1"></i>Publish
+                                                                    </button>
+                                                                {% endif %}
+                                                            </form>
+                                                            {% if listing.is_published %}
+                                                                <a class="btn btn-info btn-sm" href="{% url 'listings:listing' listing.id %}" target="_blank">
+                                                                    <i class="fas fa-external-link-alt mr-1"></i>View Live
+                                                                </a>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Mobile Cards -->
+                                <div class="d-lg-none">
+                                    {% for listing in listings %}
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h6 class="card-title mb-1">{{ listing.title }}</h6>
+                                                    <span class="badge badge-primary">#{{ listing.id }}</span>
+                                                </div>
+                                                <p class="text-muted mb-2">
+                                                    <i class="fas fa-map-marker-alt mr-1"></i>{{ listing.city }}, {{ listing.state }}
+                                                </p>
+                                                <p class="text-success font-weight-bold mb-2">${{ listing.price|floatformat:0 }}</p>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    {% if listing.is_published %}
+                                                        <span class="badge badge-success">Published</span>
+                                                    {% else %}
+                                                        <span class="badge badge-warning">Pending</span>
+                                                    {% endif %}
+                                                    <small class="text-muted">{{ listing.list_date|date:"M d, Y" }}</small>
+                                                </div>
+                                                <div class="btn-group w-100 mb-2" role="group">
+                                                    <a class="btn btn-outline-primary btn-sm" href="{% url 'accounts:admin_edit_listing' listing.id %}">
+                                                        <i class="fas fa-edit mr-1"></i>Edit
+                                                    </a>
+                                                    {% if listing.is_published %}
+                                                        <a class="btn btn-info btn-sm" href="{% url 'listings:listing' listing.id %}" target="_blank">
+                                                            <i class="fas fa-external-link-alt mr-1"></i>View
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                                <form method="post" action="{% url 'accounts:admin_toggle_listing_status' listing.id %}">
+                                                    {% csrf_token %}
+                                                    {% if listing.is_published %}
+                                                        <button type="submit" class="btn btn-warning btn-sm w-100" onclick="return confirm('Unpublish this listing?')">
+                                                            <i class="fas fa-eye-slash mr-1"></i>Unpublish
+                                                        </button>
+                                                    {% else %}
+                                                        <button type="submit" class="btn btn-success btn-sm w-100">
+                                                            <i class="fas fa-check mr-1"></i>Publish
+                                                        </button>
+                                                    {% endif %}
+                                                </form>
+                                                {% if listing.submitted_by %}
+                                                    <small class="text-muted d-block mt-2">
+                                                        Owner: {{ listing.submitted_by.first_name }} {{ listing.submitted_by.last_name }}
+                                                    </small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Pagination -->
+                                {% if listings.has_other_pages %}
+                                    <nav aria-label="Listings pagination" class="mt-4">
+                                        <ul class="pagination justify-content-center">
+                                            {% if listings.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}page={{ listings.previous_page_number }}">Previous</a>
+                                                </li>
+                                            {% endif %}
+                                            
+                                            {% for num in listings.paginator.page_range %}
+                                                {% if listings.number == num %}
+                                                    <li class="page-item active">
+                                                        <span class="page-link">{{ num }}</span>
+                                                    </li>
+                                                {% elif num > listings.number|add:'-3' and num < listings.number|add:'3' %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}page={{ num }}">{{ num }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            {% if listings.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?{% if values.search %}search={{ values.search }}&{% endif %}{% if values.status %}status={{ values.status }}&{% endif %}page={{ listings.next_page_number }}">Next</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                {% endif %}
+                            {% else %}
+                                <div class="no-listings text-center py-5">
+                                    <div class="mb-4">
+                                        <i class="fas fa-search fa-4x text-muted"></i>
+                                    </div>
+                                    <h4 class="text-muted mb-3">No Listings Found</h4>
+                                    <p class="text-muted mb-4">No listings match your current search criteria.</p>
+                                    <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-primary">
+                                        <i class="fas fa-list mr-2"></i>View All Listings
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #dc3545 0%, #a71e2a 100%);
+            min-height: 250px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-30 {
+            min-height: 250px;
+        }
+        
+        .hero-stats .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,123,255,0.05);
+        }
+        
+        .property-info h6 {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .btn-group-vertical .btn {
+            margin-bottom: 2px;
+        }
+        
+        .btn-group-vertical .btn:last-child {
+            margin-bottom: 0;
+        }
+        
+        .no-listings {
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+    </style>
+{% endblock %} 

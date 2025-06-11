@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | Project Search Results {% endblock %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="container">
+            <h1>Project Search Results</h1>
+            
+            <div class="row">
+                {% if projects %}
+                    {% for project in projects %}
+                        <div class="col-md-4 mb-4">
+                            {% include 'partials/_project_card.html' %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <h4>No projects found</h4>
+                            <p>Try adjusting your search criteria.</p>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %} 

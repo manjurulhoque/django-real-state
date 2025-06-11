@@ -1,0 +1,525 @@
+{% extends 'base.html' %}
+
+{% block title %} | My Wishlist {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="wishlist-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-8">
+                            <div class="hero-content text-white">
+                                <h1 class="display-4 font-weight-bold mb-3">
+                                    <i class="fas fa-heart mr-3"></i>My Wishlist
+                                </h1>
+                                <p class="lead mb-0">Keep track of your favorite properties and never miss out on your dream home.</p>
+                                <div class="hero-stats mt-4">
+                                    <div class="stat-item">
+                                        <h3 class="text-white font-weight-bold">{{ wishlist_items.paginator.count }}</h3>
+                                        <p class="mb-0">Saved Properties</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">
+                            <i class="fas fa-tachometer-alt mr-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">My Wishlist</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Wishlist Content -->
+    <section id="wishlist" class="py-5">
+        <div class="container">
+            {% if wishlist_items %}
+                <!-- Actions Bar -->
+                <div class="actions-bar mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h4 class="text-primary mb-0">
+                                <i class="fas fa-heart mr-2"></i>{{ wishlist_items.paginator.count }} Saved Properties
+                            </h4>
+                        </div>
+                        <div class="col-md-6 text-md-right">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary active" id="grid-view">
+                                    <i class="fas fa-th-large mr-1"></i>Grid
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" id="list-view">
+                                    <i class="fas fa-list mr-1"></i>List
+                                </button>
+                            </div>
+                            <a href="{% url 'listings:listings' %}" class="btn btn-success ml-2">
+                                <i class="fas fa-plus mr-1"></i>Find More Properties
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid View (Default) -->
+                <div id="grid-container">
+                    <div class="row">
+                        {% for wishlist_item in wishlist_items %}
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card property-card">
+                                    <div class="position-relative">
+                                        {% if wishlist_item.listing.photo_main %}
+                                            <img src="{{ wishlist_item.listing.photo_main.url }}" alt="{{ wishlist_item.listing.title }}" class="card-img-top property-image">
+                                        {% else %}
+                                            <div class="property-image-placeholder">
+                                                <i class="fas fa-home fa-3x text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                        
+                                        <!-- Wishlist Remove Button -->
+                                        <button class="btn btn-danger wishlist-remove" 
+                                                data-listing-id="{{ wishlist_item.listing.id }}"
+                                                title="Remove from wishlist">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        
+                                        <!-- Property Status Badge -->
+                                        {% if wishlist_item.listing.featured %}
+                                            <span class="badge badge-warning featured-badge">Featured</span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="card-body">
+                                        <div class="property-price mb-2">
+                                            <h4 class="text-primary font-weight-bold mb-0">
+                                                ${{ wishlist_item.listing.price|floatformat:0 }}
+                                            </h4>
+                                        </div>
+                                        
+                                        <h5 class="card-title">
+                                            <a href="{% url 'listings:listing' wishlist_item.listing.id %}" class="text-dark">
+                                                {{ wishlist_item.listing.title }}
+                                            </a>
+                                        </h5>
+                                        
+                                        <p class="text-muted mb-3">
+                                            <i class="fas fa-map-marker-alt mr-1"></i>
+                                            {{ wishlist_item.listing.city }}, {{ wishlist_item.listing.state }}
+                                        </p>
+                                        
+                                        <div class="property-details mb-3">
+                                            <div class="row text-center">
+                                                <div class="col-4">
+                                                    <div class="detail-item">
+                                                        <i class="fas fa-bed text-primary"></i>
+                                                        <span class="detail-value">{{ wishlist_item.listing.bedrooms }}</span>
+                                                        <small class="text-muted d-block">Beds</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="detail-item">
+                                                        <i class="fas fa-bath text-primary"></i>
+                                                        <span class="detail-value">{{ wishlist_item.listing.bathrooms }}</span>
+                                                        <small class="text-muted d-block">Baths</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="detail-item">
+                                                        <i class="fas fa-ruler-combined text-primary"></i>
+                                                        <span class="detail-value">{{ wishlist_item.listing.sqft }}</span>
+                                                        <small class="text-muted d-block">Sqft</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="property-meta mb-3">
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar mr-1"></i>
+                                                Added {{ wishlist_item.added_at|timesince }} ago
+                                            </small>
+                                        </div>
+                                        
+                                        <div class="property-actions">
+                                            <a href="{% url 'listings:listing' wishlist_item.listing.id %}" class="btn btn-primary btn-block">
+                                                <i class="fas fa-eye mr-1"></i>View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- List View (Hidden by default) -->
+                <div id="list-container" style="display: none;">
+                    <div class="list-group">
+                        {% for wishlist_item in wishlist_items %}
+                            <div class="list-group-item property-list-item">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3">
+                                        {% if wishlist_item.listing.photo_main %}
+                                            <img src="{{ wishlist_item.listing.photo_main.url }}" alt="{{ wishlist_item.listing.title }}" class="property-list-image">
+                                        {% else %}
+                                            <div class="property-list-placeholder">
+                                                <i class="fas fa-home fa-2x text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5 class="mb-1">
+                                            <a href="{% url 'listings:listing' wishlist_item.listing.id %}" class="text-dark">
+                                                {{ wishlist_item.listing.title }}
+                                            </a>
+                                        </h5>
+                                        <p class="text-muted mb-1">
+                                            <i class="fas fa-map-marker-alt mr-1"></i>
+                                            {{ wishlist_item.listing.city }}, {{ wishlist_item.listing.state }}
+                                        </p>
+                                        <small class="text-muted">
+                                            {{ wishlist_item.listing.bedrooms }} beds • 
+                                            {{ wishlist_item.listing.bathrooms }} baths • 
+                                            {{ wishlist_item.listing.sqft }} sqft
+                                        </small>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <h5 class="text-primary font-weight-bold mb-0">
+                                            ${{ wishlist_item.listing.price|floatformat:0 }}
+                                        </h5>
+                                        <small class="text-muted">
+                                            Added {{ wishlist_item.added_at|timesince }} ago
+                                        </small>
+                                    </div>
+                                    <div class="col-md-1 text-center">
+                                        <button class="btn btn-outline-danger wishlist-remove" 
+                                                data-listing-id="{{ wishlist_item.listing.id }}"
+                                                title="Remove from wishlist">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                {% if wishlist_items.has_other_pages %}
+                    <div class="pagination-wrapper mt-5">
+                        <nav aria-label="Wishlist pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if wishlist_items.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ wishlist_items.previous_page_number }}">
+                                            <i class="fas fa-chevron-left"></i> Previous
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for num in wishlist_items.paginator.page_range %}
+                                    {% if wishlist_items.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > wishlist_items.number|add:'-3' and num < wishlist_items.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if wishlist_items.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ wishlist_items.next_page_number }}">
+                                            Next <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Empty Wishlist -->
+                <div class="empty-wishlist text-center py-5">
+                    <div class="empty-icon mb-4">
+                        <i class="far fa-heart fa-5x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">Your Wishlist is Empty</h3>
+                    <p class="text-muted mb-4">Start saving your favorite properties to keep track of homes you love!</p>
+                    <a href="{% url 'listings:listings' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search mr-2"></i>Browse Properties
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+            min-height: 250px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-30 {
+            min-height: 250px;
+        }
+        
+        .hero-stats .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .property-card {
+            border: none;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .property-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .property-image-placeholder {
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .wishlist-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .property-details .detail-item {
+            padding: 0.5rem 0;
+        }
+        
+        .property-details .detail-value {
+            font-weight: 600;
+            color: #333;
+            margin-left: 0.5rem;
+        }
+        
+        .property-list-item {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .property-list-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .property-list-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .property-list-placeholder {
+            width: 100%;
+            height: 120px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .actions-bar {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-group .btn {
+            border-radius: 0;
+        }
+        
+        .btn-group .btn:first-child {
+            border-radius: 0.375rem 0 0 0.375rem;
+        }
+        
+        .btn-group .btn:last-child {
+            border-radius: 0 0.375rem 0.375rem 0;
+        }
+        
+        .empty-wishlist {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+        
+        .pagination .page-link {
+            border-radius: 0.375rem;
+            margin: 0 0.25rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+        
+        @media (max-width: 768px) {
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            .actions-bar {
+                text-align: center;
+            }
+            
+            .actions-bar .btn-group {
+                margin-bottom: 1rem;
+            }
+            
+            .property-card {
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+
+    <!-- JavaScript for View Toggle and Wishlist Management -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // View toggle functionality
+            const gridView = document.getElementById('grid-view');
+            const listView = document.getElementById('list-view');
+            const gridContainer = document.getElementById('grid-container');
+            const listContainer = document.getElementById('list-container');
+            
+            if (gridView && listView) {
+                gridView.addEventListener('click', function() {
+                    gridView.classList.add('active');
+                    listView.classList.remove('active');
+                    gridContainer.style.display = 'block';
+                    listContainer.style.display = 'none';
+                });
+                
+                listView.addEventListener('click', function() {
+                    listView.classList.add('active');
+                    gridView.classList.remove('active');
+                    gridContainer.style.display = 'none';
+                    listContainer.style.display = 'block';
+                });
+            }
+            
+            // Wishlist remove functionality
+            document.querySelectorAll('.wishlist-remove').forEach(button => {
+                button.addEventListener('click', function() {
+                    const listingId = this.getAttribute('data-listing-id');
+                    
+                    if (confirm('Are you sure you want to remove this property from your wishlist?')) {
+                        // AJAX call to remove from wishlist
+                        fetch(`/wishlist/remove/${listingId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remove the property card from the page
+                                const propertyCard = this.closest('.col-lg-4, .list-group-item');
+                                propertyCard.style.transition = 'all 0.3s ease';
+                                propertyCard.style.opacity = '0';
+                                propertyCard.style.transform = 'scale(0.8)';
+                                
+                                setTimeout(() => {
+                                    propertyCard.remove();
+                                    
+                                    // Check if wishlist is now empty
+                                    const remainingItems = document.querySelectorAll('.property-card, .property-list-item').length;
+                                    if (remainingItems === 1) { // 1 because we haven't removed the DOM element yet
+                                        location.reload(); // Reload to show empty state
+                                    }
+                                }, 300);
+                                
+                                // Show success message (you can customize this)
+                                alert('Property removed from your wishlist!');
+                            } else {
+                                alert('Error removing property from wishlist. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Error removing property from wishlist. Please try again.');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %} 

@@ -16,11 +16,14 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Lightbox -->
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+    {% block styles %} {% endblock %}
 
     <title>Real Estate {% block title %}{% endblock %}</title>
 </head>
 
 <body>
+<!-- CSRF Token for AJAX calls -->
+{% csrf_token %}
 <!-- Top Bar -->
 {% include 'partials/_topbar.html' %}
 <!-- NavBar -->
@@ -36,5 +39,7 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
 <script src="{% static 'js/lightbox.min.js' %} "></script>
 <script src="{% static 'js/main.js' %} "></script>
+<script src="{% static 'js/wishlist.js' %} "></script>
+{% block scripts %} {% endblock %}
 </body>
 </html>

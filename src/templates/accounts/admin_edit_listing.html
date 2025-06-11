@@ -1,0 +1,390 @@
+{% extends 'base.html' %}
+
+{% block title %} | Admin - Edit Listing {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="admin-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-12">
+                            <div class="hero-content text-white text-center">
+                                <h1 class="display-5 font-weight-bold mb-3">
+                                    <i class="fas fa-shield-alt mr-3"></i>Admin - Edit Listing
+                                </h1>
+                                <p class="lead mb-0">Edit and manage property listing: {{ listing.title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:admin_all_listings' %}">Admin Listings</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit Listing</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Edit Form -->
+    <section id="admin-edit" class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Main Form -->
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-edit mr-2"></i>Edit Property Listing
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                
+                                <!-- Basic Information -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-info-circle mr-2 text-primary"></i>Basic Information
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <label for="title" class="form-label required">Property Title</label>
+                                            <input type="text" class="form-control" id="title" name="title" value="{{ listing.title }}" required>
+                                        </div>
+                                        <div class="col-md-8 mb-3">
+                                            <label for="address" class="form-label required">Address</label>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ listing.address }}" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="zipcode" class="form-label required">Zip Code</label>
+                                            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ listing.zipcode }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="city" class="form-label required">City</label>
+                                            <input type="text" class="form-control" id="city" name="city" value="{{ listing.city }}" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="state" class="form-label required">State</label>
+                                            <select class="form-control" id="state" name="state" required>
+                                                <option value="">Select State</option>
+                                                {% for key, value in state_choices.items %}
+                                                    <option value="{{ key }}" {% if listing.state == key %}selected{% endif %}>{{ value }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Property Details -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-home mr-2 text-primary"></i>Property Details
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="price" class="form-label required">Price ($)</label>
+                                            <input type="number" class="form-control" id="price" name="price" value="{{ listing.price }}" min="0" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="bedrooms" class="form-label required">Bedrooms</label>
+                                            <select class="form-control" id="bedrooms" name="bedrooms" required>
+                                                <option value="">Select Bedrooms</option>
+                                                {% for key, value in bedroom_choices.items %}
+                                                    <option value="{{ key }}" {% if listing.bedrooms == key|add:0 %}selected{% endif %}>{{ value }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="bathrooms" class="form-label required">Bathrooms</label>
+                                            <select class="form-control" id="bathrooms" name="bathrooms" required>
+                                                <option value="">Select Bathrooms</option>
+                                                <option value="1" {% if listing.bathrooms == 1.0 %}selected{% endif %}>1</option>
+                                                <option value="1.5" {% if listing.bathrooms == 1.5 %}selected{% endif %}>1.5</option>
+                                                <option value="2" {% if listing.bathrooms == 2.0 %}selected{% endif %}>2</option>
+                                                <option value="2.5" {% if listing.bathrooms == 2.5 %}selected{% endif %}>2.5</option>
+                                                <option value="3" {% if listing.bathrooms == 3.0 %}selected{% endif %}>3</option>
+                                                <option value="3.5" {% if listing.bathrooms == 3.5 %}selected{% endif %}>3.5</option>
+                                                <option value="4" {% if listing.bathrooms == 4.0 %}selected{% endif %}>4</option>
+                                                <option value="4.5" {% if listing.bathrooms == 4.5 %}selected{% endif %}>4.5</option>
+                                                <option value="5" {% if listing.bathrooms == 5.0 %}selected{% endif %}>5+</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="garage" class="form-label">Garage Spaces</label>
+                                            <input type="number" class="form-control" id="garage" name="garage" value="{{ listing.garage }}" min="0" max="10">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="sqft" class="form-label required">Square Feet</label>
+                                            <input type="number" class="form-control" id="sqft" name="sqft" value="{{ listing.sqft }}" min="0" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="lot_size" class="form-label">Lot Size (acres)</label>
+                                            <input type="number" step="0.1" class="form-control" id="lot_size" name="lot_size" value="{{ listing.lot_size }}" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Admin Control -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-cog mr-2 text-danger"></i>Admin Controls
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {% if listing.is_published %}checked{% endif %}>
+                                                <label class="form-check-label" for="is_published">
+                                                    <strong>Publish this listing</strong>
+                                                    <small class="text-muted d-block">Check this box to make the listing visible to the public</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-align-left mr-2 text-primary"></i>Property Description
+                                    </h5>
+                                    <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe the property, its features, and what makes it special...">{{ listing.description }}</textarea>
+                                    <small class="form-text text-muted">Provide a detailed description to attract potential buyers</small>
+                                </div>
+
+                                <!-- Photos -->
+                                <div class="form-section mb-4">
+                                    <h5 class="section-title mb-3">
+                                        <i class="fas fa-camera mr-2 text-primary"></i>Property Photos
+                                    </h5>
+                                    <p class="text-muted mb-3">Upload new photos to replace existing ones. Leave blank to keep current photos.</p>
+                                    
+                                    <!-- Current Photos Preview -->
+                                    <div class="current-photos mb-4">
+                                        <h6 class="text-muted mb-2">Current Photos:</h6>
+                                        <div class="row">
+                                            {% if listing.photo_main %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_main.url }}" alt="Main Photo" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Main Photo</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_1 %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_1.url }}" alt="Photo 1" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Photo 1</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if listing.photo_2 %}
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="photo-preview">
+                                                        <img src="{{ listing.photo_2.url }}" alt="Photo 2" class="img-thumbnail">
+                                                        <small class="text-muted d-block text-center">Photo 2</small>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Photo Upload Fields -->
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_main" class="form-label">Main Photo</label>
+                                            <input type="file" class="form-control-file" id="photo_main" name="photo_main" accept="image/*">
+                                            <small class="form-text text-muted">This will be the primary photo for the listing</small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_1" class="form-label">Photo 1</label>
+                                            <input type="file" class="form-control-file" id="photo_1" name="photo_1" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_2" class="form-label">Photo 2</label>
+                                            <input type="file" class="form-control-file" id="photo_2" name="photo_2" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_3" class="form-label">Photo 3</label>
+                                            <input type="file" class="form-control-file" id="photo_3" name="photo_3" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_4" class="form-label">Photo 4</label>
+                                            <input type="file" class="form-control-file" id="photo_4" name="photo_4" accept="image/*">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="photo_5" class="form-label">Photo 5</label>
+                                            <input type="file" class="form-control-file" id="photo_5" name="photo_5" accept="image/*">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Buttons -->
+                                <div class="form-actions text-center">
+                                    <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-secondary btn-lg mr-3">
+                                        <i class="fas fa-times mr-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-danger btn-lg">
+                                        <i class="fas fa-save mr-2"></i>Update Listing
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Listing Information -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-info-circle mr-2"></i>Listing Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-item mb-3">
+                                <i class="fas fa-hashtag text-info mr-2"></i>
+                                <strong>Listing ID:</strong><br>
+                                <span class="badge badge-primary">#{{ listing.id }}</span>
+                            </div>
+                            <div class="info-item mb-3">
+                                <i class="fas fa-calendar-alt text-info mr-2"></i>
+                                <strong>Originally Submitted:</strong><br>
+                                <small class="text-muted">{{ listing.list_date|date:"F d, Y" }}</small>
+                            </div>
+                            <div class="info-item mb-3">
+                                <i class="fas fa-user text-info mr-2"></i>
+                                <strong>Submitted By:</strong><br>
+                                {% if listing.submitted_by %}
+                                    <small class="text-muted">{{ listing.submitted_by.first_name }} {{ listing.submitted_by.last_name }}</small>
+                                    <br><small class="text-muted">{{ listing.submitted_by.email }}</small>
+                                {% else %}
+                                    <small class="text-muted">System</small>
+                                {% endif %}
+                            </div>
+                            <div class="info-item mb-3">
+                                <i class="fas fa-check-circle text-info mr-2"></i>
+                                <strong>Current Status:</strong><br>
+                                {% if listing.is_published %}
+                                    <span class="badge badge-success">Published</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Unpublished</span>
+                                {% endif %}
+                            </div>
+                            {% if listing.is_published %}
+                                <a href="{% url 'listings:listing' listing.id %}" class="btn btn-info btn-block" target="_blank">
+                                    <i class="fas fa-external-link-alt mr-2"></i>View Live Listing
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Admin Actions -->
+                    <div class="card">
+                        <div class="card-header bg-warning text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-tools mr-2"></i>Quick Actions
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="{% url 'accounts:admin_toggle_listing_status' listing.id %}" class="mb-3">
+                                {% csrf_token %}
+                                {% if listing.is_published %}
+                                    <button type="submit" class="btn btn-warning btn-block" onclick="return confirm('Unpublish this listing?')">
+                                        <i class="fas fa-eye-slash mr-2"></i>Unpublish Listing
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-success btn-block">
+                                        <i class="fas fa-check mr-2"></i>Publish Listing
+                                    </button>
+                                {% endif %}
+                            </form>
+                            <a href="{% url 'accounts:admin_all_listings' %}" class="btn btn-outline-secondary btn-block">
+                                <i class="fas fa-list mr-2"></i>Back to All Listings
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Styles -->
+    <style>
+        .hero-background {
+            background: linear-gradient(135deg, #dc3545 0%, #a71e2a 100%);
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .min-vh-30 {
+            min-height: 200px;
+        }
+        
+        .form-section {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .info-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+{% endblock %} 

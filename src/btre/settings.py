@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'pages.apps.PagesConfig',
     'listings.apps.ListingsConfig',
+    'projects.apps.ProjectsConfig',
     'realtors.apps.RealtorsConfig',
     'accounts.apps.AccountsConfig',
     'contacts.apps.ContactsConfig',

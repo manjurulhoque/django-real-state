@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
         <a class="navbar-brand" href="{% url 'pages:index' %}">
-            <img src="{% static 'img/logo.png' %}" class="logo" alt="">
+            <img src="{% static 'img/logo.svg' %}" class="logo" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
@@ -28,34 +28,68 @@
                 >
                     <a class="nav-link" href="{% url 'pages:about' %}">About</a>
                 </li>
+                <li class="nav-item dropdown mr-3 {% if 'listings' in request.path %}active{% endif %}">
+                    <a class="nav-link dropdown-toggle" href="#" id="listingsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-home"></i> Properties
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="listingsDropdown">
+                        <a class="dropdown-item" href="{% url 'listings:listings' %}">
+                            <i class="fas fa-list mr-2"></i>All Properties
+                        </a>
+                        <a class="dropdown-item" href="{% url 'listings:for_sale' %}">
+                            <i class="fas fa-tag mr-2"></i>For Sale
+                        </a>
+                        <a class="dropdown-item" href="{% url 'listings:for_rent' %}">
+                            <i class="fas fa-key mr-2"></i>For Rent
+                        </a>
+                    </div>
+                </li>
                 <li
-                        {% if 'listings' in request.path %}
+                        {% if 'projects' in request.path %}
                             class="nav-item active mr-3"
                         {% else %}
                             class="nav-item mr-3"
                         {% endif %}
                 >
-                    <a class="nav-link" href="{% url 'listings:listings' %}">Featured Listings</a>
+                    <a class="nav-link" href="{% url 'projects:projects' %}">
+                        <i class="fas fa-building"></i> Projects
+                    </a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
                 {% if request.user.is_authenticated %}
                     <li
-                            {% if 'dashboard' in request.path %}
+                            {% if 'wishlist' in request.path %}
                                 class="nav-item active mr-3"
                             {% else %}
                                 class="nav-item mr-3"
                             {% endif %}
                     >
-                        <a class="nav-link" href="{% url 'dashboard' %}">
-                            Welcome {{ user.username }} (Dashboard)</a>
-                    </li>
-                    <li class="nav-item mr-3">
-                        <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                        <a class="nav-link" href="{% url 'accounts:wishlist' %}">
+                            <i class="fas fa-heart text-danger"></i> Wishlist
                         </a>
-                        <form action="{% url 'logout' %}" method="POST" id="logout">
+                    </li>
+                    <li class="nav-item dropdown mr-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'accounts:dashboard' %}">
+                                <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                            </a>
+                            <a class="dropdown-item" href="{% url 'accounts:profile_update' %}">
+                                <i class="fas fa-user-edit mr-2"></i>Update Profile
+                            </a>
+                            <a class="dropdown-item" href="{% url 'accounts:wishlist' %}">
+                                <i class="fas fa-heart mr-2"></i>My Wishlist
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:{document.getElementById('logout').submit()}">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </a>
+                        </div>
+                        <form action="{% url 'accounts:logout' %}" method="POST" id="logout" style="display: none;">
                             {% csrf_token %}
                             <input type="hidden">
                         </form>
@@ -68,7 +102,7 @@
                                 class="nav-item mr-3"
                             {% endif %}
                     >
-                        <a class="nav-link" href="{% url 'register' %}">
+                        <a class="nav-link" href="{% url 'accounts:register' %}">
                             <i class="fas fa-user-plus"></i> Register</a>
                     </li>
                     <li
@@ -78,7 +112,7 @@
                                 class="nav-item mr-3"
                             {% endif %}
                     >
-                        <a class="nav-link" href="{% url 'login' %}">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">
                             <i class="fas fa-sign-in-alt"></i>
                             Login</a>
                     </li>

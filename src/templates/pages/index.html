@@ -13,55 +13,91 @@
                     <h1 class="display-4 mb-4">
                         Property Searching Just Got So Easy
                     </h1>
-                    <p class="lead">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae quas,
-                        asperiores eveniet vel nostrum magnam
-                        voluptatum tempore! Consectetur, id commodi!</p>
+                    <p class="lead">Discover your dream property with our advanced search tools. 
+                        Find the perfect home, investment, or rental property that matches your needs and budget.</p>
                     <div class="search">
                         <form action="{% url 'listings:search' %}" method="get">
                             <!-- Form Row 1 -->
                             <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                     <label class="sr-only">Keywords</label>
-                                    <input type="text" name="keywords" class="form-control"
-                                           placeholder="Keyword (Pool, Garage, etc)">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white border-right-0">
+                                                <i class="fas fa-search text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" name="keywords" class="form-control border-left-0 ps-0"
+                                               placeholder="Keywords (Pool, Garage, etc)">
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4 mb-3">
                                     <label class="sr-only">City</label>
-                                    <input type="text" name="city" class="form-control" placeholder="City">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white border-right-0">
+                                                <i class="fas fa-map-marker-alt text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" name="city" class="form-control border-left-0 ps-0" placeholder="City">
+                                    </div>
                                 </div>
 
                                 <div class="col-md-4 mb-3">
                                     <label class="sr-only">State</label>
-                                    <select name="state" class="form-control">
-                                        <option selected="true" disabled="disabled">State (All)</option>
-                                        {% for key,value in state_choices.items %}
-                                            <option value="{{ key }}">{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white border-right-0">
+                                                <i class="fas fa-map text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <select name="state" class="form-control border-left-0">
+                                            <option selected="true" disabled="disabled">Select State</option>
+                                            {% for key,value in state_choices.items %}
+                                                <option value="{{ key }}">{{ value }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Form Row 2 -->
                             <div class="form-row">
                                 <div class="col-md-6 mb-3">
                                     <label class="sr-only">Bedrooms</label>
-                                    <select name="bedrooms" class="form-control">
-                                        <option selected="true" disabled="disabled">Bedrooms (All)</option>
-                                        {% for key,value in bedroom_choices.items %}
-                                            <option value="{{ key }}">{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white border-right-0">
+                                                <i class="fas fa-bed text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <select name="bedrooms" class="form-control border-left-0">
+                                            <option selected="true" disabled="disabled">Bedrooms</option>
+                                            {% for key,value in bedroom_choices.items %}
+                                                <option value="{{ key }}">{{ value }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <select name="price" class="form-control" id="type">
-                                        <option selected="true" disabled="disabled">Max Price (Any)</option>
-                                        {% for key,value in price_choices.items %}
-                                            <option value="{{ key }}">{{ value }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white border-right-0">
+                                                <i class="fas fa-dollar-sign text-muted"></i>
+                                            </span>
+                                        </div>
+                                        <select name="price" class="form-control border-left-0" id="type">
+                                            <option selected="true" disabled="disabled">Max Price</option>
+                                            {% for key,value in price_choices.items %}
+                                                <option value="{{ key }}">{{ value }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+                            <button class="btn btn-primary btn-lg btn-block mt-4 rounded-pill shadow" type="submit">
+                                <i class="fas fa-search me-2"></i>Search Properties
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -125,4 +161,162 @@
             </div>
         </div>
     </section>
+
+    <!-- Newsletter Modal -->
+    <div class="modal fade" id="newsletterModal" tabindex="-1" role="dialog" aria-labelledby="newsletterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close" style="top: 15px; right: 20px; z-index: 1000; background: rgba(255,255,255,0.9); border: none; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                    <span aria-hidden="true" style="font-size: 18px; color: #666;">&times;</span>
+                </button>
+                <div class="row no-gutters">
+                    <!-- Left side - Image -->
+                    <div class="col-md-6">
+                        <div class="newsletter-image h-100" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; min-height: 400px;">
+                        </div>
+                    </div>
+                    <!-- Right side - Form -->
+                    <div class="col-md-6">
+                        <div class="p-5">
+                            <div class="mb-3">
+                                <small class="text-muted text-uppercase font-weight-bold">Weekly Updates</small>
+                            </div>
+                            <h3 class="mb-3 font-weight-bold" style="color: #333;">Let's join our newsletter!</h3>
+                            <p class="text-muted mb-4">Do not worry we don't spam!</p>
+                            
+                            <form id="newsletterForm">
+                                <div class="form-group">
+                                    <label for="email" class="font-weight-bold" style="color: #333;">Email Address <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Enter Your Email" required style="border: 2px solid #e0e0e0; border-radius: 8px; height: 50px;">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-danger text-white" style="border: 2px solid #dc3545; border-left: none; border-radius: 0 8px 8px 0;">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-danger btn-lg btn-block mb-4" style="height: 50px; border-radius: 8px; font-weight: bold;">
+                                    Subscribe
+                                </button>
+                                
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="dontShowAgain">
+                                    <label class="form-check-label text-muted" for="dontShowAgain">
+                                        Don't show this popup again
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    #showcase {
+        background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .modal-content {
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    .newsletter-image {
+        position: relative;
+    }
+
+    .newsletter-image::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+    }
+
+    #newsletterForm .form-control:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        transform: translateY(-1px);
+        transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .modal-dialog {
+            margin: 1rem;
+        }
+        
+        .newsletter-image {
+            min-height: 200px;
+        }
+        
+        .modal-content .p-5 {
+            padding: 2rem !important;
+        }
+    }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    // Use jQuery's document ready instead of DOMContentLoaded since Bootstrap uses jQuery
+    $(document).ready(function() {
+        // Check if user has chosen not to show the modal again
+        const dontShowAgain = localStorage.getItem('newsletterModalDontShow');
+        
+        // Show modal after 2 seconds if not disabled
+        if (!dontShowAgain) {
+            setTimeout(function() {
+                $('#newsletterModal').modal('show');
+            }, 2000);
+        }
+        
+        // Handle form submission
+        $('#newsletterForm').on('submit', function(e) {
+            e.preventDefault();
+            console.log('Newsletter form submitted');
+            
+            const email = $('#email').val();
+            const dontShow = $('#dontShowAgain').is(':checked');
+            
+            console.log('Email:', email, 'DontShow:', dontShow);
+            
+            // Store preference if checkbox is checked
+            if (dontShow) {
+                localStorage.setItem('newsletterModalDontShow', 'true');
+                console.log('User preference saved - will not show modal again');
+            }
+            
+            // Here you would typically send the email to your backend
+            // For now, we'll just show a success message and close the modal
+            alert('Thank you for subscribing to our newsletter!');
+            $('#newsletterModal').modal('hide');
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Handle modal close with "don't show again" option
+        $('#newsletterModal').on('hidden.bs.modal', function() {
+            const dontShow = $('#dontShowAgain').is(':checked');
+            if (dontShow) {
+                localStorage.setItem('newsletterModalDontShow', 'true');
+                console.log('Modal closed - User preference to not show again saved');
+            }
+        });
+    });
+    </script>
 {% endblock %}

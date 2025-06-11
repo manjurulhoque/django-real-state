@@ -5,23 +5,59 @@
         <div class="position-relative overflow-hidden">
             <img class="card-img-top listing-image" src="{{ listing.photo_main.url }}" alt="{{ listing.title }}">
             <div class="card-img-overlay p-0">
-                <div class="position-absolute top-0 end-0 m-3">
-                    <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill">
-                        ${{ listing.price | intcomma }}
-                    </span>
-                </div>
-                {% if listing.is_published %}
-                    <div class="position-absolute top-0 start-0 m-3">
-                        <span class="badge bg-success text-white rounded-pill">Available</span>
+                <!-- Top Left - Featured Badge -->
+                {% if listing.featured %}
+                    <div class="position-absolute" style="top: 15px; left: 15px;">
+                        <span class="badge bg-danger text-white rounded-pill px-3 py-2 fw-bold">
+                            Featured
+                        </span>
                     </div>
                 {% endif %}
+                
+                <!-- Top Left - Listing Type Badge (below featured if both exist) -->
+                {% if listing.is_published %}
+                    <div class="position-absolute" style="top: {% if listing.featured %}60px{% else %}15px{% endif %}; left: 15px;">
+                        {% if listing.listing_type == 'sale' %}
+                            <span class="badge bg-info text-white rounded-pill px-3 py-2">For Sale</span>
+                        {% elif listing.listing_type == 'rent' %}
+                            <span class="badge bg-success text-white rounded-pill px-3 py-2">For Rent</span>
+                        {% elif listing.listing_type == 'both' %}
+                            <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Sale / Rent</span>
+                        {% else %}
+                            <span class="badge bg-success text-white rounded-pill px-3 py-2">Available</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                
+                <!-- Top Right - Wishlist Heart -->
+                {% if user.is_authenticated %}
+                    <div class="position-absolute" style="top: 15px; right: 15px; z-index: 15;">
+                        <button class="btn btn-outline-light btn-sm wishlist-btn rounded-circle p-2" 
+                                data-listing-id="{{ listing.id }}"
+                                title="Add to wishlist">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                {% endif %}
+                
+                <!-- Bottom Left - Property Type -->
+                <div class="position-absolute" style="bottom: 15px; left: 15px;">
+                    <span class="badge bg-dark text-white rounded px-3 py-2">
+                        {{ listing.home_type|title }}
+                    </span>
+                </div>
+                
+                <!-- Bottom Right - Price -->
+                <div class="position-absolute" style="bottom: 15px; right: 15px;">
+                    <h5 class="mb-0">
+                        <span class="badge bg-primary text-white fs-6 px-3 py-2 rounded-pill fw-bold">
+                            {{ listing.get_display_price }}
+                        </span>
+                    </h5>
+                </div>
             </div>
             <div class="listing-overlay">
-                <div class="d-flex justify-content-center align-items-center h-100">
-                    <a href="{% url 'listings:listing' listing.id %}" class="btn btn-light btn-lg rounded-pill px-4">
-                        <i class="fas fa-eye me-2"></i>View Details
-                    </a>
-                </div>
+                <!-- Empty overlay for hover effect only -->
             </div>
         </div>
         
@@ -114,9 +150,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 5;
+    pointer-events: none;
 }
 
 .listing-card:hover .listing-overlay {
@@ -152,4 +190,49 @@
 .btn-primary:hover {
     transform: translateY(-1px);
 }
-</style> 
+
+.wishlist-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    z-index: 10;
+    position: relative;
+}
+
+.wishlist-btn:hover {
+    background: rgba(255,255,255,0.9);
+    border-color: #e91e63;
+    color: #e91e63 !important;
+    transform: scale(1.1);
+}
+
+.wishlist-btn.active {
+    background: #e91e63;
+    border-color: #e91e63;
+    color: white !important;
+}
+
+.wishlist-btn.active:hover {
+    background: #ad1457;
+    border-color: #ad1457;
+}
+
+/* Enhanced visibility when overlay is active */
+.listing-card:hover .wishlist-btn {
+    background: rgba(255,255,255,0.95);
+    border-color: rgba(255,255,255,0.95);
+    color: #333 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.listing-card:hover .wishlist-btn.active {
+    background: #e91e63 !important;
+    border-color: #e91e63 !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(233, 30, 99, 0.4);
+}
+</style>
+
+ 

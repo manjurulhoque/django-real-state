@@ -8,9 +8,10 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('contacts.urls')),
     path('listings/', include('listings.urls')),
+    path('projects/', include('projects.urls')),
     #api
     path('api/', include('listings.api.urls')),
     path('api/', include('accounts.api.urls')),
     path('api/', include('pages.api.urls')),
-    path('admin/', admin.site.urls),
+    path('super-admin/', admin.site.urls),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

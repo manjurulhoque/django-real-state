@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | My Project Inquiries {% endblock %}
+
+{% block content %}
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Dashboard</h5>
+                        </div>
+                        <div class="list-group list-group-flush">
+                            <a href="{% url 'accounts:dashboard' %}" class="list-group-item">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                            <a href="{% url 'projects:my_inquiries' %}" class="list-group-item active">
+                                <i class="fas fa-question-circle"></i> Project Inquiries
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">My Project Inquiries</h5>
+                        </div>
+                        <div class="card-body">
+                            {% if inquiries %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Project</th>
+                                                <th>Inquiry Type</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for inquiry in inquiries %}
+                                                <tr>
+                                                    <td>
+                                                        <strong>{{ inquiry.project.name }}</strong><br>
+                                                        <small class="text-muted">{{ inquiry.project.city }}, {{ inquiry.project.state }}</small>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge badge-info">{{ inquiry.get_inquiry_type_display }}</span>
+                                                    </td>
+                                                    <td>{{ inquiry.created_at|date:"M d, Y" }}</td>
+                                                    <td>
+                                                        {% if inquiry.is_responded %}
+                                                            <span class="badge badge-success">Responded</span>
+                                                        {% else %}
+                                                            <span class="badge badge-warning">Pending</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'projects:project_detail' inquiry.project.id %}" class="btn btn-sm btn-outline-primary">
+                                                            View Project
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Pagination -->
+                                {% if inquiries.has_other_pages %}
+                                    <nav aria-label="Inquiries pagination">
+                                        <ul class="pagination justify-content-center">
+                                            {% if inquiries.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ inquiries.previous_page_number }}">&laquo; Previous</a>
+                                                </li>
+                                            {% endif %}
+                                            
+                                            {% for i in inquiries.paginator.page_range %}
+                                                {% if inquiries.number == i %}
+                                                    <li class="page-item active">
+                                                        <span class="page-link">{{ i }}</span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            {% if inquiries.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ inquiries.next_page_number }}">Next &raquo;</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                {% endif %}
+                            {% else %}
+                                <div class="text-center py-5">
+                                    <i class="fas fa-question-circle fa-4x text-muted mb-3"></i>
+                                    <h4 class="text-muted">No Inquiries Yet</h4>
+                                    <p class="text-muted">You haven't made any project inquiries yet.</p>
+                                    <a href="{% url 'projects:projects' %}" class="btn btn-primary">
+                                        <i class="fas fa-building"></i> Browse Projects
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} 

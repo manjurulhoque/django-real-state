@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 from listings.choices import state_choices, bedroom_choices, price_choices
-from .models import Listing
+from .models import Listing, LISTING_TYPE_CHOICES
 from realtors.models import Realtor
 
 
@@ -14,7 +15,53 @@ class ListingsListView(ListView):
     template_name = 'listings/listings.html'
     queryset = Listing.objects.order_by('-list_date').filter(is_published=True)
     context_object_name = 'listings'
-    paginate_by = 2
+    paginate_by = 10
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['listing_type_choices'] = LISTING_TYPE_CHOICES
+        context['current_filter'] = 'all'
+        return context
+
+
+class SaleListingsView(ListView):
+    model = Listing
+    template_name = 'listings/listings.html'
+    context_object_name = 'listings'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return Listing.objects.filter(
+            is_published=True,
+            listing_type__in=['sale', 'both']
+        ).order_by('-list_date')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['listing_type_choices'] = LISTING_TYPE_CHOICES
+        context['current_filter'] = 'sale'
+        context['page_title'] = 'Properties for Sale'
+        return context
+
+
+class RentListingsView(ListView):
+    model = Listing
+    template_name = 'listings/listings.html'
+    context_object_name = 'listings'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return Listing.objects.filter(
+            is_published=True,
+            listing_type__in=['rent', 'both']
+        ).order_by('-list_date')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['listing_type_choices'] = LISTING_TYPE_CHOICES
+        context['current_filter'] = 'rent'
+        context['page_title'] = 'Properties for Rent'
+        return context
 
 
 # def index(request):
@@ -32,7 +79,7 @@ class ListingDetailView(DetailView):
 
 
 def search(request):
-    queryset_list = Listing.objects.all()
+    queryset_list = Listing.objects.filter(is_published=True)
 
     # Keywords
     if 'keywords' in request.GET:
@@ -58,16 +105,28 @@ def search(request):
         if bedrooms:
             queryset_list = queryset_list.filter(bedrooms__lte=bedrooms)
 
-    # Price
+    # Listing Type (Sale/Rent)
+    if 'listing_type' in request.GET:
+        listing_type = request.GET['listing_type']
+        if listing_type:
+            queryset_list = queryset_list.filter(listing_type=listing_type)
+
+    # Price (adjusted for listing type)
     if 'price' in request.GET:
         price = request.GET['price']
         if price:
-            queryset_list = queryset_list.filter(price__lte=price)
+            # If searching for rent, filter by rent_price, otherwise by sale price
+            listing_type = request.GET.get('listing_type', 'sale')
+            if listing_type == 'rent':
+                queryset_list = queryset_list.filter(rent_price__lte=price)
+            else:
+                queryset_list = queryset_list.filter(price__lte=price)
 
     context = {
         'state_choices': state_choices,
         'bedroom_choices': bedroom_choices,
         'price_choices': price_choices,
+        'listing_type_choices': LISTING_TYPE_CHOICES,
         'listings': queryset_list,
         'values': request.GET
     }
@@ -113,6 +172,7 @@ def submit_listing(request):
         try:
             listing = Listing.objects.create(
                 realtor=realtor,
+                submitted_by=request.user,
                 title=title,
                 address=address,
                 city=city,
@@ -144,6 +204,92 @@ def submit_listing(request):
     
     # GET request - show the form
     return render(request, 'listings/submit_listing.html', get_submit_context())
+
+
+@login_required
+def edit_listing(request, listing_id):
+    listing = get_object_or_404(Listing, id=listing_id)
+    
+    # Check if the user owns this listing
+    if listing.submitted_by != request.user:
+        messages.error(request, 'You can only edit your own listings.')
+        return redirect('accounts:dashboard')
+    
+    if request.method == 'POST':
+        # Get form data
+        title = request.POST.get('title')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zipcode = request.POST.get('zipcode')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        bedrooms = request.POST.get('bedrooms')
+        bathrooms = request.POST.get('bathrooms')
+        garage = request.POST.get('garage')
+        sqft = request.POST.get('sqft')
+        lot_size = request.POST.get('lot_size')
+        
+        # Handle file uploads - only update if new files are provided
+        photo_main = request.FILES.get('photo_main')
+        photo_1 = request.FILES.get('photo_1')
+        photo_2 = request.FILES.get('photo_2')
+        photo_3 = request.FILES.get('photo_3')
+        photo_4 = request.FILES.get('photo_4')
+        photo_5 = request.FILES.get('photo_5')
+        photo_6 = request.FILES.get('photo_6')
+        
+        # Update listing
+        try:
+            listing.title = title
+            listing.address = address
+            listing.city = city
+            listing.state = state
+            listing.zipcode = zipcode
+            listing.description = description
+            listing.price = int(price) if price else 0
+            listing.bedrooms = int(bedrooms) if bedrooms else 0
+            listing.bathrooms = float(bathrooms) if bathrooms else 0
+            listing.garage = int(garage) if garage else 0
+            listing.sqft = int(sqft) if sqft else 0
+            listing.lot_size = float(lot_size) if lot_size else 0
+            
+            # Update photos only if new ones are provided
+            if photo_main:
+                listing.photo_main = photo_main
+            if photo_1:
+                listing.photo_1 = photo_1
+            if photo_2:
+                listing.photo_2 = photo_2
+            if photo_3:
+                listing.photo_3 = photo_3
+            if photo_4:
+                listing.photo_4 = photo_4
+            if photo_5:
+                listing.photo_5 = photo_5
+            if photo_6:
+                listing.photo_6 = photo_6
+            
+            # If listing was published, keep it published; if unpublished, require re-review
+            if listing.is_published:
+                listing.is_published = False  # Require re-review after edit
+            
+            listing.save()
+            
+            messages.success(request, 'Your property has been updated successfully! It will be reviewed again before being published.')
+            return redirect('accounts:dashboard')
+            
+        except Exception as e:
+            messages.error(request, 'There was an error updating your property. Please check all fields and try again.')
+    
+    # GET request - show the form with current data
+    context = {
+        'listing': listing,
+        'state_choices': state_choices,
+        'bedroom_choices': bedroom_choices,
+        'is_edit': True,
+    }
+    return render(request, 'listings/edit_listing.html', context)
 
 
 def get_submit_context():

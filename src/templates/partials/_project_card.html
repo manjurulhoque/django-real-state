@@ -1,0 +1,215 @@
+{% load humanize %}
+
+<div class="card h-100 shadow-sm hover-card">
+    <div class="card-img-wrapper position-relative">
+        <img src="{{ project.main_image.url }}" class="card-img-top" alt="{{ project.name }}" style="height: 250px; object-fit: cover;">
+        
+        <!-- Project Status Badge -->
+        <div class="position-absolute" style="top: 15px; left: 15px;">
+            {% if project.status == 'planning' %}
+                <span class="badge badge-info">Planning</span>
+            {% elif project.status == 'under_construction' %}
+                <span class="badge badge-warning">Under Construction</span>
+            {% elif project.status == 'nearing_completion' %}
+                <span class="badge badge-success">Nearing Completion</span>
+            {% elif project.status == 'completed' %}
+                <span class="badge badge-primary">Completed</span>
+            {% elif project.status == 'on_hold' %}
+                <span class="badge badge-secondary">On Hold</span>
+            {% endif %}
+        </div>
+
+        <!-- Featured Badge -->
+        {% if project.featured %}
+            <div class="position-absolute" style="top: 15px; right: 15px;">
+                <span class="badge badge-danger">
+                    <i class="fas fa-star"></i> Featured
+                </span>
+            </div>
+        {% endif %}
+
+        <!-- Price Range -->
+        <div class="position-absolute" style="bottom: 15px; left: 15px;">
+            <h5 class="mb-0">
+                <span class="badge badge-dark px-3 py-2">
+                    {{ project.get_price_range_display }}
+                </span>
+            </h5>
+        </div>
+
+        <!-- Completion Percentage for ongoing projects -->
+        {% if project.status == 'under_construction' or project.status == 'nearing_completion' %}
+            <div class="position-absolute w-100" style="bottom: 0;">
+                <div class="progress" style="height: 5px; border-radius: 0;">
+                    <div class="progress-bar bg-success" role="progressbar" 
+                         style="width: {{ project.get_completion_percentage }}%"></div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Hover Overlay -->
+        <div class="card-overlay">
+            <div class="text-center">
+                <a href="{% url 'projects:project_detail' project.id %}" class="btn btn-primary btn-lg rounded-pill">
+                    <i class="fas fa-eye me-2"></i>View Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body d-flex flex-column">
+        <div class="project-header mb-3">
+            <h5 class="card-title text-primary mb-1">{{ project.name }}</h5>
+            <p class="text-muted mb-2">
+                <i class="fas fa-map-marker-alt text-secondary"></i> 
+                {{ project.city }}, {{ project.state }}
+            </p>
+            <small class="text-muted">{{ project.project_type|title }}</small>
+        </div>
+
+        <div class="project-stats mb-3">
+            <div class="row text-center">
+                <div class="col-4">
+                    <div class="stat-item">
+                        <h6 class="mb-0 text-primary">{{ project.total_units }}</h6>
+                        <small class="text-muted">Total Units</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stat-item">
+                        <h6 class="mb-0 text-success">{{ project.available_units }}</h6>
+                        <small class="text-muted">Available</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stat-item">
+                        <h6 class="mb-0 text-info">{{ project.total_area|floatformat:0 }}</h6>
+                        <small class="text-muted">Sq Ft</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="card-text text-muted flex-grow-1">
+            {{ project.description|truncatewords:15 }}
+        </p>
+
+        <div class="project-features mb-3">
+            <div class="row">
+                {% if project.floors %}
+                    <div class="col-6">
+                        <small class="text-muted">
+                            <i class="fas fa-building"></i> {{ project.floors }} Floors
+                        </small>
+                    </div>
+                {% endif %}
+                {% if project.parking_spaces %}
+                    <div class="col-6">
+                        <small class="text-muted">
+                            <i class="fas fa-car"></i> {{ project.parking_spaces }} Parking
+                        </small>
+                    </div>
+                {% endif %}
+                {% if project.green_building_certified %}
+                    <div class="col-12 mt-1">
+                        <small class="text-success">
+                            <i class="fas fa-leaf"></i> Green Building Certified
+                        </small>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Timeline Info -->
+        {% if project.expected_completion %}
+            <div class="project-timeline mb-3">
+                <small class="text-muted">
+                    <i class="fas fa-calendar"></i> 
+                    Expected Completion: {{ project.expected_completion|date:"M Y" }}
+                </small>
+            </div>
+        {% endif %}
+
+        <div class="project-footer mt-auto">
+            <div class="row align-items-center">
+                <div class="col-8">
+                    <small class="text-muted">
+                        <i class="fas fa-user"></i> {{ project.developer.name }}
+                    </small>
+                </div>
+                <div class="col-4 text-right">
+                    {% if project.is_available %}
+                        <span class="badge badge-success">Available</span>
+                    {% else %}
+                        <span class="badge badge-secondary">Sold Out</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-img-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.hover-card:hover .card-img-wrapper img {
+    transform: scale(1.05);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hover-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.stat-item {
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: rgba(0,123,255,0.05);
+    margin-bottom: 0.5rem;
+}
+
+.project-features i {
+    width: 16px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 200px !important;
+    }
+    
+    .project-stats .col-4 {
+        margin-bottom: 0.5rem;
+    }
+}
+</style> 
