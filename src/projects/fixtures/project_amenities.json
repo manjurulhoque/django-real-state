@@ -1,0 +1,137 @@
+[
+  {
+    "model": "projects.projectamenity",
+    "pk": 1,
+    "fields": {
+      "name": "Community Pool",
+      "icon": "fa-swimming-pool",
+      "description": "Resort-style swimming pool with lounge area"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 2,
+    "fields": {
+      "name": "Fitness Center",
+      "icon": "fa-dumbbell",
+      "description": "Fully equipped gym with modern equipment"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 3,
+    "fields": {
+      "name": "Children's Playground",
+      "icon": "fa-child",
+      "description": "Safe and fun playground for kids"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 4,
+    "fields": {
+      "name": "24/7 Security",
+      "icon": "fa-shield-alt",
+      "description": "Round-the-clock security with CCTV monitoring"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 5,
+    "fields": {
+      "name": "Clubhouse",
+      "icon": "fa-building",
+      "description": "Community clubhouse for events and gatherings"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 6,
+    "fields": {
+      "name": "Landscaped Gardens",
+      "icon": "fa-seedling",
+      "description": "Beautiful landscaped gardens and green spaces"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 7,
+    "fields": {
+      "name": "Parking Garage",
+      "icon": "fa-car",
+      "description": "Covered parking with assigned spaces"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 8,
+    "fields": {
+      "name": "Business Center",
+      "icon": "fa-laptop",
+      "description": "Modern business center with meeting rooms"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 9,
+    "fields": {
+      "name": "Rooftop Deck",
+      "icon": "fa-building",
+      "description": "Rooftop deck with city views and seating"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 10,
+    "fields": {
+      "name": "Concierge Service",
+      "icon": "fa-user-tie",
+      "description": "Professional concierge service for residents"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 11,
+    "fields": {
+      "name": "Bike Storage",
+      "icon": "fa-bicycle",
+      "description": "Secure bicycle storage facility"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 12,
+    "fields": {
+      "name": "Dog Park",
+      "icon": "fa-dog",
+      "description": "Dedicated dog park and pet washing station"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 13,
+    "fields": {
+      "name": "Guest Suites",
+      "icon": "fa-bed",
+      "description": "Guest suites available for resident visitors"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 14,
+    "fields": {
+      "name": "Green Building Certified",
+      "icon": "fa-leaf",
+      "description": "LEED certified green building features"
+    }
+  },
+  {
+    "model": "projects.projectamenity",
+    "pk": 15,
+    "fields": {
+      "name": "Public Transportation",
+      "icon": "fa-subway",
+      "description": "Close proximity to public transportation"
+    }
+  }
+] 

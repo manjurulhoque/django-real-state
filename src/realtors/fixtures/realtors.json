@@ -1,0 +1,197 @@
+[
+  {
+    "model": "realtors.realtor",
+    "pk": 1,
+    "fields": {
+      "name": "John Smith",
+      "photo": "photos/2024/01/01/john_smith.jpg",
+      "description": "Experienced real estate professional with 15+ years in residential sales. Specializes in luxury homes and investment properties.",
+      "phone": "(555) 123-4567",
+      "email": "john.smith@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2010-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 2,
+    "fields": {
+      "name": "Sarah Johnson",
+      "photo": "photos/2024/01/01/sarah_johnson.jpg",
+      "description": "Top-performing agent specializing in commercial properties and new developments. Award-winning sales record.",
+      "phone": "(555) 234-5678",
+      "email": "sarah.johnson@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2012-03-20T09:30:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 3,
+    "fields": {
+      "name": "Michael Brown",
+      "photo": "photos/2024/01/01/michael_brown.jpg",
+      "description": "Dedicated to helping first-time homebuyers navigate the real estate market. Excellent customer service record.",
+      "phone": "(555) 345-6789",
+      "email": "michael.brown@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2015-07-10T14:00:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 4,
+    "fields": {
+      "name": "Emily Davis",
+      "photo": "photos/2024/01/01/emily_davis.jpg",
+      "description": "Real estate investment specialist with expertise in rental properties and portfolio management.",
+      "phone": "(555) 456-7890",
+      "email": "emily.davis@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2011-09-05T11:00:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 5,
+    "fields": {
+      "name": "David Wilson",
+      "photo": "photos/2024/01/01/david_wilson.jpg",
+      "description": "Commercial real estate expert focusing on office buildings and retail spaces. 20+ years experience.",
+      "phone": "(555) 567-8901",
+      "email": "david.wilson@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2008-11-12T16:30:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 6,
+    "fields": {
+      "name": "Jessica Martinez",
+      "photo": "photos/2024/01/01/jessica_martinez.jpg",
+      "description": "Luxury home specialist with a passion for high-end properties and exclusive neighborhoods.",
+      "phone": "(555) 678-9012",
+      "email": "jessica.martinez@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2013-04-18T08:45:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 7,
+    "fields": {
+      "name": "Robert Taylor",
+      "photo": "photos/2024/01/01/robert_taylor.jpg",
+      "description": "Residential property expert with strong negotiation skills and market knowledge.",
+      "phone": "(555) 789-0123",
+      "email": "robert.taylor@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2016-02-28T12:15:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 8,
+    "fields": {
+      "name": "Amanda White",
+      "photo": "photos/2024/01/01/amanda_white.jpg",
+      "description": "New construction specialist helping clients find their perfect home in developing communities.",
+      "phone": "(555) 890-1234",
+      "email": "amanda.white@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2018-06-15T13:20:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 9,
+    "fields": {
+      "name": "Christopher Lee",
+      "photo": "photos/2024/01/01/christopher_lee.jpg",
+      "description": "Multi-family property specialist with expertise in apartment buildings and duplexes.",
+      "phone": "(555) 901-2345",
+      "email": "christopher.lee@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2014-08-22T10:10:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 10,
+    "fields": {
+      "name": "Lisa Anderson",
+      "photo": "photos/2024/01/01/lisa_anderson.jpg",
+      "description": "Relocation specialist helping families transition smoothly to new areas and communities.",
+      "phone": "(555) 012-3456",
+      "email": "lisa.anderson@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2017-01-10T15:30:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 11,
+    "fields": {
+      "name": "Kevin Thompson",
+      "photo": "photos/2024/01/01/kevin_thompson.jpg",
+      "description": "Land and development specialist with experience in large-scale projects and zoning.",
+      "phone": "(555) 123-4567",
+      "email": "kevin.thompson@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2019-03-25T09:00:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 12,
+    "fields": {
+      "name": "Nicole Garcia",
+      "photo": "photos/2024/01/01/nicole_garcia.jpg",
+      "description": "Waterfront property specialist with deep knowledge of coastal and lakefront communities.",
+      "phone": "(555) 234-5678",
+      "email": "nicole.garcia@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2016-05-08T11:45:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 13,
+    "fields": {
+      "name": "Brian Rodriguez",
+      "photo": "photos/2024/01/01/brian_rodriguez.jpg",
+      "description": "Industrial property expert specializing in warehouses, manufacturing facilities, and logistics centers.",
+      "phone": "(555) 345-6789",
+      "email": "brian.rodriguez@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2020-09-14T14:20:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 14,
+    "fields": {
+      "name": "Stephanie Clark",
+      "photo": "photos/2024/01/01/stephanie_clark.jpg",
+      "description": "Green building and sustainable property specialist promoting eco-friendly real estate solutions.",
+      "phone": "(555) 456-7890",
+      "email": "stephanie.clark@realestate.com",
+      "is_mvp": false,
+      "hire_date": "2021-11-03T08:30:00Z"
+    }
+  },
+  {
+    "model": "realtors.realtor",
+    "pk": 15,
+    "fields": {
+      "name": "Mark Lewis",
+      "photo": "photos/2024/01/01/mark_lewis.jpg",
+      "description": "Senior real estate advisor with 25+ years experience in all property types and market conditions.",
+      "phone": "(555) 567-8901",
+      "email": "mark.lewis@realestate.com",
+      "is_mvp": true,
+      "hire_date": "2005-12-01T16:00:00Z"
+    }
+  }
+] 

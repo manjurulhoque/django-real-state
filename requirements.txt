@@ -3,6 +3,7 @@ Django==5.2.3
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
+faker==37.4.0
 pillow==11.2.1
 PyJWT==2.9.0
 pytz==2025.2

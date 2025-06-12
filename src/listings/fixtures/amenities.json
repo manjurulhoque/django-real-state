@@ -1,0 +1,137 @@
+[
+  {
+    "model": "listings.amenity",
+    "pk": 1,
+    "fields": {
+      "name": "Swimming Pool",
+      "icon": "fa-swimming-pool",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 2,
+    "fields": {
+      "name": "Fitness Center",
+      "icon": "fa-dumbbell",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 3,
+    "fields": {
+      "name": "Air Conditioning",
+      "icon": "fa-fan",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 4,
+    "fields": {
+      "name": "Balcony",
+      "icon": "fa-building",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 5,
+    "fields": {
+      "name": "Parking",
+      "icon": "fa-car",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 6,
+    "fields": {
+      "name": "Garden",
+      "icon": "fa-seedling",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 7,
+    "fields": {
+      "name": "Security System",
+      "icon": "fa-shield-alt",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 8,
+    "fields": {
+      "name": "Fireplace",
+      "icon": "fa-fire",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 9,
+    "fields": {
+      "name": "Walk-in Closet",
+      "icon": "fa-tshirt",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 10,
+    "fields": {
+      "name": "Modern Kitchen",
+      "icon": "fa-utensils",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 11,
+    "fields": {
+      "name": "Laundry Room",
+      "icon": "fa-tshirt",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 12,
+    "fields": {
+      "name": "Hardwood Floors",
+      "icon": "fa-th-large",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 13,
+    "fields": {
+      "name": "Elevator",
+      "icon": "fa-arrow-up",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 14,
+    "fields": {
+      "name": "Concierge",
+      "icon": "fa-user-tie",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "listings.amenity",
+    "pk": 15,
+    "fields": {
+      "name": "High-Speed Internet",
+      "icon": "fa-wifi",
+      "created_at": "2024-01-01T10:00:00Z"
+    }
+  }
+] 
