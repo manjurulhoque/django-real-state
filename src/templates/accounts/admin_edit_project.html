@@ -1,0 +1,538 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | Admin - Edit Project {% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section id="admin-hero" class="position-relative">
+        <div class="hero-background">
+            <div class="hero-overlay">
+                <div class="container">
+                    <div class="row align-items-center min-vh-30">
+                        <div class="col-lg-12">
+                            <div class="hero-content text-white text-center">
+                                <h1 class="display-5 font-weight-bold mb-3">
+                                    <i class="fas fa-edit mr-3"></i>Edit Project
+                                </h1>
+                                <p class="lead mb-0">Update project: {{ project.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <section class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'pages:index' %}">
+                            <i class="fas fa-home mr-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'accounts:admin_all_projects' %}">Admin Projects</a>
+                    </li>
+                    <li class="breadcrumb-item active">Edit Project</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Edit Project Form -->
+    <section id="admin-edit-project" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Basic Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-info-circle mr-2"></i>Basic Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Project Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{ project.name }}" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a project name.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="developer" class="form-label">Developer <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="developer" name="developer" required>
+                                            <option value="">Select Developer</option>
+                                            {% for realtor in realtors %}
+                                                <option value="{{ realtor.id }}" {% if realtor.id == project.developer.id %}selected{% endif %}>{{ realtor.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a developer.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="project_type" class="form-label">Project Type <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="project_type" name="project_type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="residential" {% if project.project_type == 'residential' %}selected{% endif %}>Residential</option>
+                                            <option value="commercial" {% if project.project_type == 'commercial' %}selected{% endif %}>Commercial</option>
+                                            <option value="mixed_use" {% if project.project_type == 'mixed_use' %}selected{% endif %}>Mixed Use</option>
+                                            <option value="industrial" {% if project.project_type == 'industrial' %}selected{% endif %}>Industrial</option>
+                                            <option value="retail" {% if project.project_type == 'retail' %}selected{% endif %}>Retail</option>
+                                            <option value="office" {% if project.project_type == 'office' %}selected{% endif %}>Office</option>
+                                            <option value="hospitality" {% if project.project_type == 'hospitality' %}selected{% endif %}>Hospitality</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a project type.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                        <select class="form-control" id="status" name="status" required>
+                                            <option value="">Select Status</option>
+                                            <option value="planning" {% if project.status == 'planning' %}selected{% endif %}>Planning</option>
+                                            <option value="under_construction" {% if project.status == 'under_construction' %}selected{% endif %}>Under Construction</option>
+                                            <option value="nearing_completion" {% if project.status == 'nearing_completion' %}selected{% endif %}>Nearing Completion</option>
+                                            <option value="completed" {% if project.status == 'completed' %}selected{% endif %}>Completed</option>
+                                            <option value="on_hold" {% if project.status == 'on_hold' %}selected{% endif %}>On Hold</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a status.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="description" name="description" rows="4" required 
+                                              placeholder="Detailed description of the project...">{{ project.description }}</textarea>
+                                    <div class="invalid-feedback">
+                                        Please provide a project description.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Information -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>Location Information
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="address" name="address" value="{{ project.address }}" required 
+                                           placeholder="Street address">
+                                    <div class="invalid-feedback">
+                                        Please provide an address.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="city" class="form-label">City <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="city" name="city" value="{{ project.city }}" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a city.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="state" class="form-label">State <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="state" name="state" value="{{ project.state }}" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a state.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="zipcode" class="form-label">Zipcode <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{ project.zipcode }}" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a zipcode.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Details -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-building mr-2"></i>Project Details
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="total_units" class="form-label">Total Units <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="total_units" name="total_units" value="{{ project.total_units }}" required min="1">
+                                        <small class="form-text text-muted">Total number of units/properties in project</small>
+                                        <div class="invalid-feedback">
+                                            Please provide total units.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="available_units" class="form-label">Available Units <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="available_units" name="available_units" value="{{ project.available_units }}" required min="0">
+                                        <small class="form-text text-muted">Currently available units</small>
+                                        <div class="invalid-feedback">
+                                            Please provide available units.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="price_range_min" class="form-label">Starting Price ($) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="price_range_min" name="price_range_min" value="{{ project.price_range_min }}" required min="0">
+                                        <div class="invalid-feedback">
+                                            Please provide starting price.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="price_range_max" class="form-label">Maximum Price ($) <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="price_range_max" name="price_range_max" value="{{ project.price_range_max }}" required min="0">
+                                        <div class="invalid-feedback">
+                                            Please provide maximum price.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="total_area" class="form-label">Total Area (sq ft)</label>
+                                        <input type="number" class="form-control" id="total_area" name="total_area" value="{{ project.total_area }}" step="0.01" min="0">
+                                        <small class="form-text text-muted">Total project area in square feet</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="floors" class="form-label">Number of Floors</label>
+                                        <input type="number" class="form-control" id="floors" name="floors" value="{{ project.floors }}" min="1">
+                                        <small class="form-text text-muted">Number of floors/levels</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="parking_spaces" class="form-label">Parking Spaces</label>
+                                        <input type="number" class="form-control" id="parking_spaces" name="parking_spaces" value="{{ project.parking_spaces }}" min="0">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check mt-4">
+                                            <input class="form-check-input" type="checkbox" id="green_building_certified" name="green_building_certified" {% if project.green_building_certified %}checked{% endif %}>
+                                            <label class="form-check-label" for="green_building_certified">
+                                                Green Building Certified
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-warning text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-calendar-alt mr-2"></i>Project Timeline
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="start_date" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ project.start_date|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="expected_completion" class="form-label">Expected Completion</label>
+                                        <input type="date" class="form-control" id="expected_completion" name="expected_completion" value="{{ project.expected_completion|date:'Y-m-d' }}">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="launch_date" class="form-label">Launch Date</label>
+                                        <input type="date" class="form-control" id="launch_date" name="launch_date" value="{{ project.launch_date|date:'Y-m-d' }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Amenities -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-star mr-2"></i>Project Amenities
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for amenity in project_amenities %}
+                                        <div class="col-md-4 mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="amenity_{{ amenity.id }}" 
+                                                       name="amenities" value="{{ amenity.id }}" 
+                                                       {% if amenity.id in project_features %}checked{% endif %}>
+                                                <label class="form-check-label" for="amenity_{{ amenity.id }}">
+                                                    <i class="{{ amenity.icon }} mr-2"></i>{{ amenity.name }}
+                                                </label>
+                                                {% if amenity.description %}
+                                                    <small class="form-text text-muted d-block">{{ amenity.description }}</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Media Files -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-secondary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-images mr-2"></i>Media Files
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="main_image" class="form-label">Main Image</label>
+                                        {% if project.main_image %}
+                                            <div class="mb-2">
+                                                <img src="{{ project.main_image.url }}" alt="Current main image" class="img-thumbnail" style="max-height: 100px;">
+                                                <small class="form-text text-muted d-block">Current image</small>
+                                            </div>
+                                        {% endif %}
+                                        <input type="file" class="form-control" id="main_image" name="main_image" accept="image/*">
+                                        <small class="form-text text-muted">Upload new image to replace current one</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="floor_plan" class="form-label">Floor Plan</label>
+                                        {% if project.floor_plan %}
+                                            <div class="mb-2">
+                                                <img src="{{ project.floor_plan.url }}" alt="Current floor plan" class="img-thumbnail" style="max-height: 100px;">
+                                                <small class="form-text text-muted d-block">Current floor plan</small>
+                                            </div>
+                                        {% endif %}
+                                        <input type="file" class="form-control" id="floor_plan" name="floor_plan" accept="image/*">
+                                        <small class="form-text text-muted">Upload new floor plan to replace current one</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="brochure" class="form-label">Brochure</label>
+                                    {% if project.brochure %}
+                                        <div class="mb-2">
+                                            <a href="{{ project.brochure.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-file-pdf mr-1"></i>View Current Brochure
+                                            </a>
+                                            <small class="form-text text-muted d-block">Current brochure</small>
+                                        </div>
+                                    {% endif %}
+                                    <input type="file" class="form-control" id="brochure" name="brochure" accept=".pdf,.doc,.docx">
+                                    <small class="form-text text-muted">Upload new brochure to replace current one</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gallery Images -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-photo-video mr-2"></i>Gallery Images
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    {% for i in "123456" %}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="gallery_image_{{ i }}" class="form-label">Gallery Image {{ i }}</label>
+                                            <input type="file" class="form-control" id="gallery_image_{{ i }}" 
+                                                   name="gallery_image_{{ i }}" accept="image/*">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- External Links -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-link mr-2"></i>External Links
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="virtual_tour_url" class="form-label">Virtual Tour URL</label>
+                                        <input type="url" class="form-control" id="virtual_tour_url" name="virtual_tour_url" 
+                                               value="{{ project.virtual_tour_url }}" placeholder="https://...">
+                                        <small class="form-text text-muted">Link to virtual tour</small>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="website_url" class="form-label">Project Website</label>
+                                        <input type="url" class="form-control" id="website_url" name="website_url" 
+                                               value="{{ project.website_url }}" placeholder="https://...">
+                                        <small class="form-text text-muted">Official project website</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Admin Controls -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-cog mr-2"></i>Admin Controls
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="featured" name="featured" {% if project.featured %}checked{% endif %}>
+                                            <label class="form-check-label" for="featured">
+                                                <i class="fas fa-star mr-1"></i>Featured Project
+                                            </label>
+                                            <small class="form-text text-muted d-block">Mark as featured to highlight this project</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="is_published" name="is_published" {% if project.is_published %}checked{% endif %}>
+                                            <label class="form-check-label" for="is_published">
+                                                <i class="fas fa-eye mr-1"></i>Published
+                                            </label>
+                                            <small class="form-text text-muted d-block">Make this project visible to users</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{% url 'accounts:admin_all_projects' %}" class="btn btn-secondary btn-lg">
+                                        <i class="fas fa-arrow-left mr-2"></i>Back to Projects
+                                    </a>
+                                    <div>
+                                        <a href="{% url 'projects:project_detail' project.id %}" class="btn btn-outline-primary btn-lg mr-3" target="_blank">
+                                            <i class="fas fa-eye mr-2"></i>View Project
+                                        </a>
+                                        <button type="submit" class="btn btn-success btn-lg">
+                                            <i class="fas fa-save mr-2"></i>Update Project
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .hero-background {
+        background: url('/static/img/building.jpg') no-repeat center center;
+        background-size: cover;
+        min-height: 200px;
+        position: relative;
+    }
+    
+    .hero-overlay {
+        background: rgba(32, 134, 107, 0.8);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    
+    .min-vh-30 {
+        min-height: 30vh;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Bootstrap form validation
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Price range validation
+    document.getElementById('price_range_max').addEventListener('change', function() {
+        var minPrice = parseInt(document.getElementById('price_range_min').value) || 0;
+        var maxPrice = parseInt(this.value) || 0;
+        
+        if (maxPrice > 0 && maxPrice < minPrice) {
+            this.setCustomValidity('Maximum price must be greater than or equal to starting price.');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    document.getElementById('price_range_min').addEventListener('change', function() {
+        var maxPriceField = document.getElementById('price_range_max');
+        var minPrice = parseInt(this.value) || 0;
+        var maxPrice = parseInt(maxPriceField.value) || 0;
+        
+        if (maxPrice > 0 && maxPrice < minPrice) {
+            maxPriceField.setCustomValidity('Maximum price must be greater than or equal to starting price.');
+        } else {
+            maxPriceField.setCustomValidity('');
+        }
+    });
+
+    // Available units validation
+    document.getElementById('available_units').addEventListener('change', function() {
+        var totalUnits = parseInt(document.getElementById('total_units').value) || 0;
+        var availableUnits = parseInt(this.value) || 0;
+        
+        if (availableUnits > totalUnits) {
+            this.setCustomValidity('Available units cannot exceed total units.');
+        } else {
+            this.setCustomValidity('');
+        }
+    });
+
+    document.getElementById('total_units').addEventListener('change', function() {
+        var availableUnitsField = document.getElementById('available_units');
+        var totalUnits = parseInt(this.value) || 0;
+        var availableUnits = parseInt(availableUnitsField.value) || 0;
+        
+        if (availableUnits > totalUnits) {
+            availableUnitsField.setCustomValidity('Available units cannot exceed total units.');
+        } else {
+            availableUnitsField.setCustomValidity('');
+        }
+    });
+</script>
+{% endblock %} 
