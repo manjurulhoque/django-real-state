@@ -83,9 +83,11 @@
                 <!-- Left Column - Images and Details -->
                 <div class="col-lg-8">
                     <!-- Main Image -->
-                    <div class="mb-4">
-                        <img src="{{ project.main_image.url }}" class="img-fluid rounded shadow" alt="{{ project.name }}">
-                    </div>
+                    {% if project.main_image %}
+                        <div class="mb-4">
+                            <img src="{{ project.main_image.url }}" class="img-fluid rounded shadow" alt="{{ project.name }}">
+                        </div>
+                    {% endif %}
 
                     <!-- Gallery -->
                     {% if project.get_gallery_images %}

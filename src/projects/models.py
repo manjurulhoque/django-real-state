@@ -65,7 +65,9 @@ class Project(models.Model):
     green_building_certified = models.BooleanField(default=False)
 
     # Media
-    main_image = models.ImageField(upload_to="projects/%Y/%m/%d/")
+    main_image = models.ImageField(
+        upload_to="projects/%Y/%m/%d/", blank=True, null=True
+    )
     floor_plan = models.ImageField(
         upload_to="projects/floor_plans/%Y/%m/%d/", blank=True
     )
@@ -73,22 +75,22 @@ class Project(models.Model):
 
     # Gallery images
     gallery_image_1 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
     gallery_image_2 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
     gallery_image_3 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
     gallery_image_4 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
     gallery_image_5 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
     gallery_image_6 = models.ImageField(
-        upload_to="projects/gallery/%Y/%m/%d/", blank=True
+        upload_to="projects/gallery/%Y/%m/%d/", blank=True, null=True
     )
 
     # SEO and Marketing

@@ -3,10 +3,10 @@
 <div class="card h-100 shadow-sm hover-card">
     <div class="card-img-wrapper position-relative">
         {% if project.main_image %}
-            <img src="{{ project.main_image.url }}" class="card-img-top" alt="{{ project.name }}" style="height: 250px; object-fit: cover;">
+            <img src="{{ project.main_image.url }}" class="card-img-top" alt="{{ project.name }}" style="height: 300px; object-fit: cover;">
         {% else %}
             <div class="card-img-top d-flex align-items-center justify-content-center bg-light">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-muted">
+                <svg width="80" height="300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-muted">
                     <path d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
                     <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -215,7 +215,7 @@
 
 @media (max-width: 768px) {
     .card-img-top {
-        height: 200px !important;
+        height: 250px !important;
     }
     
     .project-stats .col-4 {
