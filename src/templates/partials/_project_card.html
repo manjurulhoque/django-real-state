@@ -52,7 +52,7 @@
             <div class="position-absolute w-100" style="bottom: 0;">
                 <div class="progress" style="height: 5px; border-radius: 0;">
                     <div class="progress-bar bg-success" role="progressbar" 
-                         style="width: {{ project.get_completion_percentage }}%"></div>
+                         style="--completion-width: {{ project.get_completion_percentage }}%; width: var(--completion-width);"></div>
                 </div>
             </div>
         {% endif %}
