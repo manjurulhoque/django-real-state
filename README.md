@@ -13,8 +13,17 @@ A comprehensive, modern real estate web application built with Django that provi
 ### Project Details
 ![Project Details](screenshots/project-details.png)
 
+### User Login
+![Login](screenshots/login.png)
+
 ### User Dashboard
 ![User Profile](screenshots/user-profile.png)
+
+### Update Profile
+![Update Profile](screenshots/update-profile.png)
+
+### Update Listing
+![Update Listing](screenshots/update-listing.png)
 
 ### Admin Panel
 ![Admin Projects](screenshots/admin-projects.png)
