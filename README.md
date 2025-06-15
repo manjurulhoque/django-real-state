@@ -167,20 +167,28 @@ src/
    cd django-real-estate
    ```
 
-2. **Sync the project's dependencies with the environment.**
+2. **Install uv**
+
+   [uv installation](https://docs.astral.sh/uv/getting-started/installation)
+
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+3. **Sync the project's dependencies with the environment.**
 
    ```bash
    uv sync
    ```
 
-3. **Run database migrations**
+4. **Run database migrations**
 
    ```bash
    cd src
    uv run python manage.py migrate
    ```
 
-4. **Generate sample data (optional)**
+5. **Generate sample data (optional)**
 
    ```bash
       uv run python manage.py loaddata projects/fixtures/projects.json
@@ -188,19 +196,19 @@ src/
       uv run python manage.py loaddata listings/fixtures/listings
    ```
 
-5. **Create superuser**
+6. **Create superuser**
 
    ```bash
    uv run python manage.py createsuperuser
    ```
 
-6. **Run the development server**
+7. **Run the development server**
 
    ```bash
    uv run python manage.py runserver
    ```
 
-7. **Access the application**
+8. **Access the application**
    - Main site: http://127.0.0.1:8000/
    - Admin panel: http://127.0.0.1:8000/admin/
 
