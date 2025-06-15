@@ -5,100 +5,320 @@
 {% block title %} | Welcome {% endblock %}
 
 {% block content %}
-    <!-- Showcase -->
-    <section id="showcase">
-        <div class="container text-center">
-            <div class="home-search p-5">
-                <div class="overlay p-5">
-                    <h1 class="display-4 mb-4">
-                        Property Searching Just Got So Easy
-                    </h1>
-                    <p class="lead">Discover your dream property with our advanced search tools. 
-                        Find the perfect home, investment, or rental property that matches your needs and budget.</p>
-                    <div class="search">
-                        <form action="{% url 'listings:search' %}" method="get">
-                            <!-- Form Row 1 -->
-                            <div class="form-row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="sr-only">Keywords</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white border-right-0">
-                                                <i class="fas fa-search text-muted"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" name="keywords" class="form-control border-left-0 ps-0"
-                                               placeholder="Keywords (Pool, Garage, etc)">
-                                    </div>
-                                </div>
+    <!-- Hero Section -->
+    <section id="hero" class="position-relative">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="hero-content text-center text-white">
+                        <h1 class="hero-title mb-4">Find Your Real Estate</h1>
+                        <p class="hero-subtitle mb-5">
+                            We are a real estate agency that will help you find the best residence you 
+                            dream of, let's discuss for your dream house?
+                        </p>
+                        
+                        <!-- Property Type Tabs -->
+                        <div class="property-tabs mb-4">
+                            <ul class="nav nav-pills justify-content-center" id="propertyTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="project-tab" data-toggle="pill" href="#project" role="tab" aria-controls="project" aria-selected="true">
+                                        Project
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="rent-tab" data-toggle="pill" href="#rent" role="tab" aria-controls="rent" aria-selected="false">
+                                        For Rent
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="sale-tab" data-toggle="pill" href="#sale" role="tab" aria-controls="sale" aria-selected="false">
+                                        For Sale
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
 
-                                <div class="col-md-4 mb-3">
-                                    <label class="sr-only">City</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white border-right-0">
-                                                <i class="fas fa-map-marker-alt text-muted"></i>
-                                            </span>
+                        <!-- Search Form -->
+                        <div class="search-form-container">
+                            <div class="tab-content" id="propertyTabsContent">
+                                <!-- Project Tab -->
+                                <div class="tab-pane fade show active" id="project" role="tabpanel" aria-labelledby="project-tab">
+                                    <form action="{% url 'projects:projects' %}" method="get" class="search-form">
+                                        <!-- First Row -->
+                                        <div class="search-row mb-3">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-search text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="keywords" class="form-control" placeholder="Keywords (Pool, Garage, etc)">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map-marker-alt text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="city" class="form-control" placeholder="City">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="state" class="form-control">
+                                                        <option value="">Select State</option>
+                                                        {% for key,value in state_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input type="text" name="city" class="form-control border-left-0 ps-0" placeholder="City">
-                                    </div>
+                                        
+                                        <!-- Second Row -->
+                                        <div class="search-row mb-4">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-building text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="project_type" class="form-control">
+                                                        <option value="">Project Type</option>
+                                                        <option value="residential">Residential</option>
+                                                        <option value="commercial">Commercial</option>
+                                                        <option value="mixed">Mixed Use</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="price_range" class="form-control">
+                                                        <option value="">Price Range</option>
+                                                        <option value="under_1m">Under $1M</option>
+                                                        <option value="1m_5m">$1M - $5M</option>
+                                                        <option value="5m_10m">$5M - $10M</option>
+                                                        <option value="over_10m">Over $10M</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Search Button -->
+                                        <button type="submit" class="btn btn-warning btn-lg btn-block search-properties-btn">
+                                            <i class="fas fa-search me-2"></i>Search Properties
+                                        </button>
+                                    </form>
                                 </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label class="sr-only">State</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white border-right-0">
-                                                <i class="fas fa-map text-muted"></i>
-                                            </span>
+                                
+                                <!-- For Rent Tab -->
+                                <div class="tab-pane fade" id="rent" role="tabpanel" aria-labelledby="rent-tab">
+                                    <form action="{% url 'listings:search' %}" method="get" class="search-form">
+                                        <input type="hidden" name="listing_type" value="rent">
+                                        <!-- First Row -->
+                                        <div class="search-row mb-3">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-search text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="keywords" class="form-control" placeholder="Keywords (Pool, Garage, etc)">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map-marker-alt text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="city" class="form-control" placeholder="City">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="state" class="form-control">
+                                                        <option value="">Select State</option>
+                                                        {% for key,value in state_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <select name="state" class="form-control border-left-0">
-                                            <option selected="true" disabled="disabled">Select State</option>
-                                            {% for key,value in state_choices.items %}
-                                                <option value="{{ key }}">{{ value }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                                        
+                                        <!-- Second Row -->
+                                        <div class="search-row mb-4">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-bed text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="bedrooms" class="form-control">
+                                                        <option value="">Bedrooms</option>
+                                                        {% for key,value in bedroom_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="price" class="form-control">
+                                                        <option value="">Max Price</option>
+                                                        {% for key,value in price_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-tag text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="listing_type" class="form-control">
+                                                        <option value="rent" selected>For Rent</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Search Button -->
+                                        <button type="submit" class="btn btn-warning btn-lg btn-block search-properties-btn">
+                                            <i class="fas fa-search me-2"></i>Search Properties
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <!-- For Sale Tab -->
+                                <div class="tab-pane fade" id="sale" role="tabpanel" aria-labelledby="sale-tab">
+                                    <form action="{% url 'listings:search' %}" method="get" class="search-form">
+                                        <input type="hidden" name="listing_type" value="sale">
+                                        <!-- First Row -->
+                                        <div class="search-row mb-3">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-search text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="keywords" class="form-control" placeholder="Keywords (Pool, Garage, etc)">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map-marker-alt text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" name="city" class="form-control" placeholder="City">
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-map text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="state" class="form-control">
+                                                        <option value="">Select State</option>
+                                                        {% for key,value in state_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Second Row -->
+                                        <div class="search-row mb-4">
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-bed text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="bedrooms" class="form-control">
+                                                        <option value="">Bedrooms</option>
+                                                        {% for key,value in bedroom_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-dollar-sign text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="price" class="form-control">
+                                                        <option value="">Max Price</option>
+                                                        {% for key,value in price_choices.items %}
+                                                            <option value="{{ key }}">{{ value }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="search-field">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-tag text-muted"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select name="listing_type" class="form-control">
+                                                        <option value="sale" selected>For Sale</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Search Button -->
+                                        <button type="submit" class="btn btn-warning btn-lg btn-block search-properties-btn">
+                                            <i class="fas fa-search me-2"></i>Search Properties
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
-                            <!-- Form Row 2 -->
-                            <div class="form-row">
-                                <div class="col-md-6 mb-3">
-                                    <label class="sr-only">Bedrooms</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white border-right-0">
-                                                <i class="fas fa-bed text-muted"></i>
-                                            </span>
-                                        </div>
-                                        <select name="bedrooms" class="form-control border-left-0">
-                                            <option selected="true" disabled="disabled">Bedrooms</option>
-                                            {% for key,value in bedroom_choices.items %}
-                                                <option value="{{ key }}">{{ value }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white border-right-0">
-                                                <i class="fas fa-dollar-sign text-muted"></i>
-                                            </span>
-                                        </div>
-                                        <select name="price" class="form-control border-left-0" id="type">
-                                            <option selected="true" disabled="disabled">Max Price</option>
-                                            {% for key,value in price_choices.items %}
-                                                <option value="{{ key }}">{{ value }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary btn-lg btn-block mt-4 rounded-pill shadow" type="submit">
-                                <i class="fas fa-search me-2"></i>Search Properties
-                            </button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,10 +438,225 @@
 
 {% block styles %}
 <style>
-    #showcase {
+    #hero {
         background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
         background-size: cover;
         background-position: center;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        padding: 60px 0;
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+        line-height: 1.8;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .property-tabs .nav-pills {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 8px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .property-tabs .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        background: none;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .property-tabs .nav-link:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .property-tabs .nav-link.active {
+        color: white;
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+    }
+    
+    .search-form-container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .search-row {
+        display: flex;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .search-field {
+        flex: 1;
+        position: relative;
+    }
+    
+    .search-field .input-group {
+        height: 50px;
+    }
+    
+    .search-field .input-group-text {
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-right: none;
+        color: #6c757d;
+        font-size: 16px;
+        width: 45px;
+        justify-content: center;
+        border-radius: 8px 0 0 8px;
+    }
+    
+    .search-field .form-control {
+        height: 50px;
+        border: 2px solid #e0e0e0;
+        border-left: none;
+        border-radius: 0 8px 8px 0;
+        padding: 0 15px;
+        font-size: 16px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .search-field .form-control:focus {
+        border-color: #007bff;
+        background: white;
+        box-shadow: none;
+    }
+    
+    .search-field .form-control:focus + .input-group-text,
+    .search-field .input-group:focus-within .input-group-text {
+        border-color: #007bff;
+        background: white;
+    }
+    
+    .search-field .form-control::placeholder {
+        color: #6c757d;
+        font-size: 15px;
+    }
+    
+    .search-properties-btn {
+        background: #f4a261;
+        border: 2px solid #f4a261;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 18px;
+        padding: 12px 0;
+        transition: all 0.3s ease;
+        color: white;
+        text-transform: none;
+        letter-spacing: 0.5px;
+    }
+    
+    .search-properties-btn:hover {
+        background: #e76f51;
+        border-color: #e76f51;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(244, 162, 97, 0.4);
+        color: white;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+        
+        .search-row {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .search-form-container {
+            padding: 20px;
+            margin: 0 15px;
+        }
+        
+        .property-tabs .nav-link {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+        
+        #hero {
+            min-height: 60vh;
+            padding: 40px 0;
+        }
+        
+        .search-field .form-control,
+        .search-field .input-group-text {
+            height: 45px;
+        }
+        
+        .search-properties-btn {
+            font-size: 16px;
+            padding: 10px 0;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .property-tabs .nav-pills {
+            padding: 6px;
+        }
+        
+        .property-tabs .nav-link {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        
+        .search-field .form-control,
+        .search-field .input-group-text {
+            height: 40px;
+            font-size: 14px;
+        }
+        
+        .search-field .input-group-text {
+            width: 40px;
+        }
+        
+        .search-properties-btn {
+            font-size: 15px;
+        }
     }
 
     .modal-content {

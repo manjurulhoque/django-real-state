@@ -188,7 +188,11 @@
                                             </td>
                                             <td>
                                                 <div class="project-info">
-                                                    <strong class="d-block">{{ project.name }}</strong>
+                                                    <strong class="d-block">
+                                                        <a href="{% url 'projects:project_detail' project.id %}">
+                                                            {{ project.name }}
+                                                        </a>
+                                                    </strong>
                                                     <small class="text-muted">{{ project.project_type|title }}</small><br>
                                                     <small class="text-muted">
                                                         <i class="fas fa-map-marker-alt"></i> {{ project.city }}, {{ project.state }}
