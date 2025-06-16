@@ -5,30 +5,39 @@ A comprehensive, modern real estate web application built with Django that provi
 ## 🖼️ Screenshots
 
 ### Home Page
+
 ![Home Page](screenshots/home.png)
 
 ### Property Projects
+
 ![Projects](screenshots/projects.png)
 
 ### Project Details
+
 ![Project Details](screenshots/project-details.png)
 
 ### User Login
+
 ![Login](screenshots/login.png)
 
 ### User Dashboard
+
 ![User Profile](screenshots/user-profile.png)
 
 ### Update Profile
+
 ![Update Profile](screenshots/update-profile.png)
 
 ### Update Listing
+
 ![Update Listing](screenshots/update-listing.png)
 
 ### Admin Panel
+
 ![Admin Projects](screenshots/admin-projects.png)
 
 ### User Wishlist
+
 ![Wishlist](screenshots/wishlisht.png)
 
 ---
@@ -36,6 +45,7 @@ A comprehensive, modern real estate web application built with Django that provi
 ## 🌟 Features
 
 ### 🔍 Advanced Search & Discovery
+
 - **Multi-tab Search Interface** with modern glass-morphism design
 - **Property Search** with filters for location, price, bedrooms, property type
 - **Project Search** with specialized filters for real estate developments
@@ -43,6 +53,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **State-wise Filtering** with comprehensive location data
 
 ### 🏘️ Property Management
+
 - **Property Listings** with detailed information and multiple photos
 - **Property Types** including residential, commercial, and mixed-use
 - **Photo Galleries** with up to 6 images per property
@@ -52,6 +63,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **HOA Fee** tracking and display
 
 ### 🏗️ Real Estate Projects
+
 - **Project Management** for development properties
 - **Project Status Tracking** (Planning, Under Construction, Nearing Completion, Completed)
 - **Progress Visualization** with completion percentages
@@ -62,6 +74,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Price Range Management** for project units
 
 ### 👤 User Management & Authentication
+
 - **User Registration & Login** with secure authentication
 - **User Profiles** with customizable information
 - **Dashboard** with personalized property management
@@ -70,6 +83,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Profile Update** capabilities
 
 ### 💬 Communication & Inquiries
+
 - **Property Inquiries** with detailed contact forms
 - **Project Inquiries** with specialized inquiry types
 - **Contact Management** system
@@ -77,6 +91,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Inquiry Response Tracking**
 
 ### 👨‍💼 Admin & Management
+
 - **Super Admin Dashboard** with comprehensive controls
 - **Property Management** (Create, Read, Update, Delete)
 - **Project Management** with full CRUD operations
@@ -86,6 +101,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Publishing Controls** for properties and projects
 
 ### 🎨 Modern UI/UX
+
 - **Responsive Design** that works on all devices
 - **Modern Search Interface** with tabbed navigation
 - **Interactive Property Cards** with hover effects
@@ -97,6 +113,7 @@ A comprehensive, modern real estate web application built with Django that provi
 ## 🛠️ Technology Stack
 
 ### Backend
+
 - **Django 5.2.3** - Web framework
 - **Django REST Framework** - API development
 - **SQLite3** - Database (easily configurable to PostgreSQL/MySQL)
@@ -104,6 +121,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Django CORS Headers** - Cross-origin requests
 
 ### Frontend
+
 - **Bootstrap 4** - CSS framework
 - **Font Awesome** - Icon library
 - **JavaScript (ES6+)** - Interactive functionality
@@ -111,6 +129,7 @@ A comprehensive, modern real estate web application built with Django that provi
 - **Lightbox** - Image galleries
 
 ### Development Tools
+
 - **Faker** - Test data generation
 - **Django Admin** - Backend administration
 - **Django Debug Toolbar** (for development)
@@ -134,6 +153,7 @@ src/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.8+
 - pip (Python package manager)
 - Git
@@ -141,42 +161,51 @@ src/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone git@github.com:manjurulhoque/django-real-state.git
    cd django-real-estate
    ```
 
-2. **Create and activate virtual environment**
+2. **Install uv**
+
+   [uv installation](https://docs.astral.sh/uv/getting-started/installation)
+
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   curl -LsSf https://astral.sh/uv/install.sh | sh
    ```
 
-3. **Install dependencies**
+3. **Sync the project's dependencies with the environment.**
+
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
 4. **Run database migrations**
+
    ```bash
    cd src
-   python manage.py migrate
+   uv run python manage.py migrate
    ```
 
 5. **Generate sample data (optional)**
+
    ```bash
-   python ../generate_fixtures.py
-   python manage.py loaddata fixtures.json
+      uv run python manage.py loaddata projects/fixtures/projects.json
+      uv run python manage.py loaddata listings/fixtures/project_features.json
+      uv run python manage.py loaddata listings/fixtures/listings
    ```
 
 6. **Create superuser**
+
    ```bash
-   python manage.py createsuperuser
+   uv run python manage.py createsuperuser
    ```
 
 7. **Run the development server**
+
    ```bash
-   python manage.py runserver
+   uv run python manage.py runserver
    ```
 
 8. **Access the application**
@@ -186,6 +215,7 @@ src/
 ## 📱 Key Features Showcase
 
 ### 🏠 Property Listings
+
 - Comprehensive property database with search and filter capabilities
 - High-quality image galleries with multiple photos per property
 - Detailed property specifications including bedrooms, bathrooms, square footage
@@ -193,6 +223,7 @@ src/
 - Realtor contact information and inquiry forms
 
 ### 🏗️ Real Estate Projects
+
 - Development project management with status tracking
 - Visual progress indicators showing completion percentages
 - Project amenities and feature management
@@ -200,6 +231,7 @@ src/
 - Unit availability and pricing management
 
 ### 👤 User Experience
+
 - Modern, responsive design that works on all devices
 - Advanced search with tabbed interface for different property types
 - Wishlist functionality with real-time updates
@@ -207,6 +239,7 @@ src/
 - Seamless property inquiry and contact system
 
 ### 🔧 Admin Features
+
 - Comprehensive admin dashboard for property and project management
 - User management with role-based permissions
 - Inquiry management with response tracking
@@ -214,6 +247,7 @@ src/
 - Publishing controls and content moderation
 
 ## 🔒 Security Features
+
 - Django's built-in security measures
 - CSRF protection on all forms
 - User authentication and authorization
@@ -221,6 +255,7 @@ src/
 - SQL injection protection
 
 ## 📈 Scalability & Performance
+
 - Optimized database queries with select_related and prefetch_related
 - Image optimization and compression
 - Pagination for large datasets
@@ -228,6 +263,7 @@ src/
 - Caching support ready for production
 
 ## 🤝 Contributing
+
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
